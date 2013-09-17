@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>fullcrum (questionnaire)</title>
+
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css">
+  <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/q.js/0.9.6/q.min.js"></script>
+  <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+  <script type='text/javascript' src="js/md5.js"></script>
+</head>
+
+<body>
+To: <input id="email_to" type="text">
+<button id="send_email">Send Test Email</button>
+<div id="response"></div>
+
+<script>
+$('#send_email').click( function() {
+  Q.when( $.post( '/send_email' ) ).then( function( response ) {
+    $('#response').html( JSON.stringify( response ) );
+  });
+});
+</script>
+
+</body>
+</html>
+

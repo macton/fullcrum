@@ -1,0 +1,218 @@
+body {
+  width: 530px;
+  margin: 0 auto;
+}
+.heat-low {
+  background-color: #199900;
+}
+.heat-med-low {
+  background-color: #78ba00;
+}
+.heat-med {
+  background-color: #e1b700;
+}
+.heat-med-high {
+  background-color: #ff7d23;
+}
+.heat-high {
+  background-color: #ff2e12;
+}
+.desc {
+  background-color: #2b5797;
+  font-size: 1.1em;
+}
+.full-tile {
+  width: 490px;
+  height: 100px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 0px;
+  padding: 10px;
+  color: #FEFEF2;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  font-size: 1.25em;
+}
+.full-tile-autoheight {
+  width: 490px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 0px;
+  padding: 10px;
+  color: #FEFEF2;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  font-size: 1.25em;
+}
+.save-status {
+  width: 490px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 0px;
+  padding: 10px;
+  color: #FEFEF2;
+  background-color: #e1b700;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  font-size: 1.25em;
+}
+.status-tile {
+  width: 490px;
+  height: 1.5em;
+  margin-top: 0px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  padding: 10px;
+  color: #FEFEF2;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: moz-none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.message-tile {
+  width: 490px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 10px;
+  color: #FEFEF2;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  background-color: #2d89ef;
+}
+.message-status-tile {
+  width: 490px;
+  height: 1.2em;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 10px;
+  color: #FEFEF2;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  background-color: #2d89ef;
+}
+.suggestion-tile {
+  width: 490px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 10px;
+  color: #FEFEF2;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  background-color: #aaa;
+}
+.info-tile {
+  width: 415px;
+  height: 32px;
+  margin: 5px;
+  padding: 10px;
+  color: #FEFEF2;
+  background-color: #00aba9;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  float: left;
+  font-size: 1.5em;
+}
+.category-header-tile {
+  width: 490px;
+  height: 24px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-bottom: 0px;
+  padding: 10px;
+  color: #FEFEF2;
+  background-color: #00aba9;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  float: left;
+  font-size: 1.5em;
+}
+.category-score-tile {
+  width: 490px;
+  height: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.score-tile {
+  width: 50px;
+  height: 32px;
+  margin-top: 5px;
+  margin-left: 0px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  padding: 10px;
+  color: #FEFEF2;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  float: left;
+  text-align: right;
+}
+.bar {
+  height: 2px;
+  width: 0px;
+  margin-left: 5px;
+  margin-right: 5px;
+  background-color: #56c5ff;
+}
+.med-tile {
+  width: 74px;
+  height: 64px;
+  padding: 10px;
+  float: left;
+  margin: 5px;
+  color: #ECF1EF;
+  font-family: segoe ui, verdana, arial, sans-serif;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: moz-none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: moz-none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.user-show {
+  background-color: #99b433;
+  padding: 10px;
+  margin-top: 10px;
+}
+.quote {
+  font-size: 1.5em;
+}
+.social-links {
+  font-size: 1.25em;
+  margin-top: 10px;
+}
+.social-links i {
+  margin-right: 5px;
+}
+a {
+  text-decoration: none;
+  color: #ffffff;
+}
+a:hover {
+  color: #ffffff;
+  cursor: pointer;
+}
+img {
+  margin-right: 10px;
+}
+p {
+  margin-top: 10px;
+}
