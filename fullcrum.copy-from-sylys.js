@@ -1,8 +1,12 @@
-var fs             = require('fs');
-var Q              = require('q');
-var fullcrumConfig = require('./fullcrum.config');
-var sylysConfig    = require('./sylys.config');
-var mongoq         = require('./mongoq');
+var fs               = require('fs');
+var Q                = require('q');
+var fullcrumConfig   = require('./fullcrum.config');
+var sylysConfig      = require('./sylys.config');
+var mongoq           = require('./mongoq');
+var fullcrumMaster = require('./fullcrum.master.config');
+
+// #todo questionnaire name: 'Fullcrum Master'
+// #todo company -> questionnaireId
 
 var fullcrumDb = mongoq.Db( fullcrumConfig.mongoDbUrl );
 var sylysDb    = mongoq.Db( sylysConfig.mongoDbUrl );
@@ -41,8 +45,8 @@ Q.all( [ fullcrumDb.connect(), sylysDb.connect() ] )
         suggestionCollection = collections[3];
       })
       .then( function() {
-        console.log('# find any categories assigned to default company');
-        return fullcrumDb.collectionFind( categoryCollection, { companyId: fullcrumConfig.defaultCompanyId } );
+        console.log('# find any categories assigned to default questionnaire');
+        return fullcrumDb.collectionFind( categoryCollection, { questionnaireId: fullcrumMaster.questionnaire._id } );
       })
       .then( function( oldFullcrumCategories ) {
         console.dir( oldFullcrumCategories );
@@ -73,8 +77,8 @@ Q.all( [ fullcrumDb.connect(), sylysDb.connect() ] )
           });
       })
       .then( function() {
-        console.log('# remove any categories assigned to default company');
-        return fullcrumDb.collectionRemove( categoryCollection, { companyId: fullcrumConfig.defaultCompanyId } )
+        console.log('# remove any categories assigned to default questionnaire');
+        return fullcrumDb.collectionRemove( categoryCollection, { questionnaireId: fullcrumMaster.questionnaire._id } )
           .then( function( results ) {
             console.dir( results );
           });
@@ -82,12 +86,12 @@ Q.all( [ fullcrumDb.connect(), sylysDb.connect() ] )
   })
 
   .then( function() {
-    console.log('# add categories to default company');
+    console.log('# add categories to default questionnaire');
     return fullcrumDb.collection('Categories')
       .then( function( collection ) {
         var categories = [];
         for (var i=0;i<sylysCategories.length;i++) {
-          categories.push( { text: sylysCategories[i].value, companyId: fullcrumConfig.defaultCompanyId } );
+          categories.push( { text: sylysCategories[i].value, questionnaireId: fullcrumMaster.questionnaire._id } );
         }
         return fullcrumDb.collectionInsert( collection, categories );
       })
@@ -191,7 +195,7 @@ Q.all( [ fullcrumDb.connect(), sylysDb.connect() ] )
   })
 
   .then( function() {
-    console.log('# add summary responses to default company');
+    console.log('# add summary responses to default questionnaire');
 
     var oneNegativeResponse  = sylysResponses.one;
     var someNegativeResponse = sylysResponses.some;
@@ -199,10 +203,10 @@ Q.all( [ fullcrumDb.connect(), sylysDb.connect() ] )
     var allPositiveResponse  = sylysResponses.none;
 
     var summaryResponses = [
-      { text: oneNegativeResponse,  summaryType: 'kOneNegative',  companyId: fullcrumConfig.defaultCompanyId },
-      { text: someNegativeResponse, summaryType: 'kSomeNegative', companyId: fullcrumConfig.defaultCompanyId },
-      { text: allNegativeResponse,  summaryType: 'kAllNegative',  companyId: fullcrumConfig.defaultCompanyId },
-      { text: allPositiveResponse,  summaryType: 'kAllPositive',  companyId: fullcrumConfig.defaultCompanyId }
+      { text: oneNegativeResponse,  summaryType: 'kOneNegative',  questionnaireId: fullcrumMaster.questionnaire._id },
+      { text: someNegativeResponse, summaryType: 'kSomeNegative', questionnaireId: fullcrumMaster.questionnaire._id },
+      { text: allNegativeResponse,  summaryType: 'kAllNegative',  questionnaireId: fullcrumMaster.questionnaire._id },
+      { text: allPositiveResponse,  summaryType: 'kAllPositive',  questionnaireId: fullcrumMaster.questionnaire._id }
     ];
 
     return fullcrumDb.collection('SummaryResponses')

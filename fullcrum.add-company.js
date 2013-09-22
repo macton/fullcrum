@@ -16,7 +16,7 @@ fullcrumDb.connect()
     return fullcrumDb.collection( 'Companies' );
   })
   .then( function( collection ) {
-    return fullcrumDb.collectionSave( collection, { name: name } );
+    return fullcrumDb.collectionInsert( collection, { name: name } );
   })
   .then( function( results ) {
     console.dir( results );

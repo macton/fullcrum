@@ -6,28 +6,32 @@ Collection Admins
   Email                     email
   Text                      loginId
 
-Collection Companies
+Collection Questionnaires
   Text                      name
 
+Collection Companies
+  Text                      name
+  $oid.Questionnaires       questionnaireId
+
 Collection CompanyAdmins
-  $oid.Companies.Company    companyId
+  $oid.Companies            companyId
   Text                      name
   Email                     email
   Text                      loginId
 
 Collection Tokens
-  $oid.Companies.Company    companyId
+  $oid.Companies            companyId
   Date                      creationDate
   Email                     providerEmail
   Date                      spentDate
   Email                     spenderEmail
 
 Collection Categories
-  $oid.Companies.Company    companyId
+  $oid.Questionnaires       questionnaireId
   Text                      text
 
 Collection Questions
-  $oid.Categories.Category  categoryId
+  $oid.Categories           categoryId
   Text                      text
 
 Select ResponseType
@@ -43,17 +47,17 @@ Select SummaryType
   kAllPositive
 
 Collection Responses
-  $oid.Categories.Category  categoryId
+  $oid.Categories           categoryId
   Text                      text
   ResponseType              responseType
 
 Collection Suggestions
-  $oid.Categories.Category  categoryId
+  $oid.Categories           categoryId
   Text                      text
   Email                     authorEmail
   Url                       moreInfoUrl
 
 Collection SummaryResponses
-  $oid.Companies.Company    companyId
+  $oid.Questionnaires       questionnaireId
   Text                      text
   SummaryType               summaryType
