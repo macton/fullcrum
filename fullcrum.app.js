@@ -4,15 +4,13 @@ var express           = require('express');
 var passport          = require('passport');
 var Q                 = require('q');
 var postmark          = require('./node-postmark');
+var fullcrum          = require('./fullcrum.api');
 
 var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-
-// Docs for Jade http://naltatis.github.io/jade-syntax-docs/
-app.set('view engine', 'ejs');
 
 app.use(express.favicon());
 app.use(express.bodyParser());
@@ -28,7 +26,9 @@ app.use(passport.session());
 app.use(app.router);
 app.use(express.compress());
 app.use(express.staticCache());
-app.use(express.static(__dirname + '/public'));
+
+exports.staticMiddleware = express.static(__dirname + '/public');
+app.use( exports.staticMiddleware );
 
 // development only
 if ('development' == app.get('env')) {
@@ -41,4 +41,20 @@ exports.start = function() {
     console.log('Express server listening on port ' + app.get('port'));
   });
 }
+
+exports.sendCollection = function( collectionName, req, res ) {
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( collectionName );
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionFind( collection );
+    })
+    .then( function( results ) {
+      res.send(200, results);
+    })
+    .fail( function (err) {
+      res.send(500, err);
+    });
+};
 

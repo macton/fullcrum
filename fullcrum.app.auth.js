@@ -8,29 +8,30 @@ var app               = fullcrumApp.app;
 
 exports.ensureAuthenticated = function(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
-  console.log('redirect login');
   res.redirect('/login');
 };
 
 exports.ensureHasAccount = function(req, res, next) {
-  if (req.user && req.user._id) {
+  if (req.user && req.user._id && ( req.user.companyId == fullcrum.master.company._id ) ) {
     return next();
   }
-  console.log('redirect new-account');
   res.redirect('/new-account');
+};
+
+exports.ensureFullcrumAdmin = function(req, res, next) {
+  if (req.user && req.user._id && ( req.user.companyId == fullcrum.master.company._id ) ) {
+    return next();
+  }
+  res.send(401);
 };
 
 exports.use = function() {
 
   passport.serializeUser(function(user, done) {
-    // console.log('seralizeUser');
-    // console.dir(user);
     done(null, user);
   });
   
   passport.deserializeUser(function(obj, done) {
-    // console.log('deseralizeUser');
-    // console.dir(obj);
     done(null, obj);
   });
   
@@ -38,7 +39,7 @@ exports.use = function() {
   passport.use(new LinkedInStrategy({
       consumerKey:    linkedinConfig.apiKey,
       consumerSecret: linkedinConfig.secretKey,
-      callbackURL:    "http://192.168.1.85:3000/auth/linkedin/callback",
+      callbackURL:    "/auth/linkedin/callback",
       profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
     },
     function(token, tokenSecret, profile, done) {
@@ -71,7 +72,6 @@ exports.use = function() {
       return fullcrum.db.collectionFindOneById( collection, accountCode )
         // is this account already connected?
         .then( function( admin ) {
-          console.log('// is this account already connected?');
           if (!admin) {
             throw new Error('Account does not exist');
           }
@@ -81,18 +81,15 @@ exports.use = function() {
         })
         // update account with loginId
         .then( function() {
-          console.log('// update account with loginId');
           return fullcrum.db.collectionUpdateById( collection, accountCode, { '$set' : { loginId: req.user.loginId } } )
         })
         // return account data
         .then( function( result ) {
-          console.log('// return account data');
           return fullcrum.db.collectionFindOne( collection, { loginId: req.user.loginId } );
         });
     })
     // copy found admin account into live user data
     .then( function( admin ) {
-      console.log('// copy found admin account into live user data');
       for ( var key in admin ) {
         if ( admin.hasOwnProperty( key ) ) { 
           req.user[ key ] = admin[ key ];
@@ -100,21 +97,12 @@ exports.use = function() {
       }
     })
     .then( function() {
-      console.log( 'account-connect ' + accountCode );
       res.send( 200, { status: 'OK', accountCode: accountCode } );
     })
     .fail( function( err ) {
       console.log( err );
       res.send( 200, { status: 'Failed', message: err.toString() } );
     });
-  });
-
-  app.get('/login', function(req, res){
-    res.render('login', { user: req.user });
-  });
-
-  app.get('/new-account', function(req, res){
-    res.render('new-account', { user: req.user });
   });
 
   app.get('/auth/linkedin',
@@ -127,13 +115,11 @@ exports.use = function() {
   app.get('/auth/linkedin/callback',
     passport.authenticate('linkedin', { failureRedirect: '/login' }),
     function(req, res) {
-      console.log('redirect /');
       res.redirect('/');
     }); 
 
   app.get('/logout', function(req, res){
     req.logout();
-    console.log('redirect /');
     res.redirect('/');
   });
 }

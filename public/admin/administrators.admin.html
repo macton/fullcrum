@@ -1,0 +1,27 @@
+<div ng-controller="administrators-admin">
+  <div ng-if="!isOpen">
+    <div class="row" ng-class="(admin.$isEdit) ? 'color-notify' : 'color-info'">
+      <div ng-click="open()" class="btn-title">&#9660; {{ admin.name }}</div> 
+      <div class="btn color-delete">Delete</div> 
+    </div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row" ng-class="(admin.$isEdit) ? 'color-notify' : 'color-info'">
+      <div ng-click="close()" class="btn-title">&#9650; {{ admin.name }}</div>
+    </div>
+    <div class="form">
+      <div class="form-row">
+        <div class="field-label">Name</div>
+        <div class="field-data"><input type="text" ng-model="admin.name"></div>
+      </div>
+      <div class="form-row">
+        <div class="field-label">Email</div>
+        <div class="field-data"><input type="text" ng-model="admin.email"></div>
+      </div>
+      <div class="form-row">
+        <div class="field-label">CompanyId</div>
+        <div class="field-data"><select ng-model="admin.companyId" ng-options="company._id as company.name for company in companies"></select></div>
+      </div>
+    </div>
+  </div>
+</div>

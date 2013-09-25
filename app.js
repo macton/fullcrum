@@ -7,34 +7,28 @@ var fullcrumAuth      = require('./fullcrum.app.auth');
 var app                 = fullcrumApp.app;
 var ensureAuthenticated = fullcrumAuth.ensureAuthenticated;
 var ensureHasAccount    = fullcrumAuth.ensureHasAccount;
+var ensureFullcrumAdmin = fullcrumAuth.ensureFullcrumAdmin;
 
 fullcrumAuth.use();
 
 app.get('/', ensureAuthenticated, ensureHasAccount, function(req, res, next){
-  var adminConfig = { user: req.user };
   if ( req.user.companyId == fullcrum.master.company._id ) {
-    console.log('admin');
-    fullcrum.db.connection.then( function() {
-      console.log('connection');
-      return fullcrum.db.collection('Companies')
-    })
-    .then( function( collection ) {
-      console.log('companies');
-      return fullcrum.db.collectionFind( collection );
-    })
-    .then( function( companies ) {
-      console.log('render admin');
-      adminConfig.companies = companies;
-      res.render( 'admin', adminConfig );
-    })
-    .fail( function( err ) {
-      next(err);
-    });
+    res.redirect('/admin/fullcrum.html');
   } else {
-    console.dir( adminConfig );
-    console.log('render company admin');
-    res.render( 'admin', adminConfig );
+    res.redirect('/admin/company.html');
   }
+});
+
+app.get('/administrators', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  fullcrumApp.sendCollection('Admins', req, res);
+});
+
+app.get('/companies', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  fullcrumApp.sendCollection('Companies', req, res);
+});
+
+app.get('/admin/:file', ensureAuthenticated, ensureHasAccount, function(req, res, next) {
+  fullcrumApp.staticMiddleware( req, res, next );
 });
 
 app.post('/send_email', function( req, res ) {
@@ -45,11 +39,6 @@ app.post('/send_email', function( req, res ) {
   }, function(response){
     console.log('RESPONSE IS ' + JSON.stringify(response));
   });
-});
-
-process.on('uncaughtException', function(err) {
-   
-  console.log('Caught exception: ' + err);
 });
 
 fullcrumApp.start();

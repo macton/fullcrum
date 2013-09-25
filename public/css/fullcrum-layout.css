@@ -2,52 +2,162 @@ body {
   width: 530px;
   margin: 0 auto;
   font-family: segoe ui, verdana, arial, sans-serif;
+  font-size: 12pt;
 }
 
-h1 {
+div {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.row {
+  width: 100%;
+  padding: 5px;
   margin-top: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 0;
+  margin-right: 0;
   margin-bottom: 0px;
-  padding: 10px;
-  background-color: #da532c;
-  color: #FEFEF2;
-  font-size: 1.5em;
-  font-weight: normal;
+  min-height: 32px;
+  overflow: hidden;
 }
 
-h2 {
-  margin-top: 5px;
-  margin-left: 5px;
+.form-row {
+  width: 100%;
+  padding: 5px;
+  margin: 0;
+  overflow: hidden;
+}
+
+.form {
+  width: 100%;
+  padding: 5px;
+  margin: 0;
+  color: #FEFEF2;
+  background-color: #AAA;
+  overflow: hidden;
+}
+
+.field-label {
+  width: 20%;
+  padding: 10px;
+  margin: 0;
+  text-align: right;
+  float: left;
+}
+
+.field-data {
+  margin: 0;
+  text-align: left;
+  width: 70%;
+  float: left;
+}
+
+.field-data input {
+  width: 100%;
+  padding: 10px;
+}
+
+.field-data select {
+  width: 100%;
+  padding: 10px;
+}
+
+.btn {
+  width: 20%;
+  padding-left:   10px;
+  padding-right:  10px;
+  padding-top:    15px;
+  padding-bottom: 15px;
   margin-right: 5px;
-  margin-bottom: 0px;
-  padding: 10px;
-  background-color: #2b5797;
-  color: #FEFEF2;
-  font-size: 1.2em;
-  font-weight: normal;
+  float: right;
+  text-align: center;
 }
 
-footer {
-  margin-top: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 0px;
-  padding: 10px;
-  background-color: #2b5797;
-  color: #FEFEF2;
-  font-size: 0.8em;
-  font-weight: normal;
-}
-
-a {
-  text-decoration: none;
-  color: #ffffff;
-}
-
-a:hover {
-  text-decoration: none;
-  color: #ffffff;
+.btn:hover {
   cursor: pointer;
 }
 
+.btn-title {
+  width: 50%;
+  padding-left:   10px;
+  padding-right:  10px;
+  padding-top:    15px;
+  padding-bottom: 15px;
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.btn-title:hover {
+  cursor: pointer;
+}
+
+.title {
+  padding-left:   10px;
+  padding-right:  10px;
+  padding-top:    15px;
+  padding-bottom: 15px;
+  float: left;
+  margin-left: 5px;
+  margin-right: 5px;
+  text-transform: uppercase;
+}
+
+p {
+  padding: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.color-info {
+  color: #FEFEF2;
+  background-color: #00aba9;
+}
+
+.color-notify {
+  color: black;
+  background-color: #ffc40d;
+}
+
+.color-form {
+  color: #FEFEF2;
+  background-color: #AAA;
+}
+
+.color-delete {
+  color: #FEFEF2;
+  background-color: #ff2e12;
+}
+
+.color-primary {
+  color: #FEFEF2;
+  background-color: #199900;
+}
+
+.color-h1 {
+  background-color: #da532c;
+  color: #FEFEF2;
+}
+
+.color-h2 {
+  background-color: #2b5797;
+  color: #FEFEF2;
+}
+
+.color-footer {
+  background-color: #333;
+  color: #aaa;
+}
+
+.color-footer a {
+  color: white;
+}
+
+a.btn {
+  text-decoration: none;
+}
+
+a.btn:hover {
+  text-decoration: none;
+}
