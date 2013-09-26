@@ -5,6 +5,7 @@ Collection Admins
   Text                      name
   Email                     email
   Text                      loginId
+  $oid.Companies            companyId
 
 Collection Questionnaires
   Text                      name
@@ -12,12 +13,6 @@ Collection Questionnaires
 Collection Companies
   Text                      name
   $oid.Questionnaires       questionnaireId
-
-Collection CompanyAdmins
-  $oid.Companies            companyId
-  Text                      name
-  Email                     email
-  Text                      loginId
 
 Collection Tokens
   $oid.Companies            companyId

@@ -1,5 +1,4 @@
 
-var postmark          = require('./node-postmark');
 var fullcrum          = require('./fullcrum.api');
 var fullcrumApp       = require('./fullcrum.app');
 var fullcrumAuth      = require('./fullcrum.app.auth');
@@ -31,6 +30,11 @@ app.get('/admin/:file', ensureAuthenticated, ensureHasAccount, function(req, res
   fullcrumApp.staticMiddleware( req, res, next );
 });
 
+app.post('/save', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  fullcrumApp.save( req, res );
+});
+
+/*
 app.post('/send_email', function( req, res ) {
   postmark.send({
     to: 'macton@gmail.com',
@@ -40,5 +44,6 @@ app.post('/send_email', function( req, res ) {
     console.log('RESPONSE IS ' + JSON.stringify(response));
   });
 });
+*/
 
 fullcrumApp.start();

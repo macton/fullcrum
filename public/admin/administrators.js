@@ -6,5 +6,6 @@ app.controller('administrators', function($scope) {
     $scope.administrators.unshift( { name: 'New User', _id: fakeId, '$isNew': true, '$isEdit': true } );
     $scope.safeApply();
   }
+
 });
 

@@ -13,6 +13,7 @@ angular.module('ng').run(['$rootScope', function($rootScope) {
 
   $rootScope.isEdited           = false;
   $rootScope.documentFieldEdits = {};
+  $rootScope.isSaving           = false;
 
   $rootScope.editDocumentField = function(collectionName, documentId, fieldName, fieldValue) {
     var collectionEdits = $rootScope.documentFieldEdits[ collectionName ];
@@ -29,7 +30,22 @@ angular.module('ng').run(['$rootScope', function($rootScope) {
   };
 
   $rootScope.save = function() {
-    console.log("save");
+    $rootScope.isSaving = true;
+    $rootScope.safeApply();
+
+    Q.when( $.post( '/save', $rootScope.documentFieldEdits ) )
+      .then( function( results ) {
+        console.dir( results );
+        $rootScope.isEdited           = false;
+        $rootScope.documentFieldEdits = {};
+      })
+      .fail( function( err ) {
+        console.dir( err );
+      })
+      .done( function() {
+        $rootScope.isSaving = false;
+        $rootScope.safeApply();
+      });
   };
 
 }]);
