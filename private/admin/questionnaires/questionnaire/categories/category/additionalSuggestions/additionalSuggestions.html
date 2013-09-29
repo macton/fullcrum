@@ -1,0 +1,14 @@
+<div ng-controller="additionalSuggestions">
+  <div ng-if="!isOpen">
+    <div class="row color-h6"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Company Specific Suggestions </div> </div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row color-h6"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Company Specific Suggestions </div> <div ng-click="addNew()" class="btn color-primary">Add New</div> </div>
+    <div ng-if="additionalSuggestions.length == 0" class="form">
+      <div class="form-row" style="text-align:center;">No additional suggestions yet!</div>
+    </div>
+    <div ng-repeat="additionalSuggestion in additionalSuggestions">
+      <ng-include src="'/admin/questionnaires/questionnaire/categories/category/additionalSuggestions/additionalSuggestion/additionalSuggestion.html'"></ng-include>
+    </div>
+  </div>
+</div>

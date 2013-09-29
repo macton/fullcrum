@@ -26,6 +26,8 @@
   <script src="/admin/questionnaires/questionnaire/categories/category/responses/response/response.js"></script>
   <script src="/admin/questionnaires/questionnaire/categories/category/suggestions/suggestions.js"></script>
   <script src="/admin/questionnaires/questionnaire/categories/category/suggestions/suggestion/suggestion.js"></script>
+  <script src="/admin/questionnaires/questionnaire/categories/category/additionalSuggestions/additionalSuggestions.js"></script>
+  <script src="/admin/questionnaires/questionnaire/categories/category/additionalSuggestions/additionalSuggestion/additionalSuggestion.js"></script>
   <script src="/admin/questionnaires/questionnaire/summaryResponses/summaryResponses.js"></script>
   <script src="/admin/questionnaires/questionnaire/summaryResponses/summaryResponse/summaryResponse.js"></script>
 </head>
@@ -34,7 +36,7 @@
   <span style="float:right;"><a href="/logout">logout</a></span> 
   <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
   <div class="row color-h1">
-    <div class="title">Glad to see you {{ userName }}!</div>
+    <div class="title">Happy to see you {{ userName }}!</div>
     <div ng-if="isEdited" ng-click="save()" class="btn color-notify"><i ng-show="isSaving" class="icon-spin icon-spinner"></i><span ng-show="!isSaving">Save</span></div>
   </div>
 

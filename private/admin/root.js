@@ -77,10 +77,13 @@ function handleOpenClose( $scope ) {
   };
 }
 
-function handleEdit( $scope, collectionName, docName, fieldName ) {
+function handleEdit( $scope, collectionName, docName, fieldName, keyName, keyValue ) {
   $scope.$watch( docName + '.' + fieldName, function( value, oldValue ) {
     if (value !== oldValue) {
-      $scope.editDocumentField( collectionName, $scope[ docName ]._id, fieldName ,value );
+      $scope.editDocumentField( collectionName, $scope[ docName ]._id, fieldName, value );
+      if ( keyName && keyValue ) {
+        $scope.editDocumentField( collectionName, $scope[ docName ]._id, keyName, keyValue );
+      }
       $scope.questionnaire.$isEdit = true;
       delete $scope[ docName ].$isNew;
     }

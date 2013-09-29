@@ -47,6 +47,7 @@ function hasCollectionChangeAccess( collectionName, user ) {
           "Questions",
           "Responses",
           "Suggestions",
+          "AdditionalSuggestions",
           "SummaryResponses"
     ];
 

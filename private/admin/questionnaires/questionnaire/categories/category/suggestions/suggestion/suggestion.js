@@ -1,9 +1,9 @@
 app.controller('suggestions-suggestion', function($scope) {
   handleOpenClose( $scope );
   handleOpenIsNew( $scope, 'suggestion' );
-  handleEdit( $scope, 'SummaryResponses', 'suggestion', 'text' );
-  handleEdit( $scope, 'SummaryResponses', 'suggestion', 'authorEmail' );
-  handleEdit( $scope, 'SummaryResponses', 'suggestion', 'moreInfoUrl' );
-  handleEdit( $scope, 'SummaryResponses', 'suggestion', 'responseType' );
+  handleEdit( $scope, 'Suggestions', 'suggestion', 'text', 'categoryId', $scope.category._id );
+  handleEdit( $scope, 'Suggestions', 'suggestion', 'authorEmail', 'categoryId', $scope.category._id );
+  handleEdit( $scope, 'Suggestions', 'suggestion', 'moreInfoUrl', 'categoryId', $scope.category._id );
+  handleEdit( $scope, 'Suggestions', 'suggestion', 'responseType', 'categoryId', $scope.category._id );
 });
 

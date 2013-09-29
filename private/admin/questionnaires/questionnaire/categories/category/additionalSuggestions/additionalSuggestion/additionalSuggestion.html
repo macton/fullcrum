@@ -1,0 +1,27 @@
+<div ng-controller="additionalSuggestions-additionalSuggestion">
+  <div class="form">
+    <div class="form-row">
+      <div class="field-hlabel">Suggestion</div>
+      <div class="field-hdata"><textarea class="xxtall" ng-model="additionalSuggestion.text"></textarea></div>
+    </div>
+    <div class="form-row">
+      <div class="field-label">Author email</div>
+      <div class="field-data"><input type="text" ng-model="additionalSuggestion.authorEmail"></div>
+    </div>
+    <div class="form-row">
+      <div class="field-label">More info URL</div>
+      <div class="field-data"><input type="text" ng-model="additionalSuggestion.moreInfoUrl"></div>
+    </div>
+    <div class="form-row">
+      <div class="field-label">When</div>
+      <div class="field-data">
+        <select ng-model="additionalSuggestion.responseType" ng-options="type.value as type.text for type in responseTypes"></select>
+     </div>
+    </div>
+    <div class="form-row">
+      <div class="field-label">Company</div>
+      <div class="field-data"><select ng-model="additionalSuggestion.companyId" ng-options="company._id as company.name for company in companies"></select></div>
+    </div>
+  </div>
+</div>
+

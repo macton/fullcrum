@@ -70,8 +70,44 @@ app.get('/suggestions', ensureAuthenticated, ensureFullcrumAdmin, function(req, 
   }
 });
 
-app.get('/admin/:file', ensureAuthenticated, ensureHasAccount, function(req, res, next) {
-  res.sendfile( 'private/admin/' + req.param('file') );
+app.get('/additionalSuggestions', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  if ( req.param('categoryId') ) {
+    var query = { categoryId: req.param('categoryId') };
+    if ( req.param('companyId') ) {
+      query.companyId = req.param('companyId');
+    }
+    fullcrumApp.sendCollection('AdditionalSuggestions', req, res, query);
+  } else {
+    res.send(400);
+  }
+});
+
+var privateDirectories = [
+  "admin",
+  "admin/administrators",
+  "admin/administrators/admin",
+  "admin/companies",
+  "admin/companies/company",
+  "admin/questionnaires",
+  "admin/questionnaires/questionnaire",
+  "admin/questionnaires/questionnaire/categories",
+  "admin/questionnaires/questionnaire/categories/category",
+  "admin/questionnaires/questionnaire/categories/category/additionalSuggestions",
+  "admin/questionnaires/questionnaire/categories/category/additionalSuggestions/additionalSuggestion",
+  "admin/questionnaires/questionnaire/categories/category/questions",
+  "admin/questionnaires/questionnaire/categories/category/questions/question",
+  "admin/questionnaires/questionnaire/categories/category/suggestions",
+  "admin/questionnaires/questionnaire/categories/category/suggestions/suggestion",
+  "admin/questionnaires/questionnaire/categories/category/responses",
+  "admin/questionnaires/questionnaire/categories/category/responses/response",
+  "admin/questionnaires/questionnaire/summaryResponses",
+  "admin/questionnaires/questionnaire/summaryResponses/summaryResponse"
+];
+
+privateDirectories.forEach( function( directory ) {
+  app.get( '/' + directory + '/:file', ensureAuthenticated, ensureHasAccount, function(req, res, next) {
+    res.sendfile( 'private/' + directory + '/' + req.param('file') );
+  });
 });
 
 app.post('/save', ensureAuthenticated, ensureHasAccount, function(req, res) {
