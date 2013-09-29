@@ -1,0 +1,7 @@
+exports.domain   = 'api.postmarkapp.com';
+exports.endpoint = '/email';
+exports.secure   = false;
+exports.token    = 'postmarktoken-1111-9999-8888-123456789';
+exports.from     = 'you@yourapp.com';
+exports.subject  = '[no subject]';
+exports.text     = '[no message]';

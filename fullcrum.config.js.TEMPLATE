@@ -1,0 +1,17 @@
+
+exports.mongoDbUrl      = "mongodb://name:pass@db.url:port/path";
+exports.dbName          = 'dbname';
+exports.collectionNames = [
+  'scratchpad',
+  'Admins',
+  'About',
+  'Questionnaires',
+  'Companies',
+  'CompanyAdmins',
+  'Tokens',
+  'Categories',
+  'Questions',
+  'Responses',
+  'Suggestions',
+  'SummaryResponses'
+];
