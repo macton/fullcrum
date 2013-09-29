@@ -53,6 +53,44 @@ div {
   float: left;
 }
 
+.field-hlabel {
+  width: 90%;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 4px;
+  margin: 0;
+  text-align: left;
+}
+
+.field-hdata {
+  margin: 0;
+  text-align: left;
+  width: 92%;
+  padding-left: 10px;
+}
+
+.field-hdata textarea {
+  width: 100%;
+  padding: 10px;
+  resize: none;
+}
+
+.field-hdata textarea.tall {
+  height: 12em;
+}
+
+.field-hdata textarea.xtall {
+  height: 16em;
+}
+
+.field-hdata textarea.xxtall {
+  height: 20em;
+}
+
+.field-hdata textarea.short {
+  height: 4em;
+}
+
 .field-data input {
   width: 100%;
   padding: 10px;
@@ -79,7 +117,7 @@ div {
 }
 
 .btn-title {
-  width: 50%;
+  width: 60%;
   padding-left:   10px;
   padding-right:  10px;
   padding-top:    15px;
@@ -120,6 +158,10 @@ p {
   background-color: #ffc40d;
 }
 
+.text-notify {
+  color: #ffc40d;
+}
+
 .color-form {
   color: #FEFEF2;
   background-color: #AAA;
@@ -141,7 +183,32 @@ p {
 }
 
 .color-h2 {
+  color: #FEFEF2;
+  background-color: #00aba9;
+}
+
+.color-h3 {
   background-color: #2b5797;
+  color: #FEFEF2;
+}
+
+.color-h4 {
+  background-color: #691BB8;
+  color: #FEFEF2;
+}
+
+.color-h5 {
+  background-color: #AA40FF;
+  color: #FEFEF2;
+}
+
+.color-h6 {
+  background-color: #DE4AAD;
+  color: #FEFEF2;
+}
+
+.color-h7 {
+  background-color: #E773BD;
   color: #FEFEF2;
 }
 

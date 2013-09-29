@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>fullcrum new account</title>
+  <title>fullcrum login</title>
 
   <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
   <link rel="stylesheet" type="text/css" href="/css/fullcrum-layout.css">
@@ -9,30 +9,38 @@
   <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/q.js/0.9.6/q.min.js"></script>
 </head>
 <body>
-  <img src="/img/fullcrum_cropped.jpg">
 
-  <div class="tile-w5 tile-color-h1">Hello!</div>
+  <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+  <div class="row color-h1"><div class="title">New admin account</div> <div class="btn color-primary account-connect">Connect</div></div>
 
-  <div class="tile-w5 tile-color-info">
-    <p> The next step is to connect your account. </p>
-    Account Code: <input class="account-code" type="text"> <button class="account-connect">Connect</button>
+  <div class="form">
+    <div class="form-row">
+      <div class="field-label">Account Code</div>
+      <div class="field-data"><input class="account-code" type="text"></div>
+    </div>
+  </div>
+
+  <div class="row color-footer">
+    <p>
+      We want your studio to have better retention, happier developers, and upgraded leaders. Ask us how we can help!  
+      <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=%77%65%6c%6f%76%65%64%65%76%73@%66%75%6c%6c%63%72%75%6d.%63%6f" target="_blank">welovedevs@fullcrum.co</a>
+      <a href="https://twitter.com/fullcrumco"><i class="icon-twitter"></i></a>
+    </p>
   </div>
 
   <script>
   $('.account-connect').on('click', function() {
     var accountCode = $('.account-code').val().trim();
     Q.when($.post( '/account-connect', { accountCode: accountCode } ))
-      .then( function() {
+      .then( function( results ) {
         window.location.replace('/');
-      }).done();
+      })
+      .fail( function( err ) { 
+        console.dir( err );
+      });
   });
   </script>
 
-  <footer>
-    We want your studio to have better retention, happier developers, and upgraded leaders. Ask us how we can help!  
-    <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=%77%65%6c%6f%76%65%64%65%76%73@%66%75%6c%6c%63%72%75%6d.%63%6f" target="_blank">welovedevs@fullcrum.co</a>
-    <a href="https://twitter.com/fullcrumco"><i class="icon-twitter"></i></a>
-  </footer>
 
 </body>
 </html>
