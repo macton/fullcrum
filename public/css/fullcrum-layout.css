@@ -143,14 +143,14 @@ div {
 }
 
 p {
-  padding: 10px;
+  padding: 5px;
   margin-left: 5px;
   margin-right: 5px;
 }
 
 .color-info {
-  color: #FEFEF2;
-  background-color: #00aba9;
+  color: #444;
+  background-color: #91D100;
 }
 
 .color-notify {
@@ -160,11 +160,6 @@ p {
 
 .text-notify {
   color: #ffc40d;
-}
-
-.color-form {
-  color: #FEFEF2;
-  background-color: #AAA;
 }
 
 .color-delete {
