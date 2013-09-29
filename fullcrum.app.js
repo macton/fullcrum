@@ -37,26 +37,30 @@ if ('development' == app.get('env')) {
 
 function hasCollectionChangeAccess( collectionName, user ) {
   var isFullcrumAdmin = ( user.companyId == fullcrum.master.company._id );
-  if ( isFullcrumAdmin ) {
-    var fullcrumAdminOnlyCollections = [ 
-          "About",
-          "Admins",
-          "Companies",
-          "Tokens",
-          "Categories",
-          "Questions",
-          "Responses",
-          "Suggestions",
-          "AdditionalSuggestions",
-          "SummaryResponses"
-    ];
+  var fullcrumAdminOnlyCollections = [ 
+    "About",
+    "Admins",
+    "Companies",
+    "Tokens",
+    "Categories",
+    "Questions",
+    "Responses",
+    "Suggestions",
+    "AdditionalSuggestions",
+    "SummaryResponses"
+  ];
 
-    if ( fullcrumAdminOnlyCollections.indexOf( collectionName ) != -1 ) {
-      return true;
-    }
+  if ( fullcrumAdminOnlyCollections.indexOf( collectionName ) != -1 ) {
+    return isFullcrumAdmin;
   }
 
-  // #todo access to company admin data
+  var adminCollections = [ 
+    "Employees"
+  ];
+
+  if ( adminCollections.indexOf( collectionName ) != -1 ) {
+    return true;
+  }
 
   return false;
 }

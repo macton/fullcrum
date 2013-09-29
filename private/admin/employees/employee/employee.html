@@ -1,0 +1,22 @@
+<div ng-controller="employees-employee">
+  <div ng-if="!isOpen">
+    <div class="row" ng-class="(employee.$isEdit) ? 'color-notify' : 'color-h3'">
+      <div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> {{ employee.name }}</div> 
+    </div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row" ng-class="(employee.$isEdit) ? 'color-notify' : 'color-h3'">
+      <div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> {{ employee.name }}</div>
+    </div>
+    <div class="form">
+      <div class="form-row">
+        <div class="field-label">Name</div>
+        <div class="field-data"><input type="text" ng-model="employee.name" required></div>
+      </div>
+      <div class="form-row">
+        <div class="field-label">Email</div>
+        <div class="field-data"><input type="email" ng-model="employee.email" required></div>
+      </div>
+    </div>
+  </div>
+</div>

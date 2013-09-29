@@ -26,6 +26,14 @@ app.get('/administrators', ensureAuthenticated, ensureFullcrumAdmin, function(re
   fullcrumApp.sendCollection('Admins', req, res);
 });
 
+app.get('/employees', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  if ( req.param('companyId') ) {
+    fullcrumApp.sendCollection('Employees', req, res, { companyId: req.param('companyId') } );
+  } else {
+    res.send(400);
+  }
+});
+
 app.get('/companies', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
   fullcrumApp.sendCollection('Companies', req, res);
 });
@@ -86,6 +94,7 @@ app.get('/additionalSuggestions', ensureAuthenticated, ensureFullcrumAdmin, func
   }
 });
 
+// find private -type d
 var privateDirectories = [
   "admin",
   "admin/administrators",
@@ -105,7 +114,9 @@ var privateDirectories = [
   "admin/questionnaires/questionnaire/categories/category/responses",
   "admin/questionnaires/questionnaire/categories/category/responses/response",
   "admin/questionnaires/questionnaire/summaryResponses",
-  "admin/questionnaires/questionnaire/summaryResponses/summaryResponse"
+  "admin/questionnaires/questionnaire/summaryResponses/summaryResponse",
+  "admin/employees",
+  "admin/employees/employee"
 ];
 
 privateDirectories.forEach( function( directory ) {

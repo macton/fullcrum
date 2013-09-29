@@ -1,0 +1,19 @@
+<div ng-controller="employees">
+  <div ng-if="!isOpen">
+    <div class="row color-h2"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Employees </div></div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Employees </div> <div ng-click="addNew()" class="btn color-primary">Add New</div> </div>
+    <div class="form">
+      <div class="form-row">
+        Add the employees for your company here. Each employees will be given a unique URL to take the Fullcrum questionnaire. Privacy and anonymity are important to the process, so individual results and statistics are not available for any specific employee.
+      </div>
+    </div>
+    <div ng-if="employees.length == 0" class="form">
+      <div class="form-row" style="text-align:center;">No employees yet!</div>
+    </div>
+    <div ng-repeat="employee in employees">
+      <ng-include src="'/admin/employees/employee/employee.html'"></ng-include>
+    </div>
+  </div>
+</div>

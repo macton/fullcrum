@@ -11,15 +11,15 @@
     <div class="form">
       <div class="form-row">
         <div class="field-label">Name</div>
-        <div class="field-data"><input type="text" ng-model="admin.name"></div>
+        <div class="field-data"><input type="text" ng-model="admin.name" required></div>
       </div>
       <div class="form-row">
         <div class="field-label">Email</div>
-        <div class="field-data"><input type="text" ng-model="admin.email"></div>
+        <div class="field-data"><input type="email" ng-model="admin.email" required></div>
       </div>
       <div class="form-row">
         <div class="field-label">Company</div>
-        <div class="field-data"><select ng-model="admin.companyId" ng-options="company._id as company.name for company in companies"></select></div>
+        <div class="field-data"><select ng-model="admin.companyId" ng-options="company._id as company.name for company in companies" required></select></div>
       </div>
     </div>
   </div>

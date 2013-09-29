@@ -4,6 +4,11 @@
   </div>
   <div ng-if="isOpen">
     <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Questionnaires </div> <div ng-click="addNew()" class="btn color-primary">Add New</div> </div>
+    <div class="form">
+      <div class="form-row">
+        These are the available Fullcrum questionnaires. Each company is assigned one of these questionnaires. The "Fullcrum Master" is the main questionnaire and the only one inter-company statistics can be tracked on. Additional questionnaires are made only as unique needs for specific companies arise.
+      </div>
+    </div>
     <div ng-if="questionnaires.length == 0" class="form">
       <div class="form-row" style="text-align:center;">No questionnaires yet!</div>
     </div>

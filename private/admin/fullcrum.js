@@ -7,6 +7,7 @@ app.controller('main', function($scope) {
   Q.when( $.get('/adminInfo') )
     .then( function( results ) {
       $scope.userName              = results.userName;
+      $scope.userCompanyId         = results.userCompanyId;
       $scope.masterQuestionnaireId = results.masterQuestionnaireId;
 
       // keep masterQuestionnaire for questionnaires.fork()
@@ -21,14 +22,14 @@ app.controller('main', function($scope) {
         }
       });
 
+      handleGetCollection( $scope, '/administrators', 'administrators' );
+      handleGetCollection( $scope, '/companies', 'companies' );
+      handleGetCollection( $scope, '/questionnaires', 'questionnaires' );
+      handleGetCollection( $scope, '/employees', 'employees', { companyId: $scope.userCompanyId } );
+      handlePostSaveCleanup( $scope, [ 'administrators', 'companies', 'questionnaires', 'employees' ] );
+
     })
     .done();
-
-  handleGetCollection( $scope, '/administrators', 'administrators' );
-  handleGetCollection( $scope, '/companies', 'companies' );
-  handleGetCollection( $scope, '/questionnaires', 'questionnaires' );
-  handlePostSaveCleanup( $scope, [ 'administrators', 'companies', 'questionnaires' ] );
-
 });
 
 
