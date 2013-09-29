@@ -8,6 +8,19 @@ app.controller('main', function($scope) {
     .then( function( results ) {
       $scope.userName              = results.userName;
       $scope.masterQuestionnaireId = results.masterQuestionnaireId;
+
+      // keep masterQuestionnaire for questionnaires.fork()
+      $scope.$watch('questionnaires', function( questionnaires ) { 
+        var questionnaireCount = questionnaires.length;
+        var i;
+        for (i=0;i<questionnaireCount;i++) {
+          if ( questionnaires[i]._id == $scope.masterQuestionnaireId ) {
+            $scope.masterQuestionnaire = questionnaires[i];
+            break;
+          }
+        }
+      });
+
     })
     .done();
 
