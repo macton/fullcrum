@@ -19,7 +19,7 @@ app.get('/', ensureAuthenticated, ensureHasAccount, function(req, res, next){
 });
 
 app.get('/adminInfo', ensureAuthenticated, ensureHasAccount, function( req, res ) {
-  res.send(200, { masterQuestionnaireId: fullcrum.master.questionnaire._id, userName: req.user.name } );
+  res.send(200, { masterQuestionnaireId: fullcrum.master.questionnaire._id, userName: req.user.name, userCompanyId: req.user.companyId } );
 });
 
 app.get('/administrators', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
@@ -35,7 +35,11 @@ app.get('/questionnaires', ensureAuthenticated, ensureFullcrumAdmin, function(re
 });
 
 app.get('/categories', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
-  fullcrumApp.sendCollection('Categories', req, res);
+  if ( req.param('questionnaireId') ) {
+    fullcrumApp.sendCollection('Categories', req, res, { questionnaireId: req.param('questionnaireId') } );
+  } else {
+    res.send(400);
+  }
 });
 
 app.get('/summaryResponses', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {

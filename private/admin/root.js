@@ -31,21 +31,22 @@ angular.module('ng').run(['$rootScope', function($rootScope) {
 
   $rootScope.save = function() {
     $rootScope.isSaving = true;
-    $rootScope.safeApply();
-
-    Q.when( $.post( '/save', $rootScope.documentFieldEdits ) )
-      .then( function( results ) {
-        console.dir( results );
-        $rootScope.isEdited           = false;
-        $rootScope.documentFieldEdits = {};
-      })
-      .fail( function( err ) {
-        console.dir( err );
-      })
-      .done( function() {
-        $rootScope.isSaving = false;
-        $rootScope.safeApply();
-      });
+    $rootScope.safeApply( function() {
+      Q.when( $.post( '/save', $rootScope.documentFieldEdits ) )
+        .then( function( results ) {
+          console.dir( results );
+          $rootScope.isEdited           = false;
+          $rootScope.documentFieldEdits = {};
+        })
+        .fail( function( err ) {
+          console.dir( err );
+        })
+        .done( function() {
+          $rootScope.safeApply( function() {
+            $rootScope.isSaving = false;
+          });
+        });
+    });
   };
 
   $rootScope.responseTypes = [
@@ -84,7 +85,7 @@ function handleEdit( $scope, collectionName, docName, fieldName, keyName, keyVal
       if ( keyName && keyValue ) {
         $scope.editDocumentField( collectionName, $scope[ docName ]._id, keyName, keyValue );
       }
-      $scope.questionnaire.$isEdit = true;
+      $scope[ docName ].$isEdit = true;
       delete $scope[ docName ].$isNew;
     }
   });
@@ -142,4 +143,17 @@ function handlePostSaveCleanup( $scope, collectionNames ) {
       }
     }
   });
+}
+
+function handleAddNew( $scope, collectionName, defaults ) {
+  $scope.addNew = function() {
+    $scope.safeApply( function() {
+      var newDocument        = $.extend( {}, defaults );
+      var objectId           = new ObjectId();
+      newDocument['_id']     = objectId.toString();
+      newDocument['$isNew']  = true;
+      newDocument['$isEdit'] = true;
+      $scope[ collectionName ].unshift( newDocument );
+    });
+  };
 }

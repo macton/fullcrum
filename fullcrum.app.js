@@ -84,23 +84,8 @@ exports.sendCollection = function( collectionName, req, res, query ) {
     });
 };
 
-exports.save = function( req, res ) {
-  var changes         = req.body;
-  var responses       = [];
-  var promises        = [];
-  var collections     = {};
-
-  var saveNewDocument = function( collectionName, fakeDocumentId, documentChanges ) {
-    return collections[ collectionName ]
-      .then( function( collection ) {
-        return fullcrum.db.collectionInsert( collection, documentChanges );    
-      })
-      .then( function( results ) {
-        var result = results[0];
-        return { status: 'created', collectionName: collectionName, id: result._id.toHexString(), fakeId: fakeDocumentId };
-      })
-      .then( function( results ) {
-
+/* send mail to admin */
+/*
         if ( collectionName == 'Admins' ) {
           return postmark.send({
             to:      documentChanges.email,
@@ -120,16 +105,23 @@ exports.save = function( req, res ) {
             results.mail = { status: 'Error', results: err };
             return results;
           });
+*/
 
-        } else {
-          return results;
-        }
+exports.save = function( req, res ) {
+  var changes         = req.body;
+  var responses       = [];
+  var promises        = [];
 
-      });
-  };
+  // validate access to save
+  for ( var collectionName in changes ) {
+    if ( !hasCollectionChangeAccess( collectionName, req.user ) ) {
+      res.send(401);    
+      return;
+    }
+  }
 
   var saveDocumentChanges = function( collectionName, documentId, documentChanges ) {
-    return collections[ collectionName ]
+    return fullcrum.db.collection( collectionName ) 
       .then( function( collection ) {
         return fullcrum.db.collectionUpdateById( collection, documentId, { '$set' : documentChanges } );    
       })
@@ -139,27 +131,11 @@ exports.save = function( req, res ) {
   };
 
   for ( var collectionName in changes ) {
-    if ( !hasCollectionChangeAccess( collectionName, req.user ) ) {
-      res.send(401);    
-      return;
-    }
-
-    collections[ collectionName ] = fullcrum.db.connection
-      .then( function() { 
-        return fullcrum.db.collection( collectionName ) 
-      });
-
     var collectionChanges = changes[ collectionName ];
 
     for ( var documentId in collectionChanges ) {
-      var isNewDocument   = documentId.charAt(0) === '#';
       var documentChanges = collectionChanges[ documentId ];
-
-      if ( isNewDocument ) {
-        promises.push( saveNewDocument( collectionName, documentId, documentChanges ) );
-      } else {
-        promises.push( saveDocumentChanges( collectionName, documentId, documentChanges ) );
-      } 
+      promises.push( saveDocumentChanges( collectionName, documentId, documentChanges ) );
     }
   }
 

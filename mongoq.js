@@ -31,7 +31,7 @@ exports.Db = function( url ) {
     assert( query,      'no query' );
     assert( document,   'no document' );
     return denodeify( function( resolver ) {
-      collection.update( query, document, {w: 1}, resolver );
+      collection.update( query, document, {w: 1, upsert: true}, resolver );
     });
   };
 
@@ -40,7 +40,7 @@ exports.Db = function( url ) {
     assert( documentId, 'no documentId' );
     assert( document,   'no document' );
     return denodeify( function( resolver ) {
-      collection.update({"_id": new ObjectId( documentId )}, document, {w:1}, resolver );
+      collection.update({"_id": new ObjectId( documentId )}, document, {w:1, upsert: true}, resolver );
     });
   };
 
