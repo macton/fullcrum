@@ -1,0 +1,14 @@
+<div ng-controller="summaryResponses-summaryResponse">
+  <div class="form">
+    <div class="form-row">
+      <div class="field-hlabel">Response</div>
+      <div class="field-hdata"><textarea class="tall" ng-model="summaryResponse.text"></textarea></div>
+    </div>
+    <div class="form-row">
+      <div class="field-label">When</div>
+      <div class="field-data">
+        <select ng-model="summaryResponse.summaryType" ng-options="type.value as type.text for type in summaryTypes"></select>
+     </div>
+    </div>
+  </div>
+</div>

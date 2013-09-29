@@ -18,6 +18,10 @@ app.get('/', ensureAuthenticated, ensureHasAccount, function(req, res, next){
   }
 });
 
+app.get('/adminInfo', ensureAuthenticated, ensureHasAccount, function( req, res ) {
+  res.send(200, { masterQuestionnaireId: fullcrum.master.questionnaire._id, userName: req.user.name } );
+});
+
 app.get('/administrators', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
   fullcrumApp.sendCollection('Admins', req, res);
 });
@@ -26,24 +30,52 @@ app.get('/companies', ensureAuthenticated, ensureFullcrumAdmin, function(req, re
   fullcrumApp.sendCollection('Companies', req, res);
 });
 
+app.get('/questionnaires', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  fullcrumApp.sendCollection('Questionnaires', req, res);
+});
+
+app.get('/categories', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  fullcrumApp.sendCollection('Categories', req, res);
+});
+
+app.get('/summaryResponses', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  if ( req.param('questionnaireId') ) {
+    fullcrumApp.sendCollection('SummaryResponses', req, res, { questionnaireId: req.param('questionnaireId') } );
+  } else {
+    res.send(400);
+  }
+});
+
+app.get('/questions', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  if ( req.param('categoryId') ) {
+    fullcrumApp.sendCollection('Questions', req, res, { categoryId: req.param('categoryId') } );
+  } else {
+    res.send(400);
+  }
+});
+
+app.get('/responses', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  if ( req.param('categoryId') ) {
+    fullcrumApp.sendCollection('Responses', req, res, { categoryId: req.param('categoryId') } );
+  } else {
+    res.send(400);
+  }
+});
+
+app.get('/suggestions', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  if ( req.param('categoryId') ) {
+    fullcrumApp.sendCollection('Suggestions', req, res, { categoryId: req.param('categoryId') } );
+  } else {
+    res.send(400);
+  }
+});
+
 app.get('/admin/:file', ensureAuthenticated, ensureHasAccount, function(req, res, next) {
-  fullcrumApp.staticMiddleware( req, res, next );
+  res.sendfile( 'private/admin/' + req.param('file') );
 });
 
 app.post('/save', ensureAuthenticated, ensureHasAccount, function(req, res) {
   fullcrumApp.save( req, res );
 });
-
-/*
-app.post('/send_email', function( req, res ) {
-  postmark.send({
-    to: 'macton@gmail.com',
-    subject: 'fullcrum email test',
-    text: 'Hey Keith, it\'s macton. This is just testing email integration. You should receive this when I click a button. You might get more than one because I\'m testing that. Don\'t worry, I\'ll switch it off your address so I don\'t spam you. But I wanted to test against someone that wasn\'t me to be sure. You should confirm the email you got from postmarkapp.com as well. Also does this appear as a link to you? http://fullcrum.jit.su/report.html'
-  }, function(response){
-    console.log('RESPONSE IS ' + JSON.stringify(response));
-  });
-});
-*/
 
 fullcrumApp.start();

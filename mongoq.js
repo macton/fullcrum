@@ -74,14 +74,14 @@ exports.Db = function( url ) {
     return denodeify( function( resolver ) {
       collection.findOne({"_id": new ObjectId( documentId )}, resolver );
     });
-  }
+  };
 
   api.collectionFind = function( collection, query ) {
     assert( collection, 'no collection' );
     return denodeify( function( resolver ) {
       collection.find( query ).toArray( resolver );
     });
-  }
+  };
 
   api.collectionFindOne = function( collection, query ) {
     assert( collection, 'no collection' );
@@ -89,7 +89,7 @@ exports.Db = function( url ) {
     return denodeify( function( resolver ) {
       collection.findOne( query, resolver );
     });
-  }
+  };
 
   api.collectionRemove = function( collection, query ) {
     assert( collection, 'no collection' );

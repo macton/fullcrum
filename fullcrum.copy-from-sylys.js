@@ -37,12 +37,20 @@ Q.all( [ fullcrumDb.connect(), sylysDb.connect() ] )
     console.log('# remove old data');
     var categoryCollection;
     var questionCollection;
-    return Q.all( [ fullcrumDb.collection('Categories'), fullcrumDb.collection('Questions'), fullcrumDb.collection('Responses'), fullcrumDb.collection('Suggestions') ] )
+    var responseCollection;
+    var suggestionCollection;
+    var summaryResponseCollection;
+    return Q.all( [ fullcrumDb.collection('Categories'), fullcrumDb.collection('Questions'), fullcrumDb.collection('Responses'), fullcrumDb.collection('Suggestions'), fullcrumDb.collection('SummaryResponses') ] )
       .then( function( collections ) {
         categoryCollection   = collections[0];
         questionCollection   = collections[1];
         responseCollection   = collections[2];
         suggestionCollection = collections[3];
+        summaryResponseCollection = collections[4];
+      })
+      .then( function() {
+        console.log('# remove any summaryResponses assigned to default questionnaire');
+        return fullcrumDb.collectionRemove( summaryResponseCollection, { questionnaireId: fullcrumMaster.questionnaire._id } );
       })
       .then( function() {
         console.log('# find any categories assigned to default questionnaire');
@@ -91,7 +99,7 @@ Q.all( [ fullcrumDb.connect(), sylysDb.connect() ] )
       .then( function( collection ) {
         var categories = [];
         for (var i=0;i<sylysCategories.length;i++) {
-          categories.push( { text: sylysCategories[i].value, questionnaireId: fullcrumMaster.questionnaire._id } );
+          categories.push( { name: sylysCategories[i].value, questionnaireId: fullcrumMaster.questionnaire._id } );
         }
         return fullcrumDb.collectionInsert( collection, categories );
       })
@@ -108,7 +116,7 @@ Q.all( [ fullcrumDb.connect(), sylysDb.connect() ] )
     var questions = [];
     var findCategoryIdByText = function( sylysCategoryText ) {
       return fullcrumCategories.filter( function( category ) {
-        return category.text == sylysCategoryText;
+        return category.name == sylysCategoryText;
       })[0]._id.toHexString();
     }
     for (var i=0;i<sylysQuestions.length;i++) {
@@ -132,7 +140,7 @@ Q.all( [ fullcrumDb.connect(), sylysDb.connect() ] )
     var responses = [];
     var findCategoryIdByText = function( sylysCategoryText ) {
       return fullcrumCategories.filter( function( category ) {
-        return category.text == sylysCategoryText;
+        return category.name == sylysCategoryText;
       })[0]._id.toHexString();
     }
     for (var i=0;i<sylysResponses.categories.length;i++) {
@@ -161,7 +169,7 @@ Q.all( [ fullcrumDb.connect(), sylysDb.connect() ] )
     var suggestions = [];
     var findCategoryIdByText = function( sylysCategoryText ) {
       return fullcrumCategories.filter( function( category ) {
-        return category.text == sylysCategoryText;
+        return category.name == sylysCategoryText;
       })[0]._id.toHexString();
     }
     for (var i=0;i<sylysResponses.categories.length;i++) {

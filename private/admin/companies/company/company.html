@@ -1,0 +1,22 @@
+<div ng-controller="companies-company">
+  <div ng-if="!isOpen">
+    <div class="row" ng-class="(company.$isEdit) ? 'color-notify' : 'color-h3'">
+      <div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> {{ company.name }}</div> 
+    </div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row" ng-class="(company.$isEdit) ? 'color-notify' : 'color-h3'">
+      <div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> {{ company.name }}</div>
+    </div>
+    <div class="form">
+      <div class="form-row">
+        <div class="field-label">Name</div>
+        <div class="field-data"><input type="text" ng-model="company.name"></div>
+      </div>
+      <div class="form-row">
+        <div class="field-label">Questionnaire</div>
+        <div class="field-data"><select ng-model="company.questionnaireId" ng-options="questionnaire._id as questionnaire.name for questionnaire in questionnaires"></select></div>
+      </div>
+    </div>
+  </div>
+</div>

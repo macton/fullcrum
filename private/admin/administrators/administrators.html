@@ -1,0 +1,14 @@
+<div ng-controller="administrators">
+  <div ng-if="!isOpen">
+    <div class="row color-h2"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Administrators </div></div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Administrators </div> <div ng-click="addNew()" class="btn color-primary">Add New</div> </div>
+    <div ng-if="administrators.length == 0" class="form">
+      <div class="form-row" style="text-align:center;">No administrators yet!</div>
+    </div>
+    <div ng-repeat="admin in administrators">
+      <ng-include src="'/admin/administrators/admin/admin.html'"></ng-include>
+    </div>
+  </div>
+</div>

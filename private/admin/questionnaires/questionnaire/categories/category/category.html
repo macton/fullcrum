@@ -1,0 +1,21 @@
+<div ng-controller="categories-category">
+  <div ng-if="!isOpen">
+    <div class="row" ng-class="(category.$isEdit) ? 'color-notify' : 'color-h5'">
+      <div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> {{ category.name }}</div> 
+    </div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row" ng-class="(category.$isEdit) ? 'color-notify' : 'color-h5'">
+      <div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> {{ category.name }}</div>
+    </div>
+    <div class="form">
+      <div class="form-row">
+        <div class="field-label">Name</div>
+        <div class="field-data"><input type="text" ng-model="category.name"></div>
+      </div>
+    </div>
+    <ng-include src="'/admin/questionnaires/questionnaire/categories/category/questions/questions.html'"></ng-include>
+    <ng-include src="'/admin/questionnaires/questionnaire/categories/category/responses/responses.html'"></ng-include>
+    <ng-include src="'/admin/questionnaires/questionnaire/categories/category/suggestions/suggestions.html'"></ng-include>
+  </div>
+</div>

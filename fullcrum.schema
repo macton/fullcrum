@@ -1,5 +1,8 @@
-Collection About
-  Text                     text
+Collection Site
+  Url                       headerImageUrl
+  Text                      aboutHtml
+  Text                      footerHtml
+  Text                      newAdminEmailBodyHtml
 
 Collection Admins
   Text                      name
@@ -51,8 +54,21 @@ Collection Suggestions
   Text                      text
   Email                     authorEmail
   Url                       moreInfoUrl
+  ResponseType              responseType
+
+Collection AdditionalSuggestions
+  $oid.Categories           categoryId
+  $oid.Companies            companyId
+  Text                      text
+  Email                     authorEmail
+  Url                       moreInfoUrl
 
 Collection SummaryResponses
   $oid.Questionnaires       questionnaireId
   Text                      text
   SummaryType               summaryType
+
+Collection Employees
+  $oid.Companies            companyId
+  Text                      name
+  Email                     email

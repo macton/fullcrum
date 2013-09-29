@@ -1,0 +1,14 @@
+<div ng-controller="summaryResponses">
+  <div ng-if="!isOpen">
+    <div class="row color-h4"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Summary Responses </div> </div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row color-h4"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Summary Responses </div> <div ng-click="addNew()" class="btn color-primary">Add New</div> </div>
+    <div ng-if="summaryResponses.length == 0" class="form">
+      <div class="form-row" style="text-align:center;">No summary responses yet!</div>
+    </div>
+    <div ng-repeat="summaryResponse in summaryResponses">
+      <ng-include src="'/admin/questionnaires/questionnaire/summaryResponses/summaryResponse/summaryResponse.html'"></ng-include>
+    </div>
+  </div>
+</div>

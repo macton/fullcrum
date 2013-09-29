@@ -1,0 +1,54 @@
+<html ng-app="app">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>fullcrum login</title>
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+  <link rel="stylesheet" href="/css/fullcrum-layout.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/q.js/0.9.6/q.min.js"></script>
+  <script src="/js/guid.js"></script>
+  <script src="/admin/root.js"></script>
+  <script src="/admin/fullcrum.js"></script>
+  <script src="/admin/administrators/administrators.js"></script>
+  <script src="/admin/administrators/admin/admin.js"></script>
+  <script src="/admin/companies/companies.js"></script>
+  <script src="/admin/companies/company/company.js"></script>
+  <script src="/admin/questionnaires/questionnaires.js"></script>
+  <script src="/admin/questionnaires/questionnaire/questionnaire.js"></script>
+  <script src="/admin/questionnaires/questionnaire/categories/categories.js"></script>
+  <script src="/admin/questionnaires/questionnaire/categories/category/category.js"></script>
+  <script src="/admin/questionnaires/questionnaire/categories/category/questions/questions.js"></script>
+  <script src="/admin/questionnaires/questionnaire/categories/category/questions/question/question.js"></script>
+  <script src="/admin/questionnaires/questionnaire/categories/category/responses/responses.js"></script>
+  <script src="/admin/questionnaires/questionnaire/categories/category/responses/response/response.js"></script>
+  <script src="/admin/questionnaires/questionnaire/categories/category/suggestions/suggestions.js"></script>
+  <script src="/admin/questionnaires/questionnaire/categories/category/suggestions/suggestion/suggestion.js"></script>
+  <script src="/admin/questionnaires/questionnaire/summaryResponses/summaryResponses.js"></script>
+  <script src="/admin/questionnaires/questionnaire/summaryResponses/summaryResponse/summaryResponse.js"></script>
+</head>
+<body ng-controller="main">
+  
+  <span style="float:right;"><a href="/logout">logout</a></span> 
+  <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+  <div class="row color-h1">
+    <div class="title">Glad to see you {{ userName }}!</div>
+    <div ng-if="isEdited" ng-click="save()" class="btn color-notify"><i ng-show="isSaving" class="icon-spin icon-spinner"></i><span ng-show="!isSaving">Save</span></div>
+  </div>
+
+  <ng-include src="'/admin/administrators/administrators.html'"></ng-include>
+  <ng-include src="'/admin/companies/companies.html'"></ng-include>
+  <ng-include src="'/admin/questionnaires/questionnaires.html'"></ng-include>
+
+  <div class="row color-footer">
+    <p>
+      We want your studio to have better retention, happier developers, and upgraded leaders. Ask us how we can help!  
+      <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=%77%65%6c%6f%76%65%64%65%76%73@%66%75%6c%6c%63%72%75%6d.%63%6f" target="_blank">welovedevs@fullcrum.co</a>
+      <a href="https://twitter.com/fullcrumco"><i class="icon-twitter"></i></a>
+    </p>
+  </div>
+
+</body>
+</html>

@@ -67,13 +67,13 @@ exports.start = function() {
   });
 }
 
-exports.sendCollection = function( collectionName, req, res ) {
+exports.sendCollection = function( collectionName, req, res, query ) {
   fullcrum.db.connection
     .then( function() {
       return fullcrum.db.collection( collectionName );
     })
     .then( function( collection ) {
-      return fullcrum.db.collectionFind( collection );
+      return fullcrum.db.collectionFind( collection, query );
     })
     .then( function( results ) {
       res.send(200, results);
