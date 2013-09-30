@@ -1,0 +1,14 @@
+<div ng-controller="employeeGroupConnections">
+  <div ng-if="!isOpen">
+    <div class="row color-h4"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Groups </div></div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row color-h4"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Groups </div> <div ng-click="addNew()" class="btn color-primary">Add New</div> </div>
+    <div ng-if="employeeGroupConnections.length == 0" class="form">
+      <div class="form-row" style="text-align:center;">Not in any groups.</div>
+    </div>
+    <div ng-repeat="employeeGroupConnection in employeeGroupConnections">
+      <ng-include src="'/admin/employees/employee/employeeGroupConnections/employeeGroupConnection/employeeGroupConnection.html'"></ng-include>
+    </div>
+  </div>
+</div>

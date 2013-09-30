@@ -55,6 +55,8 @@ function hasCollectionChangeAccess( collectionName, user ) {
   }
 
   var adminCollections = [ 
+    "EmployeeGroupConnections",
+    "EmployeeGroups",
     "Employees"
   ];
 

@@ -34,6 +34,22 @@ app.get('/employees', ensureAuthenticated, ensureHasAccount, function(req, res) 
   }
 });
 
+app.get('/employeeGroups', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  if ( req.param('companyId') ) {
+    fullcrumApp.sendCollection('EmployeeGroups', req, res, { companyId: req.param('companyId') } );
+  } else {
+    res.send(400);
+  }
+});
+
+app.get('/employeeGroupConnections', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  if ( req.param('employeeId') ) {
+    fullcrumApp.sendCollection('EmployeeGroupConnections', req, res, { employeeId: req.param('employeeId') } );
+  } else {
+    res.send(400);
+  }
+});
+
 app.get('/companies', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
   fullcrumApp.sendCollection('Companies', req, res);
 });
@@ -101,6 +117,8 @@ var privateDirectories = [
   "admin/administrators/admin",
   "admin/companies",
   "admin/companies/company",
+  "admin/employeeGroups",
+  "admin/employeeGroups/employeeGroup",
   "admin/questionnaires",
   "admin/questionnaires/questionnaire",
   "admin/questionnaires/questionnaire/categories",
@@ -116,7 +134,9 @@ var privateDirectories = [
   "admin/questionnaires/questionnaire/summaryResponses",
   "admin/questionnaires/questionnaire/summaryResponses/summaryResponse",
   "admin/employees",
-  "admin/employees/employee"
+  "admin/employees/employee",
+  "admin/employees/employee/employeeGroupConnections",
+  "admin/employees/employee/employeeGroupConnections/employeeGroupConnection"
 ];
 
 privateDirectories.forEach( function( directory ) {

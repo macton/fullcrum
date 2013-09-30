@@ -26,6 +26,7 @@ app.controller('main', function($scope) {
       handleGetCollection( $scope, '/companies', 'companies' );
       handleGetCollection( $scope, '/questionnaires', 'questionnaires' );
       handleGetCollection( $scope, '/employees', 'employees', { companyId: $scope.userCompanyId } );
+      handleGetCollection( $scope, '/employeeGroups', 'employeeGroups', { companyId: $scope.userCompanyId } );
       handlePostSaveCleanup( $scope, [ 'administrators', 'companies', 'questionnaires', 'employees' ] );
 
     })

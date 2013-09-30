@@ -68,7 +68,19 @@ Collection SummaryResponses
   Text                      text
   SummaryType               summaryType
 
+Collection EmployeeGroup
+  $oid.Companies            companyId
+  Text                      name
+
 Collection Employees
   $oid.Companies            companyId
   Text                      name
   Email                     email
+
+Collection EmployeeGroupConnection
+  $oid.EmployeeGroup        employeeGroupId
+  $oid.Employee             employeeId
+
+Collection QuestionnaireInstance
+  $oid.Companies            companyId
+  Text                      name

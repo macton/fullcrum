@@ -1,0 +1,8 @@
+<div ng-controller="employeeGroupConnections-employeeGroupConnection">
+  <div class="form">
+    <div class="form-row">
+      <div class="field-label">Group</div>
+      <div class="field-data"><select ng-model="employeeGroupConnection.employeeGroupId" ng-options="employeeGroup._id as employeeGroup.name for employeeGroup in employeeGroups" required></select></div>
+    </div>
+  </div>
+</div>
