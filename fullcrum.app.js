@@ -114,12 +114,21 @@ exports.sendCollection = function( collectionName, req, res, query ) {
 */
 
 exports.save = function( req, res ) {
-  var changes         = req.body;
+  var deletes         = req.body.delete || {};
+  var changes         = req.body.edit || {};
   var responses       = [];
   var promises        = [];
+  var collectionName;
+  var documentId;
 
   // validate access to save
   for ( var collectionName in changes ) {
+    if ( !hasCollectionChangeAccess( collectionName, req.user ) ) {
+      res.send(401);    
+      return;
+    }
+  }
+  for ( var collectionName in deletes ) {
     if ( !hasCollectionChangeAccess( collectionName, req.user ) ) {
       res.send(401);    
       return;
@@ -136,13 +145,30 @@ exports.save = function( req, res ) {
       });
   };
 
-  for ( var collectionName in changes ) {
+  var deleteDocument = function( collectionName, documentId ) {
+    return fullcrum.db.collection( collectionName ) 
+      .then( function( collection ) {
+        return fullcrum.db.collectionRemoveById( collection, documentId );
+      })
+      .then( function( results ) {
+        return { status: 'removed', collectionName: collectionName, id: documentId };
+      });
+  };
+
+  for ( collectionName in changes ) {
     var collectionChanges = changes[ collectionName ];
 
-    for ( var documentId in collectionChanges ) {
+    for ( documentId in collectionChanges ) {
       var documentChanges = collectionChanges[ documentId ];
       promises.push( saveDocumentChanges( collectionName, documentId, documentChanges ) );
     }
+  }
+
+  for ( collectionName in deletes ) {
+    var collectionDeletes = deletes[ collectionName ]; 
+    collectionDeletes.forEach( function( documentId ) {
+      promises.push( deleteDocument( collectionName, documentId ) );
+    });
   }
 
   Q.allSettled( promises )

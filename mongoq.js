@@ -97,6 +97,13 @@ exports.Db = function( url ) {
       collection.remove( query, { w: 1 }, resolver );
     });
   };
+
+  api.collectionRemoveById = function( collection, documentId ) {
+    assert( collection, 'no collection' );
+    return denodeify( function( resolver ) {
+      collection.remove({"_id": new ObjectId( documentId )}, { w: 1 },  resolver );
+    });
+  };
   
   api.collectionDrop = function( collection ) {
     assert( collection, 'no collection' );

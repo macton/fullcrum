@@ -13,6 +13,7 @@ angular.module('ng').run(['$rootScope', function($rootScope) {
 
   $rootScope.isEdited           = false;
   $rootScope.documentFieldEdits = {};
+  $rootScope.documentDeletes    = {};
   $rootScope.isSaving           = false;
 
   $rootScope.editDocumentField = function(collectionName, documentId, fieldName, fieldValue) {
@@ -26,17 +27,26 @@ angular.module('ng').run(['$rootScope', function($rootScope) {
     }
     documentEdits[ fieldName ] = fieldValue;
     $rootScope.isEdited = true;
-    console.dir( $rootScope.documentFieldEdits );
   };
+
+  $rootScope.deleteDocument = function( collectionName, documentId ) {
+    var collectionDeletes = $rootScope.documentDeletes[ collectionName ];
+    if (!collectionDeletes) {
+      collectionDeletes = $rootScope.documentDeletes[ collectionName ] = [];
+    }
+    collectionDeletes.push( documentId );
+    $rootScope.isEdited = true;
+  }
 
   $rootScope.save = function() {
     $rootScope.isSaving = true;
     $rootScope.safeApply( function() {
-      Q.when( $.post( '/save', $rootScope.documentFieldEdits ) )
+      Q.when( $.post( '/save', { edit: $rootScope.documentFieldEdits, delete: $rootScope.documentDeletes } ) )
         .then( function( results ) {
           console.dir( results );
           $rootScope.isEdited           = false;
           $rootScope.documentFieldEdits = {};
+          $rootScope.documentDeletes    = {};
         })
         .fail( function( err ) {
           console.dir( err );
@@ -89,6 +99,30 @@ function handleEdit( $scope, collectionName, docName, fieldName, keyName, keyVal
       delete $scope[ docName ].$isNew;
     }
   });
+}
+
+function handleRemove( $scope, collectionName, arrayName, arrayIndexRef ) {
+  $scope.remove = function() { 
+    var docArray = $scope[ arrayName ];
+    var index    = $scope[ arrayIndexRef ];
+    var doc      = docArray[ index ];
+    var docId    = doc._id;
+
+    if ( doc.$isNew ) {
+      docArray.splice( index, 1 );
+      return; 
+    }
+
+    var val1 = Math.floor((Math.random()*10)+1);
+    var val2 = Math.floor((Math.random()*10)+1);
+    var result = prompt('This will permanently delete this value and all associated values from our database. If you are sure you want to continue, enter the answer.\n\nWhat is ' + val1 + ' + ' + val2 + '?' ); 
+    if ( (result|0) == (val1+val2) ) {
+      $scope.safeApply( function() {
+        $scope.deleteDocument( collectionName, docId );
+        docArray.splice( index, 1 );
+      });
+    }
+  };
 }
 
 function handleOpenIsNew( $scope, docName ) {
