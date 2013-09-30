@@ -7,6 +7,7 @@
   <div ng-if="isOpen">
     <div class="row" ng-class="(category.$isEdit) ? 'color-notify' : 'color-h5'">
       <div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> {{ category.name }}</div>
+      <i ng-click="remove()" class="btn text-delete icon-remove-sign"></i>
     </div>
     <div class="form">
       <div class="form-row">

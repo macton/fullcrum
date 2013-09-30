@@ -1,7 +1,8 @@
 app.controller('categories-category', function($scope) {
   handleOpenClose( $scope );
   handleOpenIsNew( $scope, 'category' );
-  handleEdit( $scope, 'Questionnaires', 'category', 'name' );
+  handleRemove( $scope, 'Categories', 'categories', '$index' );
+  handleEdit( $scope, 'Categories', 'category', 'name' );
 
   handleGetCollection( $scope, '/questions', 'questions',   { categoryId: $scope.category._id } );
   handleGetCollection( $scope, '/responses', 'responses',   { categoryId: $scope.category._id } );
