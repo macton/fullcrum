@@ -1,0 +1,21 @@
+<div ng-controller="splash">
+  <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+  <div class="form">
+    <iframe width="530" height="315" src="//www.youtube.com/embed/Kdgt1ZHkvnM" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="row color-h1">
+    <div class="title">Get Started</div>
+  </div>
+  <div class="form">
+    <div class="form-row">
+      <p>Thank you for taking part in the fullcrum.co questionnaire. Your company is using this tool to help them improve their leadership.</p>
+      <p>But this questionnaire is also an opportunity for you to reflect on what is important to you and make an honest assessment of your 
+         own situation. At the end of the questionnaire you will also be provided some immediate feedback to help you introspect. We hope you
+         find it valuable.</p>
+      <p>Please note that while individual and cumulative results will be available to your company, every effort has been made to
+         protect your anonymity so that you can be as honest as possible.</p>
+      <div ng-click="next()" class="btn color-primary" style="width:40%; margin-right:150px;">Begin Questionnaire</div>
+    </div>
+  </div>
+  <ng-include src="'/shared/footer/footer.html'"></ng-include>
+</div>

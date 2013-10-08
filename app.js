@@ -195,4 +195,8 @@ app.post('/save', ensureAuthenticated, ensureHasAccount, function(req, res) {
   fullcrumApp.save( req, res );
 });
 
+app.post('/results', function(req, res) {
+  fullcrumApp.saveQuestionnaireResults( req, res, req.body.results );
+});
+
 fullcrumApp.start();

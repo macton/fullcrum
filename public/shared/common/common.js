@@ -1,5 +1,7 @@
 angular.module('ng').run(['$rootScope', function($rootScope) {
 
+  $rootScope.isServerError = false;
+
   $rootScope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
     if(phase == '$apply' || phase == '$digest') {
@@ -10,6 +12,14 @@ angular.module('ng').run(['$rootScope', function($rootScope) {
       this.$apply(fn);
     }
   };
+
+  $rootScope.serverError = function( err ) {
+    $rootScope.safeApply( function() {
+      console.log( err );
+      $rootScope.isServerError   = true;
+      $rootScope.serverErrorText = err.status + ' ' + err.statusText + ' ' + err.responseText;
+    });
+  }
 
   $rootScope.isEdited           = false;
   $rootScope.documentFieldEdits = {};
@@ -151,6 +161,9 @@ function handleGetCollection( $scope, url, collectionName, data ) {
         }
         $scope[ collectionName ] = results;
       });
+    })
+    .fail( function( err ) {
+      $scope.serverError( err );
     })
     .done();
 }

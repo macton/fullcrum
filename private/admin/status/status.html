@@ -38,7 +38,7 @@
             <tr ng-repeat="status in employeeQuestionnaireStatus">
               <td style="padding:5px">{{status.email}}</td>
               <td style="padding:5px">{{status.name}}</td>
-              <td style="padding:5px">{{statusStateText[status.state]}}</td>
+              <td ng-style="statusStateStyle[status.state]">{{statusStateText[status.state]}}</td>
             </tr>
           </table>
         </div>

@@ -9,9 +9,16 @@ app.controller('status', function($scope) {
 
   $scope.statusStateText = {
     'kUnopened'  : 'Unopened',
-    'kUnsent'    : '<span style="color:red;">Unopened</span>',
-    'kStarted'   : '<span style="color:blue;">Started</span>',
-    'kCompleted' : '<span style="color:green">Complete</span>'
+    'kUnsent'    : 'Unsent',
+    'kStarted'   : 'Started',
+    'kCompleted' : 'Complete'
+  };
+
+  $scope.statusStateStyle = {
+    'kUnopened'  : { padding: '5px' },
+    'kUnsent'    : { padding: '5px', color: 'red' },
+    'kStarted'   : { padding: '5px', color: 'blue' },
+    'kCompleted' : { padding: '5px', color: 'green' }
   };
 
   var refreshOpenQuestionnaire = function() {

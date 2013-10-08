@@ -3,16 +3,35 @@ app.controller('questionnaire', function($scope) {
   $scope.results     = [];
 
   $scope.submit = function() {
-    console.log( $scope.results );
+    var questionnaireResults    = { results: [] };
+    var resultCount             = $scope.results.length;
+    var questionnaireInstanceId = $scope.questionnaireInstanceId;
+    var employeeId              = $scope.employeeId;
+    var companyId               = $scope.companyId;
+    for (var i=0;i<resultCount;i++) {
+      questionnaireResults.results.push( { 
+        questionnaireInstanceId: questionnaireInstanceId,
+        employeeId:              employeeId,
+        companyId:               companyId,
+        questionId:              $scope.results[i].questionId,
+        score:                   $scope.results[i].score
+      });
+    }
     $scope.setAppState( 'kResults' );
+
+    Q.when( $.post('/results', questionnaireResults ) )
+      .then( function( result ) {
+        console.log( result );
+        window.location.replace("/questionnaire/?cid=" + $scope.companyId + "&uid=" + $scope.employeeId + "&qid=" + $scope.questionnaireInstanceId );
+      })
+      .fail( function( err ) {
+        $scope.serverError( err );
+      });
   };
 
   var setQuestionResult = function( questionNdx, questionScore ) {
     var question = $scope.questions[ questionNdx ];
     $scope.results[ questionNdx ] = {
-      questionnaireInstanceId: $scope.questionnaireInstanceId,
-      employeeId:              $scope.employeeId,
-      companyId:               $scope.companyId,
       questionId:              question._id,       
       score:                   questionScore
     };

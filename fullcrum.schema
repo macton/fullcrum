@@ -101,3 +101,9 @@ Collection EmployeeQuestionnaireStatus
   $oid.Employee              empoyeeId
   EmployeeQuestionnaireState state
 
+Collection QuestionnaireResults
+  $oid.Companies             companyId
+  $oid.Employee              empoyeeId
+  $oid.QuestionnaireInstance questionnaireInstanceId
+  $oid.Question              quesitonId
+  Integer                    score

@@ -183,6 +183,62 @@ exports.save = function( req, res ) {
     });
 };
 
+exports.saveQuestionnaireResults = function( req, res, questionnaireResults ) {
+
+  if ( (!questionnaireResults) || (!questionnaireResults.length) ) {
+    res.send(400, questionnaireResults );
+    return;
+  }
+  
+  var employeeId              = questionnaireResults[0].employeeId;
+  var companyId               = questionnaireResults[0].companyId;
+  var questionnaireInstanceId = questionnaireResults[0].questionnaireInstanceId;
+  var employeeEmail;
+  var collectedResults = {};
+
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( 'Employees' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFindOneById( collection, employeeId )
+            .then( function( employee ) {
+              employeeEmail = employee.email;  
+            })
+            .then( function( results ) {
+              collectedResults.employee = results;
+            });
+        });
+    })
+    .then( function() {
+      return fullcrum.db.collection( 'QuestionnaireResults' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionInsert( collection, questionnaireResults );
+        })
+        .then( function( results ) {
+          collectedResults.questionnaireResults = results;
+        });
+    })
+    .then( function() {
+      return fullcrum.db.collection('EmployeeQuestionnaireStatus')
+        .then( function( collection ) {
+          return fullcrum.db.collectionFindOne( collection, { email: employeeEmail, questionnaireInstanceId: questionnaireInstanceId, companyId: companyId } )
+            .then( function( employeeStatus ) {
+              var employeeStatusId = employeeStatus._id.toHexString();
+              return fullcrum.db.collectionUpdateById( collection, employeeStatusId, { '$set' : { state: 'kCompleted' } } );
+            })
+            .then( function( results ) {
+              collectedResults.employeeQuestionnaireStatus = results;
+            });
+        });
+    })
+    .then( function() {
+      res.send( 200, collectedResults );
+    })
+    .fail( function (err) {
+      res.send( 500, err.toString() );
+    });
+};
+
 exports.createQuestionnaire = function( req, res, questionnaire ) {
   var collectedResults = {};
   collectedResults.mail = [];
