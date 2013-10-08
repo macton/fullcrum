@@ -41,20 +41,37 @@
 <body ng-controller="main">
   
   <span style="float:right;"><a href="/logout">logout</a></span> 
-  <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
-  <div class="row color-h1">
-    <div class="title">Happy to see you {{ userName }}!</div>
-    <div ng-if="isEdited" ng-click="save()" class="btn color-notify"><i ng-show="isSaving" class="icon-spin icon-spinner"></i><span ng-show="!isSaving">Save</span></div>
+
+  <div ng-if="isServerError">
+    <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+    <div class="row color-h1">
+      <div class="title">Server Error</div>
+    </div>
+    <div class="form">
+      <div class="form-row">
+        <p>Argh! Sorry about this, but it looks like there's some problem with our server or one of our service providers.</p>
+        <p>Feel free to contact us welovedevs@fullcrum.co for an update on the situation.</p>
+        <p>Error: {{ serverErrorText }}</p>
+      </div>
+    </div>
   </div>
 
-  <ng-include src="'/admin/administrators/administrators.html'"></ng-include>
-  <ng-include src="'/admin/companies/companies.html'"></ng-include>
-  <ng-include src="'/admin/questionnaires/questionnaires.html'"></ng-include>
-  <ng-include src="'/admin/employeeGroups/employeeGroups.html'"></ng-include>
-  <ng-include src="'/admin/employees/employees.html'"></ng-include>
-  <ng-include src="'/admin/status/status.html'"></ng-include>
+  <div ng-if="!isServerError">
+    <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+    <div class="row color-h1">
+      <div class="title">Happy to see you {{ userName }}!</div>
+      <div ng-if="isEdited" ng-click="save()" class="btn color-notify"><i ng-show="isSaving" class="icon-spin icon-spinner"></i><span ng-show="!isSaving">Save</span></div>
+    </div>
+  
+    <ng-include src="'/admin/administrators/administrators.html'"></ng-include>
+    <ng-include src="'/admin/companies/companies.html'"></ng-include>
+    <ng-include src="'/admin/questionnaires/questionnaires.html'"></ng-include>
+    <ng-include src="'/admin/employeeGroups/employeeGroups.html'"></ng-include>
+    <ng-include src="'/admin/employees/employees.html'"></ng-include>
+    <ng-include src="'/admin/status/status.html'"></ng-include>
 
-  <ng-include src="'/shared/footer/footer.html'"></ng-include>
+    <ng-include src="'/shared/footer/footer.html'"></ng-include>
+  </div>  
 
 </body>
 </html>
