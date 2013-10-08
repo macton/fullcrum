@@ -101,6 +101,13 @@ function handleEdit( $scope, collectionName, docName, fieldName, keyName, keyVal
   });
 }
 
+function sureConfirm( text ) {
+  var val1 = Math.floor((Math.random()*10)+1);
+  var val2 = Math.floor((Math.random()*10)+1);
+  var result = prompt( text + '\n\nIf you are sure you want to continue, enter the answer.\n\nWhat is ' + val1 + ' + ' + val2 + '?' ); 
+  return ( (result|0) == (val1+val2) );
+}
+
 function handleRemove( $scope, collectionName, arrayName, arrayIndexRef ) {
   $scope.remove = function() { 
     var docArray = $scope[ arrayName ];
@@ -112,11 +119,8 @@ function handleRemove( $scope, collectionName, arrayName, arrayIndexRef ) {
       docArray.splice( index, 1 );
       return; 
     }
-
-    var val1 = Math.floor((Math.random()*10)+1);
-    var val2 = Math.floor((Math.random()*10)+1);
-    var result = prompt('This will permanently delete this value and all associated values from our database. If you are sure you want to continue, enter the answer.\n\nWhat is ' + val1 + ' + ' + val2 + '?' ); 
-    if ( (result|0) == (val1+val2) ) {
+   
+    if ( sureConfirm('This will permanently delete this value and all associated values from our database.')  ) {
       $scope.safeApply( function() {
         $scope.deleteDocument( collectionName, docId );
         docArray.splice( index, 1 );

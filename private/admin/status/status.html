@@ -1,0 +1,62 @@
+<div ng-controller="status">
+  <div ng-if="!isOpen">
+    <div class="row color-h2"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Status </div></div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Status </div> </div>
+
+    <div class="form">
+      <div class="form-row">
+        <p>This is where you manage your open questionnaire until it is closed and results are prepared.</p>
+      </div>
+    </div>
+
+    <div ng-if="isLoading" class="form">
+      <div class="form-row" style="text-align:center;"><i class="icon-spin icon-spinner"></i> Loading...</div>
+    </div>
+
+    <div ng-if="!isLoading">
+
+      <div ng-if="!hasOpenQuestionnaire" class="form">
+        <div class="row color-h3">
+          <span class="title">Next step</span>
+        </div>
+        <div class="form-row" style="text-align:center;">Start your questionnaire.</div>
+        <div class="form-row">
+          <div class="field-label">Title</div>
+          <div class="field-data"><input type="text" ng-model="newQuestionnaireTitle" required></div>
+        </div>
+        <div class="form-row"><div class="btn color-primary" ng-click="begin()" style="margin-right: 180px;">Begin!</div></div>
+      </div>
+
+      <div ng-if="hasOpenQuestionnaire">
+        <div class="row color-h3">
+          <span class="title">{{ openQuestionnaire.title }} employee status</span>
+        </div>
+        <div class="form">
+          <table class="form-row">
+            <tr ng-repeat="status in employeeQuestionnaireStatus">
+              <td style="padding:5px">{{status.email}}</td>
+              <td style="padding:5px">{{status.name}}</td>
+              <td style="padding:5px">{{statusStateText[status.state]}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      
+      <div class="row color-h3">
+        <span class="title">Next step</span>
+      </div>
+      <div class="form">
+        <div class="form-row">
+          Once all employees have finished, close the questionnaire to see the results.
+        </div>
+        <div class="form-row">
+          <div class="btn color-primary" style="width: 40%; margin-right: 30%;">Close Questionnare</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

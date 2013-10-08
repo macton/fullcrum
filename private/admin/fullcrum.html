@@ -5,12 +5,12 @@
 
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
-  <link rel="stylesheet" href="/css/fullcrum-layout.css">
+  <link rel="stylesheet" href="/shared/common/common.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/q.js/0.9.6/q.min.js"></script>
-  <script src="/js/ObjectId.js"></script>
-  <script src="/admin/root.js"></script>
+  <script src="/shared/ObjectId/ObjectId.js"></script>
+  <script src="/shared/common/common.js"></script>
   <script src="/admin/fullcrum.js"></script>
   <script src="/admin/administrators/administrators.js"></script>
   <script src="/admin/administrators/admin/admin.js"></script>
@@ -36,6 +36,7 @@
   <script src="/admin/employeeGroups/employeeGroup/employeeGroup.js"></script>
   <script src="/admin/employees/employee/employeeGroupConnections/employeeGroupConnections.js"></script>
   <script src="/admin/employees/employee/employeeGroupConnections/employeeGroupConnection/employeeGroupConnection.js"></script>
+  <script src="/admin/status/status.js"></script>
 </head>
 <body ng-controller="main">
   
@@ -51,14 +52,9 @@
   <ng-include src="'/admin/questionnaires/questionnaires.html'"></ng-include>
   <ng-include src="'/admin/employeeGroups/employeeGroups.html'"></ng-include>
   <ng-include src="'/admin/employees/employees.html'"></ng-include>
+  <ng-include src="'/admin/status/status.html'"></ng-include>
 
-  <div class="row color-footer">
-    <p>
-      We want your studio to have better retention, happier developers, and upgraded leaders. Ask us how we can help!  
-      <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=%77%65%6c%6f%76%65%64%65%76%73@%66%75%6c%6c%63%72%75%6d.%63%6f" target="_blank">welovedevs@fullcrum.co</a>
-      <a href="https://twitter.com/fullcrumco"><i class="icon-twitter"></i></a>
-    </p>
-  </div>
+  <ng-include src="'/shared/footer/footer.html'"></ng-include>
 
 </body>
 </html>

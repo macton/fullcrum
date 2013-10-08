@@ -3,6 +3,7 @@ var path              = require('path');
 var express           = require('express');
 var passport          = require('passport');
 var Q                 = require('q');
+var Qx                = require('qx');
 var postmark          = require('./postmark');
 var fullcrum          = require('./fullcrum.api');
 
@@ -57,7 +58,8 @@ function hasCollectionChangeAccess( collectionName, user ) {
   var adminCollections = [ 
     "EmployeeGroupConnections",
     "EmployeeGroups",
-    "Employees"
+    "Employees",
+    "EmployeeQuestionnaireStatus"
   ];
 
   if ( adminCollections.indexOf( collectionName ) != -1 ) {
@@ -181,3 +183,73 @@ exports.save = function( req, res ) {
     });
 };
 
+exports.createQuestionnaire = function( req, res, questionnaire ) {
+  var collectedResults = {};
+  collectedResults.mail = [];
+  var questionnaireInstanceId;
+
+  questionnaire.state = 'kOpen';
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( 'QuestionnaireInstances' );
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionInsert( collection, questionnaire );
+    })
+    .then( function( results ) {
+      collectedResults.addQuestionnaire = results;
+      questionnaireInstanceId = results[0]._id.toHexString();
+      console.log( results );
+    })
+    .then( function() {
+      console.log('Get Employees');
+      return fullcrum.db.collection( 'Employees' );
+    })
+    .then( function( collection ) {
+      console.log('Get Employees for ' + questionnaire.companyId );
+      return fullcrum.db.collectionFind( collection, { companyId: questionnaire.companyId } );
+    })
+    .then( Qx.map( function( employee ) {
+      console.log( employee );
+      return postmark.send({
+        to:      employee.email,
+        subject: 'Welcome to fullcrum.co!',
+        html:    '<h1>Welcome to fullcrum!</h1>'
+                +'Hello ' + employee.name + ',<br><br>'
+                +'Your company has started a new questionnaire and is asking for your feedback.<br><br>'
+                +'As part of the process, you will also hopefully gain some insights into your own situation and immediate suggestions and recommendations will be presented to you.<br><br>'
+                +'We have also made every effort to keep your results anonymous.<br><br>'
+                +'<a href=' + fullcrum.config.hostUrl + '/questionnaire/?cid=' + questionnaire.companyId + '&uid=' + employee._id.toHexString() + '&qid=' + questionnaireInstanceId +'>Your unique questionnaire link</a><br><br>'
+                +'Let us know if you have any trouble! -- welovedevs@fullcrum.co'
+      })
+      .then( function( mailResults ) {
+        console.log( mailResults );
+        collectedResults.mail.push( { status: 'OK', results: mailResults, email: employee.email  } );
+        return { state: 'kUnopened', email: employee.email, name: employee.name, questionnaireInstanceId: questionnaireInstanceId, companyId: questionnaire.companyId };
+      })
+      .fail( function( err ) {
+        console.log( err );
+        collectedResults.mail.push( { status: 'Error', results: err } );
+        return { state: 'kUnsent', email: employee.email, name: employee.name, questionnaireInstanceId: questionnaireInstanceId, companyId: questionnaire.companyId };
+      });
+    }))
+    .then( function( results ) {
+      console.log( 'mail results = ' );
+      console.log( results );
+      return fullcrum.db.collection('EmployeeQuestionnaireStatus')
+        .then( function( collection ) { 
+          return fullcrum.db.collectionInsert( collection, results );
+        })
+        .then( function( results ) {
+          console.log( 'EmployeeQuestionnaireStatus results = ' );
+          console.log( results );
+          collectedResults.employeeQuestionnaireStatus = results;
+        });
+    })
+    .then( function() {
+      res.send( 200, collectedResults );
+    })
+    .fail( function (err) {
+      res.send( 500, err.toString() );
+    });
+}

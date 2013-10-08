@@ -2,6 +2,8 @@
 var fullcrum          = require('./fullcrum.api');
 var fullcrumApp       = require('./fullcrum.app');
 var fullcrumAuth      = require('./fullcrum.app.auth');
+var Q                 = require('q');  
+var Qx                = require('qx');  
 
 var app                 = fullcrumApp.app;
 var ensureAuthenticated = fullcrumAuth.ensureAuthenticated;
@@ -27,16 +29,28 @@ app.get('/administrators', ensureAuthenticated, ensureFullcrumAdmin, function(re
 });
 
 app.get('/employees', ensureAuthenticated, ensureHasAccount, function(req, res) {
-  if ( req.param('companyId') ) {
-    fullcrumApp.sendCollection('Employees', req, res, { companyId: req.param('companyId') } );
+  fullcrumApp.sendCollection('Employees', req, res, { companyId: req.user.companyId } );
+});
+
+app.get('/employeeGroups', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  fullcrumApp.sendCollection('EmployeeGroups', req, res, { companyId: req.user.companyId } );
+});
+
+app.get('/openQuestionnaire', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  fullcrumApp.sendCollection('QuestionnaireInstances', req, res, { companyId: req.user.companyId, state: 'kOpen' } );
+});
+
+app.get('/employeeQuestionnaireStatus', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  if ( req.param('questionnaireInstanceId') ) {
+    fullcrumApp.sendCollection('EmployeeQuestionnaireStatus', req, res, { companyId: req.user.companyId, questionnaireInstanceId: req.param('questionnaireInstanceId') } );
   } else {
     res.send(400);
   }
 });
 
-app.get('/employeeGroups', ensureAuthenticated, ensureHasAccount, function(req, res) {
-  if ( req.param('companyId') ) {
-    fullcrumApp.sendCollection('EmployeeGroups', req, res, { companyId: req.param('companyId') } );
+app.post('/openQuestionnaire', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  if ( req.param('title') ) {
+    fullcrumApp.createQuestionnaire( req, res, { companyId: req.user.companyId, title: req.param('title') } );
   } else {
     res.send(400);
   }
@@ -74,9 +88,40 @@ app.get('/summaryResponses', ensureAuthenticated, ensureFullcrumAdmin, function(
   }
 });
 
-app.get('/questions', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+app.get('/questions', function(req, res) {
   if ( req.param('categoryId') ) {
     fullcrumApp.sendCollection('Questions', req, res, { categoryId: req.param('categoryId') } );
+  } else if ( req.param('companyId') ) {
+    var results = [];
+    fullcrum.db.connection
+      .then( function() {
+        return fullcrum.db.collection( 'Companies' )
+          .then( function( collection ) {
+            return fullcrum.db.collectionFindOneById( collection, req.param('companyId') );
+          });
+      })
+      .then( function( company ) {
+        return fullcrum.db.collection( 'Categories' ) 
+          .then( function( collection ) {
+            return fullcrum.db.collectionFind( collection, { questionnaireId: company.questionnaireId } );
+          }); 
+      })
+      .then( Qx.map( function( category ) {
+        return fullcrum.db.collection( 'Questions' )
+          .then( function( collection ) {
+            return fullcrum.db.collectionFind( collection, { categoryId: category._id.toHexString() } );
+          });  
+      }))
+      .then( Qx.map( function( questions ) {
+        results = results.concat( questions );
+      })) 
+      .then( function() {
+        res.send( 200, results );
+      })
+      .fail( function( err ) {
+        res.send( 400, err.toString() );
+      });
+      
   } else {
     res.send(400);
   }
@@ -136,7 +181,8 @@ var privateDirectories = [
   "admin/employees",
   "admin/employees/employee",
   "admin/employees/employee/employeeGroupConnections",
-  "admin/employees/employee/employeeGroupConnections/employeeGroupConnection"
+  "admin/employees/employee/employeeGroupConnections/employeeGroupConnection",
+  "admin/status"
 ];
 
 privateDirectories.forEach( function( directory ) {

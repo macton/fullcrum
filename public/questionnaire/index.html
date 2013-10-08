@@ -1,0 +1,63 @@
+<html ng-app="app">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>fullcrum questionnaire</title>
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+  <link rel="stylesheet" href="/shared/common/common.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/q.js/0.9.6/q.min.js"></script>
+  <script src="/shared/common/common.js"></script>
+  <script src="/shared/ObjectId/ObjectId.js"></script>
+  <script src="/questionnaire/index.js"></script>
+  <script src="/questionnaire/questionnaire/questionnaire.js"></script>
+</head>
+<body ng-controller="main">
+  
+  <div ng-if="isAppState('kSplash')">
+    <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+    <div class="form">
+      <iframe width="530" height="315" src="//www.youtube.com/embed/Kdgt1ZHkvnM" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="row color-h1">
+      <div class="title">Get Started</div>
+    </div>
+    <div class="form">
+      <div class="form-row">
+        <p>Thank you for taking part in the fullcrum.co questionnaire. Your company is using this tool to help them improve their leadership.</p>
+        <p>But this questionnaire is also an opportunity for you to reflect on what is important to you and make an honest assessment of your 
+           own situation. At the end of the questionnaire you will also be provided some immediate feedback to help you introspect. We hope you
+           find it valuable.</p>
+        <p>Please note that while individual and cumulative results will be available to your company, every effort has been made to
+           protect your anonymity so that you can be as honest as possible.</p>
+        <div ng-click="next()" class="btn color-primary" style="width:40%; margin-right:150px;">Begin Questionnaire</div>
+      </div>
+    </div>
+    <ng-include src="'/shared/footer/footer.html'"></ng-include>
+  </div>
+
+  <div ng-if="isAppState('kQuestionnaire')">
+    <ng-include src="'/questionnaire/questionnaire/questionnaire.html'"></ng-include>
+  </div>
+  <div ng-if="isAppState('kResults')">
+    <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+    <div class="row color-h1">
+      <div class="title">Results</div>
+    </div>
+    <div class="form">
+      <div class="form-row">
+        <p>Thank you for taking part in the fullcrum.co questionnaire. Your company is using this tool to help them improve their leadership.</p>
+        <p>But this questionnaire is also an opportunity for you to reflect on what is important to you and make an honest assessment of your 
+           own situation. At the end of the questionnaire you will also be provided some immediate feedback to help you introspect. We hope you
+           find it valuable.</p>
+        <p>Please note that while individual and cummulative results will be available to your company, every effort has been made to
+           protect your anonymity so that you can be as honest as possible.</p>
+      </div>
+    </div>
+    <ng-include src="'/shared/footer/footer.html'"></ng-include>
+  </div>
+
+</body>
+</html>

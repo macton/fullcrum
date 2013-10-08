@@ -1,46 +1,34 @@
-<html>
+<html ng-app="app">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title>fullcrum login</title>
 
-  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
-  <link rel="stylesheet" type="text/css" href="/css/fullcrum-layout.css">
-  <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
+  <link rel="stylesheet" href="/shared/common/common.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
   <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/q.js/0.9.6/q.min.js"></script>
+  <script src="index.js"></script>
 </head>
-<body>
+<body ng-controller="main">
 
   <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
-  <div class="row color-h1"><div class="title">New admin account</div> <div class="btn color-primary account-connect">Connect</div></div>
+  <div class="row color-h1"><div class="title">New admin account</div> 
+    <div ng-if="isConnecting" class="btn color-primary"><i class="icon-spinner icon-spin"></i></div>
+    <div ng-if="!isConnecting" ng-click="connect()" class="btn color-primary">Connect</div>
+  </div>
 
   <div class="form">
+    <div ng-if="isError" class="form-row">
+      <span class="text-error">Account not connected. Contact us at welovedevs@fullcrum.co</span> 
+    </div>
     <div class="form-row">
       <div class="field-label">Account Code</div>
       <div class="field-data"><input class="account-code" type="text"></div>
     </div>
   </div>
 
-  <div class="row color-footer">
-    <p>
-      We want your studio to have better retention, happier developers, and upgraded leaders. Ask us how we can help!  
-      <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=%77%65%6c%6f%76%65%64%65%76%73@%66%75%6c%6c%63%72%75%6d.%63%6f" target="_blank">welovedevs@fullcrum.co</a>
-      <a href="https://twitter.com/fullcrumco"><i class="icon-twitter"></i></a>
-    </p>
-  </div>
-
-  <script>
-  $('.account-connect').on('click', function() {
-    var accountCode = $('.account-code').val().trim();
-    Q.when($.post( '/account-connect', { accountCode: accountCode } ))
-      .then( function( results ) {
-        window.location.replace('/');
-      })
-      .fail( function( err ) { 
-        console.dir( err );
-      });
-  });
-  </script>
-
+  <ng-include src="'/shared/footer/footer.html'"></ng-include>
 
 </body>
 </html>

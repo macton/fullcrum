@@ -244,6 +244,11 @@ p {
   color: #aaa;
 }
 
+.color-close {
+  background-color: #333;
+  color: #aaa;
+}
+
 .color-footer a {
   color: white;
 }
@@ -257,5 +262,169 @@ a.btn:hover {
 }
 
 a:hover {
+  cursor: pointer;
+}
+
+.question-top {
+  width: 100%;
+  margin-top: 105px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  overflow: hidden;
+  background-color: #2b5797;
+  color: #FEFEF2;
+  min-height: 8em;
+}
+
+.question-row {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.1em;
+}
+
+.question-bottom {
+  width: 100%;
+  margin-top: 0px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 5px;
+  overflow: hidden;
+  color: #FEFEF2;
+  background-color: #2b5797;
+}
+
+.strongly-disagree {
+  width: 102px;
+  height: 82px;
+  margin-top: 5px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  margin-right: 5px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 20px;
+  padding-bottom: 0px;
+  text-align:center;
+  background-color: #ff2e12;
+  color: #FEFEF2;
+  float: left;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.disagree {
+  width: 102px;
+  height: 82px;
+  margin-top: 5px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  margin-right: 5px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 20px;
+  padding-bottom: 0px;
+  text-align:center;
+  background-color: #ff7d23;
+  color: #FEFEF2;
+  float: left;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.neutral {
+  width: 102px;
+  height: 82px;
+  margin-top: 5px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  margin-right: 5px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 20px;
+  padding-bottom: 0px;
+  text-align:center;
+  background-color: #e1b700;
+  color: #FEFEF2;
+  float: left;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.agree {
+  width: 102px;
+  height: 82px;
+  margin-top: 5px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  margin-right: 5px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 20px;
+  padding-bottom: 0px;
+  text-align:center;
+  background-color: #78ba00;
+  color: #FEFEF2;
+  float: left;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.strongly-agree {
+  width: 102px;
+  height: 82px;
+  margin-top: 5px;
+  margin-left: 0px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 20px;
+  padding-bottom: 0px;
+  text-align:center;
+  background-color: #199900;
+  color: #FEFEF2;
+  float: left;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.strongly-disagree:hover {
+  cursor: pointer;
+}
+
+.disagree:hover {
+  cursor: pointer;
+}
+
+.neutral:hover {
+  cursor: pointer;
+}
+
+.agree:hover {
+  cursor: pointer;
+}
+
+.strongly-agree:hover {
   cursor: pointer;
 }

@@ -1,0 +1,41 @@
+<div ng-controller="questionnaire">
+
+  <div ng-if="!isEnd()">
+    <div class="question-top">
+      <div class="question-row">
+        {{ questionText() }}
+      </div>
+    </div>
+    <div class="question-bottom">
+      <div class="question-row">
+        <a ng-if="hasBack()" ng-click="back()" style="padding-top:12px; float:left;"><i class="icon-circle-arrow-left" style="padding:5px;"></i></a>
+        <span style="float:right; padding:5px; margin-bottom:5px; margin-right:20px;">{{questionNumber()}} / {{questionCount()}}
+      </div>
+    </div>
+    <div style="min-height: 3px">
+      <div ng-repeat="result in results" ng-style="resultBarStyle( result )"></div>
+    </div>
+    <div style="clear:both; line-height:0px">&nbsp;</div>
+    <div ng-click="stronglyDisagree()" class="strongly-disagree">Strongly<br>Disagree</div>
+    <div ng-click="disagree()" class="disagree">Disagree</div>
+    <div ng-click="neutral()" class="neutral">Neutral</div>
+    <div ng-click="agree()" class="agree">Agree</div>
+    <div ng-click="stronglyAgree()" class="strongly-agree">Strongly<br>Agree</div>
+  </div>
+
+  <div ng-if="isEnd()">
+    <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+    <div class="row color-h1">
+      <div class="title"> <a ng-click="back()"><i class="icon-circle-arrow-left" style="padding:5px;"></i></a> Completed!</div>
+    </div>
+    <div class="form">
+      <div class="form-row">
+        <p>Thank you again for taking part in the fullcrum.co questionnaire!</p>
+        <p>We hope it gave you a chance to reflect on your situation and consider the things most important to you as a game developer and as a professional at your studio.</p>
+        <p>Once you submit your answers, you will be able to return and review your results anytime from the same personal URL you used to arrive here.</p>
+        <div ng-click="submit()" class="btn color-primary" style="width:40%; margin-right:150px;">Submit and view results</div>
+      </div>
+    </div>
+  </div>
+
+</div>

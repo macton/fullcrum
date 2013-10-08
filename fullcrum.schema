@@ -81,6 +81,23 @@ Collection EmployeeGroupConnection
   $oid.EmployeeGroup        employeeGroupId
   $oid.Employee             employeeId
 
-Collection QuestionnaireInstance
+Select QuestionnaireState
+  kOpen
+  kClosed
+
+Collection QuestionnaireInstances
   $oid.Companies            companyId
   Text                      name
+  QuestionnaireState        state
+
+Select EmployeeQuestionnaireState
+  kUnsent
+  kUnopened
+  kStarted
+  kCompleted
+
+Collection EmployeeQuestionnaireStatus
+  $oid.QuestionnaireInstance questionnaireInstanceId
+  $oid.Employee              empoyeeId
+  EmployeeQuestionnaireState state
+
