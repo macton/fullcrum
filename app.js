@@ -48,6 +48,14 @@ app.get('/employeeQuestionnaireStatus', ensureAuthenticated, ensureHasAccount, f
   }
 });
 
+app.get('/singleEmployeeQuestionnaireStatus', function(req, res) {
+  fullcrumApp.singleEmployeeQuestionnaireStatus(req,res);
+});
+
+app.get('/singleEmployeeResults', function(req, res) {
+  fullcrumApp.singleEmployeeResults(req,res);
+});
+
 app.post('/openQuestionnaire', ensureAuthenticated, ensureHasAccount, function(req, res) {
   if ( req.param('title') ) {
     fullcrumApp.createQuestionnaire( req, res, { companyId: req.user.companyId, title: req.param('title') } );
@@ -197,6 +205,10 @@ app.post('/save', ensureAuthenticated, ensureHasAccount, function(req, res) {
 
 app.post('/results', function(req, res) {
   fullcrumApp.saveQuestionnaireResults( req, res, req.body.results );
+});
+
+app.post('/startQuestionnaire', function(req, res) {
+  fullcrumApp.startQuestionnaire( req, res, req.body );
 });
 
 fullcrumApp.start();

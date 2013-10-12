@@ -1,7 +1,8 @@
 {
-  "name": "application-name",
-  "version": "0.0.1-26",
+  "name": "fullcrum",
+  "version": "0.0.1-27",
   "private": true,
+  "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },

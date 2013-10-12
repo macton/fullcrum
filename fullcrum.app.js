@@ -36,6 +36,16 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+function classifyScore( score ) {
+  if ( score < 0.75 ) {
+    return 'kNegative';
+  }
+  if ( score > 0.75 ) {
+    return 'kPositive';
+  }
+  return 'kNeutral';
+}
+
 function hasCollectionChangeAccess( collectionName, user ) {
   var isFullcrumAdmin = ( user.companyId == fullcrum.master.company._id );
   var fullcrumAdminOnlyCollections = [ 
@@ -92,33 +102,42 @@ exports.sendCollection = function( collectionName, req, res, query ) {
     });
 };
 
-/* send mail to admin */
-/*
-        if ( collectionName == 'Admins' ) {
-          return postmark.send({
-            to:      documentChanges.email,
+function sendAdminEmailUpdates( adminChanges ) {
+  for ( adminId in adminChanges ) {
+    fullcrum.db.connection
+      .then( function() {
+        return fullcrum.db.collection( 'Admins' );
+      })
+      .then( function( collection ) {
+        return fullcrum.db.collectionFindOneById( collection, adminId );
+      })
+      .then( function( admin ) {
+        return postmark.send({
+            to:      admin.email,
             subject: 'Welcome to fullcrum.co!',
             html:    '<h1>Welcome to fullcrum!</h1>'
-                    +'Hello ' + documentChanges.name + ',<br>'
+                    +'Hello ' + admin.name + ',<br>'
                     +'You have been provided an administrator account.<br><br>'
-                    +'To access the account, first log in to <a href="http://fullcrum.jit.su">fullcrum</a>, '
-                    +'Then provide the one-time-use key: <b>' + results.id + '</b> when prompted.<br><br>'
+                    +'To access the account, first log in to <a href="' + fullcrum.config.hostUrl + '">fullcrum</a>, '
+                    +'Then provide the one-time-use key: <b>' + adminId + '</b> when prompted.<br><br>'
                     +'Let us know if you have any trouble! -- welovedevs@fullcrum.co'
           })
-          .then( function( mailResults ) {
-            results.mail = { status: 'OK', results: mailResults };
-            return results;
+          .then( function( results ) {
+            console.log( results );
           })
           .fail( function( err ) {
-            results.mail = { status: 'Error', results: err };
-            return results;
+            console.log( err );
           });
-*/
+      })
+      .fail( function( err ) {
+        console.log( err );
+      });
+  }
+}
 
 exports.save = function( req, res ) {
   var deletes         = req.body.delete || {};
   var changes         = req.body.edit || {};
-  var responses       = [];
   var promises        = [];
   var collectionName;
   var documentId;
@@ -163,6 +182,9 @@ exports.save = function( req, res ) {
     for ( documentId in collectionChanges ) {
       var documentChanges = collectionChanges[ documentId ];
       promises.push( saveDocumentChanges( collectionName, documentId, documentChanges ) );
+    }
+    if ( collectionName === 'Admins' ) {
+      sendAdminEmailUpdates( collectionChanges );
     }
   }
 
@@ -225,6 +247,242 @@ exports.saveQuestionnaireResults = function( req, res, questionnaireResults ) {
             .then( function( employeeStatus ) {
               var employeeStatusId = employeeStatus._id.toHexString();
               return fullcrum.db.collectionUpdateById( collection, employeeStatusId, { '$set' : { state: 'kCompleted' } } );
+            })
+            .then( function( results ) {
+              collectedResults.employeeQuestionnaireStatus = results;
+            });
+        });
+    })
+    .then( function() {
+      res.send( 200, collectedResults );
+    })
+    .fail( function (err) {
+      res.send( 500, err.toString() );
+    });
+};
+
+exports.singleEmployeeQuestionnaireStatus = function( req, res ) {
+  var companyId               = req.param('companyId');
+  var questionnaireInstanceId = req.param('questionnaireInstanceId');
+  var employeeId              = req.param('employeeId');
+  var employeeEmail;
+
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( 'Employees' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFindOneById( collection, employeeId )
+            .then( function( employee ) {
+              employeeEmail = employee.email;  
+            });
+        });
+    })
+    .then( function() {
+      return fullcrum.db.collection('EmployeeQuestionnaireStatus')
+        .then( function( collection ) {
+          return fullcrum.db.collectionFindOne( collection, { email: employeeEmail, questionnaireInstanceId: questionnaireInstanceId, companyId: companyId } )
+            .then( function( employeeStatus ) {
+              res.send( 200, employeeStatus );
+            });
+        });
+    })
+    .fail( function (err) {
+      res.send( 500, err.toString() );
+    });
+};
+
+exports.singleEmployeeResults = function( req, res ) {
+  var companyId               = req.param('companyId');
+  var questionnaireInstanceId = req.param('questionnaireInstanceId');
+  var employeeId              = req.param('employeeId');
+  var questionnaireId;
+
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( 'Companies' );
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionFindOneById( collection, companyId );
+    })
+    .then( function( company ) {
+      questionnaireId = company.questionnaireId;
+    })
+    .then( function() {
+      return fullcrum.db.collection( 'QuestionnaireResults' );
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionFind( collection, { employeeId: employeeId, questionnaireInstanceId: questionnaireInstanceId, companyId: companyId } );
+    })
+    .then( Qx.map( function( result ) {
+      return fullcrum.db.collection( 'Questions' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFindOneById( collection, result.questionId );
+        })
+        .then( function( question ) {
+          result.categoryId = question.categoryId;
+          return result;
+        });
+    }))
+    .then( function( results ) {
+      var categoryWorking = {};
+      var categoryResults = [];
+
+      results.forEach( function( result ) {
+        if ( categoryWorking[ result.categoryId ] ) {
+          categoryWorking[ result.categoryId ].count++;
+          categoryWorking[ result.categoryId ].score += parseInt(result.score);
+        } else {
+          categoryWorking[ result.categoryId ] = {
+            count: 1,
+            score: parseInt(result.score)
+          };
+        }
+      });
+      for (var categoryId in categoryWorking) {
+        var score      = ( categoryWorking[categoryId].score / categoryWorking[categoryId].count );
+        var scoreClass = classifyScore( score );
+        categoryResults.push( {
+          categoryId: categoryId,
+          scoreClass: scoreClass,
+          responses: [],
+          suggestions: []
+        });
+      }
+      return categoryResults;
+    })
+    .then( Qx.map( function( result ) {
+      return fullcrum.db.collection( 'Categories' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFindOneById( collection, result.categoryId );
+        })
+        .then( function( category ) {
+          result.categoryName = category.name;
+          return result;
+        });
+    }))
+    .then( Qx.map( function( result ) {
+      return fullcrum.db.collection( 'Responses' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFind( collection, { categoryId: result.categoryId, responseType: result.scoreClass } );
+        })
+        .then( function( responses ) {
+          result.responses = result.responses.concat( responses );
+          return result;
+        });
+    }))
+    .then( Qx.map( function( result ) {
+      return fullcrum.db.collection( 'Responses' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFind( collection, { categoryId: result.categoryId, responseType: 'kAny' } );
+        })
+        .then( function( responses ) {
+          result.responses = result.responses.concat( responses );
+          return result;
+        });
+    }))
+    .then( Qx.map( function( result ) {
+      return fullcrum.db.collection( 'Suggestions' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFind( collection, { categoryId: result.categoryId, responseType: result.scoreClass } );
+        })
+        .then( function( suggestions ) {
+          result.suggestions = result.suggestions.concat( suggestions ); 
+          return result;
+        });
+    }))
+    .then( Qx.map( function( result ) {
+      return fullcrum.db.collection( 'Suggestions' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFind( collection, { categoryId: result.categoryId, responseType: 'kAny' } );
+        })
+        .then( function( suggestions ) {
+          result.suggestions = result.suggestions.concat( suggestions ); 
+          return result;
+        });
+    }))
+    .then( Qx.map( function( result ) {
+      return fullcrum.db.collection( 'AdditionalSuggestions' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFind( collection, { categoryId: result.categoryId, responseType: result.scoreClass, companyId: companyId } );
+        })
+        .then( function( suggestions ) {
+          result.suggestions = result.suggestions.concat( suggestions ); 
+          return result;
+        });
+    }))
+    .then( Qx.map( function( result ) {
+      return fullcrum.db.collection( 'AdditionalSuggestions' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFind( collection, { categoryId: result.categoryId, responseType: 'kAny', companyId: companyId } );
+        })
+        .then( function( suggestions ) {
+          result.suggestions = result.suggestions.concat( suggestions ); 
+          return result;
+        });
+    }))
+    .then( function( results ) {
+      var negativeCount = 0;
+      results.forEach( function( result ) {
+        if ( result.scoreClass === 'kNegative' ) {
+          negativeCount++;
+        }
+      });
+      if ( negativeCount === 0 ) {
+         summaryType = 'kAllPositive';
+      } else if ( negativeCount === 1 ) {
+         summaryType = 'kOneNegative';
+      } else if ( negativeCount === results.length ) {
+         summaryType = 'kAllNegative';
+      } else {
+         summaryType = 'kSomeNegative';
+      }
+      return fullcrum.db.collection( 'SummaryResponses' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFindOne( collection, { questionnaireId: questionnaireId, summaryType: summaryType } );
+        })
+        .then( function( summary ) {
+          return {
+            summary: summary,
+            categoryResults: results
+          };
+        });
+    })
+    .then( function( results ) {
+      res.send( 200, results );      
+    })
+    .fail( function (err) {
+      res.send( 500, err.toString() );
+    });
+};
+
+exports.startQuestionnaire = function( req, res, body ) {
+
+  var companyId               = body.companyId;
+  var questionnaireInstanceId = body.questionnaireInstanceId;
+  var employeeId              = body.employeeId;
+  var employeeEmail;
+  var collectedResults = {};
+
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( 'Employees' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFindOneById( collection, employeeId )
+            .then( function( employee ) {
+              employeeEmail = employee.email;  
+            })
+            .then( function( results ) {
+              collectedResults.employee = results;
+            });
+        });
+    })
+    .then( function() {
+      return fullcrum.db.collection('EmployeeQuestionnaireStatus')
+        .then( function( collection ) {
+          return fullcrum.db.collectionFindOne( collection, { email: employeeEmail, questionnaireInstanceId: questionnaireInstanceId, companyId: companyId } )
+            .then( function( employeeStatus ) {
+              var employeeStatusId = employeeStatus._id.toHexString();
+              return fullcrum.db.collectionUpdateById( collection, employeeStatusId, { '$set' : { state: 'kStarted' } } );
             })
             .then( function( results ) {
               collectedResults.employeeQuestionnaireStatus = results;

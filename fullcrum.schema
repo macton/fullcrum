@@ -62,6 +62,7 @@ Collection AdditionalSuggestions
   Text                      text
   Email                     authorEmail
   Url                       moreInfoUrl
+  ResponseType              responseType
 
 Collection SummaryResponses
   $oid.Questionnaires       questionnaireId

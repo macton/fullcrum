@@ -1,8 +1,10 @@
 <div ng-controller="splash">
   <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+<!--
   <div class="form">
     <iframe width="530" height="315" src="//www.youtube.com/embed/Kdgt1ZHkvnM" frameborder="0" allowfullscreen></iframe>
   </div>
+-->
   <div class="row color-h1">
     <div class="title">Get Started</div>
   </div>
@@ -14,7 +16,7 @@
          find it valuable.</p>
       <p>Please note that while individual and cumulative results will be available to your company, every effort has been made to
          protect your anonymity so that you can be as honest as possible.</p>
-      <div ng-click="next()" class="btn color-primary" style="width:40%; margin-right:150px;">Begin Questionnaire</div>
+      <div ng-click="setAppState('kQuestionnaire')" class="btn color-primary" style="width:40%; margin-right:150px;">Begin Questionnaire</div>
     </div>
   </div>
   <ng-include src="'/shared/footer/footer.html'"></ng-include>

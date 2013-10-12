@@ -1,13 +1,21 @@
 app.controller('questionnaire', function($scope) {
-  var questionNdx = 0;
-  $scope.results     = [];
+  var questionnaireInstanceId = $scope.questionnaireInstanceId;
+  var employeeId              = $scope.employeeId;
+  var companyId               = $scope.companyId;
+  var questionNdx             = 0;
+  $scope.results              = [];
+
+  Q.when( $.post('/startQuestionnaire', { employeeId: employeeId, companyId: companyId, questionnaireInstanceId: questionnaireInstanceId } ) )
+    .then( function( result ) {
+      console.log( result );
+    })
+    .fail( function( err ) {
+      $scope.serverError( err );
+    });
 
   $scope.submit = function() {
     var questionnaireResults    = { results: [] };
     var resultCount             = $scope.results.length;
-    var questionnaireInstanceId = $scope.questionnaireInstanceId;
-    var employeeId              = $scope.employeeId;
-    var companyId               = $scope.companyId;
     for (var i=0;i<resultCount;i++) {
       questionnaireResults.results.push( { 
         questionnaireInstanceId: questionnaireInstanceId,
