@@ -10,10 +10,15 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/q.js/0.9.6/q.min.js"></script>
   <script src="/shared/common/common.js"></script>
+  <script src="/shared/md5/md5.js"></script>
   <script src="/shared/ObjectId/ObjectId.js"></script>
   <script src="/questionnaire/index.js"></script>
   <script src="/questionnaire/splash/splash.js"></script>
   <script src="/questionnaire/questionnaire/questionnaire.js"></script>
+  <script src="/questionnaire/results/results.js"></script>
+  <script src="/questionnaire/results/categoryResult/categoryResult.js"></script>
+  <script src="/questionnaire/results/categoryResult/suggestions/suggestions.js"></script>
+  <script src="/questionnaire/results/categoryResult/suggestions/author/author.js"></script>
 </head>
 <body ng-controller="main">
   
@@ -49,26 +54,7 @@
     </div>
 
     <div ng-if="isAppState('kResults')">
-      <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
-
-      <div class="row color-h1">
-        <div class="title">Summary</div>
-      </div>
-      <div style="background-color: red; border-style:solid; border-left-color:#ff0000; border-left-width:30px;">
-        <div class="row color-h3">
-          <div class="title">Category</div>
-        </div>
-        <div class="form">
-          <div class="form-row">
-            <p>Don’t let your emotional or physical wellbeing fall by the wayside. Your physical health (nutrition, sleep, exercise) has been proven to have a noteworthy impact on your performance at work. Your emotional health (forging relationships, doing work that’s meaningful to you) also plays a role in how you perform as a team member. Remember…your work isn’t your life!</p>
-          </div>
-        </div>
-        <div class="row color-h2">
-        <p>“Take a walk and a real break for lunch. It’s better for you emotionally and physically. My own experience is that walking alongside someone is a much better way to have a one-on-one discussion than sitting across a desk from each other:”</p>
-        </div>
-      </div>
-      <ng-include src="'/shared/footer/footer.html'"></ng-include>
-    </div>
+      <ng-include src="'/questionnaire/results/results.html'"></ng-include>
   </div>
 
 </body>

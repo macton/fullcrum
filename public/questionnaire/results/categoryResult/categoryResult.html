@@ -1,0 +1,13 @@
+<div ng-controller="categoryResult">
+  <div class="row ng-class:{ 'color-negative': (categoryResult.scoreClass == 'kNegative'), 'color-neutral': (categoryResult.scoreClass == 'kNeutral'), 'color-positive': (categoryResult.scoreClass == 'kPositive') }">
+    <div class="title"> {{ categoryResult.categoryName }} </div>
+  </div>
+  <div class="form">
+    <div class="form-row" ng-repeat="response in categoryResult.responses">
+      <p> {{ response.text }} </p>
+    </div>
+  </div>
+  <div ng-if="categoryResult.suggestions.length > 0">
+    <ng-include src="'/questionnaire/results/categoryResult/suggestions/suggestions.html'"></ng-include>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div ng-controller="suggestions">
+  <div ng-if="!isOpen">
+    <div class="form">
+      <a class="form-row" style="float:right;text-align:right;" ng-click="open()"> Suggestions <i class="icon-plus"></i> </a>
+    </div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="form">
+      <a class="form-row" style="float:right;text-align:right;" ng-click="close()"> <i class="icon-minus"></i> </a>
+    </div>
+    <div ng-repeat="suggestion in categoryResult.suggestions" class="row color-h2">
+      <p> {{ suggestion.text }} </p>
+      <ng-include src="'/questionnaire/results/categoryResult/suggestions/author/author.html'"></ng-include>
+      <div style="clear:both;"></div>
+      <p ng-if="suggestion.moreInfoUrl">See also: <a ng-href="{{ suggestion.moreInfoUrl }}">{{ suggestion.moreInfoUrl }}</a></p>
+    </div>
+  </div>
+</div>

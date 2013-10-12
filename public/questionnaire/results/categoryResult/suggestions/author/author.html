@@ -1,0 +1,29 @@
+<div ng-controller="author">
+  <div ng-if="!isOpen">
+    <div>
+      <a style="float:right;text-align:right;" ng-click="open()"> <i class="icon-plus"></i> {{ profile.displayName }} </a>
+    </div>
+    <div style="clear:both;"></div>    
+  </div>
+  <div ng-if="isOpen">
+    <div>
+      <a style="float:right;text-align:right;" ng-click="close()"> <i class="icon-minus"></i> {{ profile.displayName }} </a>
+    </div>
+    <div style="clear:both;"></div>    
+    <div class="color-h3">
+      <img ng-src="{{ profile.thumbnailUrl }}" style="float:left; padding:15px;"></img>
+      <p> {{ profile.aboutMe }} </p>
+      <div style="text-align:right;" ng-if="profile.accounts"> 
+        <span class="social-links" ng-repeat="account in profile.accounts">
+          <span ng-if="account.shortname == 'facebook'"><a ng-href="{{account.url}}"><i class="icon-facebook"></i></a></span>
+          <span ng-if="account.shortname == 'google'"><a ng-href="{{account.url}}"><i class="icon-google-plus"></i></a></span>
+          <span ng-if="account.shortname == 'linkedin'"><a ng-href="{{account.url}}"><i class="icon-linkedin"></i></a></span>
+          <span ng-if="account.shortname == 'twitter'"><a ng-href="{{account.url}}"><i class="icon-twitter"></i></a></span>
+        </span>
+      </div>
+      <ul ng-show="profile.urls && profile.urls.length">
+        <li ng-repeat="url in profile.urls"> <a ng-href="{{url.value}}">{{url.title}}</a> </li>
+      </ul>
+    </div>
+  </div>
+</div>

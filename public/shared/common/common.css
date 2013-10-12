@@ -294,6 +294,10 @@ a:hover {
   background-color: #2b5797;
 }
 
+.color-negative {
+  background-color: #ff2e12;
+  color: #FEFEF2;
+}
 .strongly-disagree {
   width: 102px;
   height: 82px;
@@ -340,6 +344,10 @@ a:hover {
   user-select: none;
 }
 
+.color-neutral {
+  background-color: #e1b700;
+  color: #FEFEF2;
+}
 .neutral {
   width: 102px;
   height: 82px;
@@ -386,6 +394,10 @@ a:hover {
   user-select: none;
 }
 
+.color-positive {
+  background-color: #199900;
+  color: #FEFEF2;
+}
 .strongly-agree {
   width: 102px;
   height: 82px;
@@ -427,4 +439,23 @@ a:hover {
 
 .strongly-agree:hover {
   cursor: pointer;
+}
+
+.social-links a {
+  color: #FEFEF2;
+  font-size: 1.2em;
+  text-decoration: none;
+  padding-right: 5px;
+}
+
+.color-h3 ul {
+  color: #FEFEF2;
+}
+
+.color-h3 ul a {
+  color: #FEFEF2;
+}
+
+ul {
+  padding-bottom: 10px;
 }
