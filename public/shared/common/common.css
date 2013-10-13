@@ -52,6 +52,20 @@ div {
   float: left;
 }
 
+.bottom-bar {
+  /* width: 210px; */
+  /* padding: 5px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 0px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0px;
+  min-height: 10px;
+  overflow: hidden;
+  float: left;
+}
+
 .form-row {
   width: 100%;
   /* padding: 5px; */
@@ -332,6 +346,10 @@ a:hover {
   background-color: #ff2e12;
   color: #FEFEF2;
 }
+.color-strongly-disagree {
+  background-color: #ff2e12;
+  color: #FEFEF2;
+}
 .strongly-disagree {
   width: 102px;
   height: 82px;
@@ -355,6 +373,10 @@ a:hover {
   user-select: none;
 }
 
+.color-disagree {
+  background-color: #ff7d23;
+  color: #FEFEF2;
+}
 .disagree {
   width: 102px;
   height: 82px;
@@ -405,6 +427,10 @@ a:hover {
   user-select: none;
 }
 
+.color-agree {
+  background-color: #78ba00;
+  color: #FEFEF2;
+}
 .agree {
   width: 102px;
   height: 82px;
@@ -429,6 +455,10 @@ a:hover {
 }
 
 .color-positive {
+  background-color: #199900;
+  color: #FEFEF2;
+}
+.color-strongly-agree {
   background-color: #199900;
   color: #FEFEF2;
 }
@@ -492,4 +522,12 @@ a:hover {
 
 ul {
   padding-bottom: 10px;
+}
+
+td {
+  padding: 5px;
+}
+
+table {
+  margin-left: 20px;
 }

@@ -1,0 +1,47 @@
+<div ng-controller="resultCategoryQuestion">
+
+  <div ng-if="!isOpen">
+    <div class="row color-h6"><div ng-click="open()" class="btn-title" style="width: 95%"><i class="icon-plus"></i> {{ resultCategoryQuestion.text }}</div></div>
+  </div>
+
+  <div ng-if="isOpen">
+    <div class="row color-h6"><div ng-click="close()" class="btn-title" style="width: 95%"><i class="icon-minus"></i> {{ resultCategoryQuestion.text }}</div></div>
+  </div>
+
+  <div class="bottom-bar color-strongly-disagree" ng-style="stronglyDisagreeBarStyle()">&nbsp;</div>
+  <div class="bottom-bar color-disagree" ng-style="disagreeBarStyle()">&nbsp;</div>
+  <div class="bottom-bar color-neutral" ng-style="neutralBarStyle()">&nbsp;</div>
+  <div class="bottom-bar color-agree" ng-style="agreeBarStyle()">&nbsp;</div>
+  <div class="bottom-bar color-strongly-agree" ng-style="stronglyAgreeBarStyle()">&nbsp;</div>
+  <div style="clear:both;"></div>
+  
+  <div ng-if="isOpen">
+    <div class="form">
+      <div class="form-row">
+        <table>
+          <tr>
+            <td>Strongly disagree</td>
+            <td>{{resultCategoryQuestion.stronglyDisagreeCount}}</td>
+          </tr>
+          <tr>
+            <td>Disagree</td>
+            <td>{{resultCategoryQuestion.disagreeCount}}</td>
+          </tr>
+          <tr>
+            <td>Neutral</td>
+            <td>{{resultCategoryQuestion.neutralCount}}</td>
+          </tr>
+          <tr>
+            <td>Agree</td>
+            <td>{{resultCategoryQuestion.agreeCount}}</td>
+          </tr>
+          <tr>
+            <td>Strongly agree</td>
+            <td>{{resultCategoryQuestion.stronglyAgreeCount}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

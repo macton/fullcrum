@@ -20,4 +20,28 @@
     </div>
   </div>
 
+  <div ng-if="isOpen">
+    <div class="form">
+      <div class="form-row">
+        <table>
+          <tr>
+            <td>Negative</td>
+            <td>{{resultCategory.negativeCount}}</td>
+          </tr>
+          <tr>
+            <td>Neutral</td>
+            <td>{{resultCategory.neutralCount}}</td>
+          </tr>
+          <tr>
+            <td>Positive</td>
+            <td>{{resultCategory.positiveCount}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div ng-repeat="resultCategoryQuestion in resultCategory.questionResults">
+      <ng-include src="'/admin/results/closedQuestionnaireInstance/resultsByCategory/resultCategory/resultCategoryQuestion/resultCategoryQuestion.html'"></ng-include>
+    </div>
+  </div>
+
 </div>
