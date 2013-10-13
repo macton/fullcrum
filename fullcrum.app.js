@@ -70,7 +70,8 @@ function hasCollectionChangeAccess( collectionName, user ) {
     "EmployeeGroupConnections",
     "EmployeeGroups",
     "Employees",
-    "EmployeeQuestionnaireStatus"
+    "EmployeeQuestionnaireStatus",
+    "QuestionnaireInstances"
   ];
 
   if ( adminCollections.indexOf( collectionName ) != -1 ) {

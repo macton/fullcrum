@@ -33,8 +33,8 @@ angular.module('ng').run(['$rootScope', function($rootScope) {
   };
 
   $rootScope.isEdited           = false;
-  $rootScope.documentFieldEdits = {};
-  $rootScope.documentDeletes    = {};
+  $rootScope.documentFieldEdits = {}; /* { collectionName: { documentId: { fieldName: fieldValue, ... }, ... }, ... } */
+  $rootScope.documentDeletes    = {}; /* { collectionName: [ documentId, ... ], ... } */
   $rootScope.isSaving           = false;
 
   $rootScope.editDocumentField = function(collectionName, documentId, fieldName, fieldValue) {
@@ -59,7 +59,15 @@ angular.module('ng').run(['$rootScope', function($rootScope) {
     $rootScope.isEdited = true;
   }
 
-  $rootScope.save = function() {
+  $rootScope.save = function( collectionName, documentId, document ) {
+
+    if ( collectionName && documentId && document ) {
+      var documentFieldEdits = {};
+      documentFieldEdits[ collectionName ] = {};
+      documentFieldEdits[ collectionName ][ documentId ] = document;
+      return Q.when( $.post( '/save', { edit: documentFieldEdits } ) );
+    }
+
     $rootScope.isSaving = true;
     $rootScope.safeApply( function() {
       Q.when( $.post( '/save', { edit: $rootScope.documentFieldEdits, delete: $rootScope.documentDeletes } ) )

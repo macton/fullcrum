@@ -46,7 +46,7 @@ app.controller('status', function($scope) {
   $scope.begin = function() {
     if ( sureConfirm('This will create your new questionnaire and send an email with a unique URL to each employee.') ) {
       $scope.isLoading = true;
-      Q.when( $.post('/openQuestionnaire', { title: $scope.newQuestionnaireTitle } ) )
+      Q.when( $.post('/closeQuestionnaire', { title: $scope.newQuestionnaireTitle } ) )
         .then( function( results ) {
           console.log( results );
         })
@@ -55,6 +55,20 @@ app.controller('status', function($scope) {
         })
         .done( function() {
           refreshOpenQuestionnaire();        
+        });
+    }
+  };
+
+  $scope.end = function() {
+    if ( sureConfirm('This will close your questionnaire and make results available. No further results will be accepted.') ) {
+      $scope.isLoading = true;
+      $scope.save('QuestionnaireInstances', $scope.openQuestionnaire._id, { state: 'kClosed' })
+        .then( function( results ) {
+          console.log( results );
+          refreshOpenQuestionnaire();        
+        })
+        .fail( function( err ) {
+          $scope.serverError( err );
         });
     }
   };
