@@ -9,7 +9,7 @@
       <a class="form-row" style="float:right;text-align:right;" ng-click="close()"> Suggestions <i class="icon-minus"></i> </a>
     </div>
     <div ng-repeat="suggestion in categoryResult.suggestions" class="row color-h2">
-      <p> {{ suggestion.text }} </p>
+      <p>&ldquo; {{ suggestion.text }} &rdquo;</p>
       <ng-include src="'/questionnaire/results/categoryResult/suggestions/author/author.html'"></ng-include>
       <div style="clear:both;"></div>
       <p ng-if="suggestion.moreInfoUrl">See: <a ng-href="{{ suggestion.moreInfoUrl }}">{{ suggestion.moreInfoUrl }}</a></p>

@@ -19,7 +19,18 @@ angular.module('ng').run(['$rootScope', function($rootScope) {
       $rootScope.isServerError   = true;
       $rootScope.serverErrorText = err.status + ' ' + err.statusText + ' ' + err.responseText;
     });
-  }
+  };
+
+  $rootScope.cachePromises = { };
+  $rootScope.cache = function( collectionName, id, gather ) {
+    if (!$rootScope.cachePromises.hasOwnProperty( collectionName )) {
+      $rootScope.cachePromises[ collectionName ] = {};
+    }
+    if (!$rootScope.cachePromises[ collectionName ].hasOwnProperty( id )) {
+      $rootScope.cachePromises[ collectionName ][ id ] = gather();
+    }
+    return $rootScope.cachePromises[ collectionName ][ id ];
+  };
 
   $rootScope.isEdited           = false;
   $rootScope.documentFieldEdits = {};

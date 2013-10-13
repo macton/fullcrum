@@ -12,7 +12,8 @@
     "q": "~0.9.7",
     "passport-linkedin": "~0.1.3",
     "passport": "~0.1.17",
-    "qx": "SLaks/Qx"
+    "qx": "SLaks/Qx",
+    "ejs": "~0.8.4"
   },
   "subdomain": "fullcrum",
   "engines": {

@@ -4,6 +4,7 @@ var express           = require('express');
 var passport          = require('passport');
 var Q                 = require('q');
 var Qx                = require('qx');
+var ejs               = require('ejs');
 var postmark          = require('./postmark');
 var fullcrum          = require('./fullcrum.api');
 
@@ -421,12 +422,24 @@ exports.singleEmployeeResults = function( req, res ) {
         });
     }))
     .then( function( results ) {
+      results.sort( function( a, b ) {
+        var sortOrder = {
+          'kNegative': { 'kNegative': 0, 'kPostive': -1, 'kNeutral': -1 },
+          'kNeutral':  { 'kNegative': 1, 'kPostive': -1, 'kNeutral':  0 },
+          'kPositive': { 'kNegative': 1, 'kPostive':  0, 'kNeutral':  1 },
+        };
+        return sortOrder[a.scoreClass][b.scoreClass];
+      });
+
       var negativeCount = 0;
+      var negativeCategories = [];
       results.forEach( function( result ) {
         if ( result.scoreClass === 'kNegative' ) {
           negativeCount++;
+          negativeCategories.push( result.categoryName );
         }
       });
+
       if ( negativeCount === 0 ) {
          summaryType = 'kAllPositive';
       } else if ( negativeCount === 1 ) {
@@ -436,11 +449,18 @@ exports.singleEmployeeResults = function( req, res ) {
       } else {
          summaryType = 'kSomeNegative';
       }
+
       return fullcrum.db.collection( 'SummaryResponses' )
         .then( function( collection ) {
           return fullcrum.db.collectionFindOne( collection, { questionnaireId: questionnaireId, summaryType: summaryType } );
         })
         .then( function( summary ) {
+          var summaryVars = {
+            negativeCategories: negativeCategories.join(', ')
+          };
+
+          summary.text = ejs.render( summary.text, summaryVars );
+
           return {
             summary: summary,
             categoryResults: results
