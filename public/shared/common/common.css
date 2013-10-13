@@ -13,7 +13,9 @@ div {
 
 .row {
   width: 100%;
-  padding: 5px;
+  /* padding: 5px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
   margin-top: 5px;
   margin-left: 0;
   margin-right: 0;
@@ -22,16 +24,48 @@ div {
   overflow: hidden;
 }
 
+.row-left-60 {
+  width: 320px;
+  /* padding: 5px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 5px;
+  margin-left: 0;
+  margin-right: 5px;
+  margin-bottom: 0px;
+  min-height: 32px;
+  overflow: hidden;
+  float: left;
+}
+
+.row-right {
+  /* width: 210px; */
+  /* padding: 5px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 5px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0px;
+  min-height: 32px;
+  overflow: hidden;
+  float: left;
+}
+
 .form-row {
   width: 100%;
-  padding: 5px;
+  /* padding: 5px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
   margin: 0;
   overflow: hidden;
 }
 
 .form {
   width: 100%;
-  padding: 5px;
+  /* padding: 5px; */
+  padding-top: 5px;
+  padding-bottom: 5px;
   margin: 0;
   color: #FEFEF2;
   background-color: #AAA;

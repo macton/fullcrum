@@ -4,5 +4,8 @@
   </div>
   <div ng-if="isOpen">
     <div class="row color-h4"><div ng-click="close()" class="btn-title"> <i class="icon-minus"></i> Results by Category </div></div>
+    <div ng-repeat="resultCategory in questionnaireInstanceResultsByCategory">
+      <ng-include src="'/admin/results/closedQuestionnaireInstance/resultsByCategory/resultCategory/resultCategory.html'"></ng-include>
+    </div>
   </div>
 </div>

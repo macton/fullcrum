@@ -1,0 +1,23 @@
+<div ng-controller="resultCategory">
+
+  <div style="width:100%;overflow:hidden;">
+    <div ng-if="!isOpen">
+      <div class="row-left-60 color-h5"><div ng-click="open()" class="btn-title" style="width:100%"><i class="icon-plus"></i> {{ resultCategory.name }}</div></div>
+    </div>
+
+    <div ng-if="isOpen">
+      <div class="row-left-60 color-h5"><div ng-click="close()" class="btn-title" style="width:100%"><i class="icon-minus"></i> {{ resultCategory.name }}</div></div>
+    </div>
+
+    <div class="row-right color-negative" ng-style="negativeBarStyle()">
+      <div class="title">&nbsp;</div>
+    </div>
+    <div class="row-right color-neutral" ng-style="neutralBarStyle()">
+      <div class="title">&nbsp;</div>
+    </div>
+    <div class="row-right color-positive" ng-style="positiveBarStyle()">
+      <div class="title">&nbsp;</div>
+    </div>
+  </div>
+
+</div>

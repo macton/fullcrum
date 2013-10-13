@@ -197,6 +197,7 @@ var privateDirectories = [
   "admin/results",
   "admin/results/closedQuestionnaireInstance",
   "admin/results/closedQuestionnaireInstance/resultsByCategory",
+  "admin/results/closedQuestionnaireInstance/resultsByCategory/resultCategory",
   "admin/employeeGroups",
   "admin/employeeGroups/employeeGroup",
   "admin/status",
