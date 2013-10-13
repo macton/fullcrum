@@ -1,0 +1,16 @@
+<div ng-controller="results">
+  <div ng-if="!isOpen">
+    <div class="row color-h2"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Results </div></div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Results </div></div>
+    <div class="form">
+      <div class="form-row">
+        <p>This is where you can view the results from your closed questionnaires.</p>
+      </div>
+    </div>
+    <div ng-repeat="closedQuestionnaireInstance in closedQuestionnaireInstances">
+      <ng-include src="'/admin/results/closedQuestionnaireInstance/closedQuestionnaireInstance.html'"></ng-include>
+    </div>
+  </div>
+</div>

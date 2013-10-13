@@ -163,6 +163,30 @@ app.get('/additionalSuggestions', ensureAuthenticated, ensureFullcrumAdmin, func
   }
 });
 
+app.post('/save', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  fullcrumApp.save( req, res );
+});
+
+app.post('/results', function(req, res) {
+  fullcrumApp.saveQuestionnaireResults( req, res, req.body.results );
+});
+
+app.post('/startQuestionnaire', function(req, res) {
+  fullcrumApp.startQuestionnaire( req, res, req.body );
+});
+
+app.get('/closedQuestionnaireInstances', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  fullcrumApp.sendCollection( 'QuestionnaireInstances', req, res, { companyId: req.user.companyId, state: 'kClosed' } );
+});
+
+app.get('/questionnaireInstanceResultsByCategory', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  if ( req.param('questionnaireInstanceId') ) {
+    fullcrumApp.questionnaireInstanceResultsByCategory( req, res ); 
+  } else {
+    res.send(400);
+  }
+});
+
 // find private -type d
 var privateDirectories = [
   "admin",
@@ -170,8 +194,12 @@ var privateDirectories = [
   "admin/administrators/admin",
   "admin/companies",
   "admin/companies/company",
+  "admin/results",
+  "admin/results/closedQuestionnaireInstance",
+  "admin/results/closedQuestionnaireInstance/resultsByCategory",
   "admin/employeeGroups",
   "admin/employeeGroups/employeeGroup",
+  "admin/status",
   "admin/questionnaires",
   "admin/questionnaires/questionnaire",
   "admin/questionnaires/questionnaire/categories",
@@ -189,26 +217,13 @@ var privateDirectories = [
   "admin/employees",
   "admin/employees/employee",
   "admin/employees/employee/employeeGroupConnections",
-  "admin/employees/employee/employeeGroupConnections/employeeGroupConnection",
-  "admin/status"
+  "admin/employees/employee/employeeGroupConnections/employeeGroupConnection"
 ];
 
 privateDirectories.forEach( function( directory ) {
   app.get( '/' + directory + '/:file', ensureAuthenticated, ensureHasAccount, function(req, res, next) {
     res.sendfile( 'private/' + directory + '/' + req.param('file') );
   });
-});
-
-app.post('/save', ensureAuthenticated, ensureHasAccount, function(req, res) {
-  fullcrumApp.save( req, res );
-});
-
-app.post('/results', function(req, res) {
-  fullcrumApp.saveQuestionnaireResults( req, res, req.body.results );
-});
-
-app.post('/startQuestionnaire', function(req, res) {
-  fullcrumApp.startQuestionnaire( req, res, req.body );
 });
 
 fullcrumApp.start();

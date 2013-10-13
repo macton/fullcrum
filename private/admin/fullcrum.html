@@ -37,6 +37,9 @@
   <script src="/admin/employees/employee/employeeGroupConnections/employeeGroupConnections.js"></script>
   <script src="/admin/employees/employee/employeeGroupConnections/employeeGroupConnection/employeeGroupConnection.js"></script>
   <script src="/admin/status/status.js"></script>
+  <script src="/admin/results/results.js"></script>
+  <script src="/admin/results/closedQuestionnaireInstance/closedQuestionnaireInstance.js"></script>
+  <script src="/admin/results/closedQuestionnaireInstance/resultsByCategory/resultsByCategory.js"></script>
 </head>
 <body ng-controller="main">
   
@@ -69,6 +72,7 @@
     <ng-include src="'/admin/employeeGroups/employeeGroups.html'"></ng-include>
     <ng-include src="'/admin/employees/employees.html'"></ng-include>
     <ng-include src="'/admin/status/status.html'"></ng-include>
+    <ng-include ng-if="closedQuestionnaireInstances.length > 0" src="'/admin/results/results.html'"></ng-include>
 
     <ng-include src="'/shared/footer/footer.html'"></ng-include>
   </div>  

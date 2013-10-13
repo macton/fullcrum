@@ -259,7 +259,7 @@ exports.saveQuestionnaireResults = function( req, res, questionnaireResults ) {
       res.send( 200, collectedResults );
     })
     .fail( function (err) {
-      res.send( 500, err.toString() );
+      res.send( 500, err.stack );
     });
 };
 
@@ -289,7 +289,7 @@ exports.singleEmployeeQuestionnaireStatus = function( req, res ) {
         });
     })
     .fail( function (err) {
-      res.send( 500, err.toString() );
+      res.send( 500, err.stack );
     });
 };
 
@@ -472,7 +472,7 @@ exports.singleEmployeeResults = function( req, res ) {
       res.send( 200, results );      
     })
     .fail( function (err) {
-      res.send( 500, err.toString() );
+      res.send( 500, err.stack );
     });
 };
 
@@ -514,7 +514,7 @@ exports.startQuestionnaire = function( req, res, body ) {
       res.send( 200, collectedResults );
     })
     .fail( function (err) {
-      res.send( 500, err.toString() );
+      res.send( 500, err.stack );
     });
 };
 
@@ -585,6 +585,140 @@ exports.createQuestionnaire = function( req, res, questionnaire ) {
       res.send( 200, collectedResults );
     })
     .fail( function (err) {
-      res.send( 500, err.toString() );
+      res.send( 500, err.stack );
     });
-}
+};
+
+exports.questionnaireInstanceResultsByCategory = function( req, res ) {
+  var questionnaireInstanceId = req.param('questionnaireInstanceId');
+  var companyId               = req.user.companyId;
+  var questionnaireId;
+  var questions  = {};
+  var categories = {};
+
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( 'Companies' );
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionFindOneById( collection, companyId );
+    })
+    .then( function( company ) {
+      questionnaireId = company.questionnaireId;
+    })
+    .then( function() {
+      return fullcrum.db.collection( 'QuestionnaireResults' );
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionFind( collection, { questionnaireInstanceId: questionnaireInstanceId, companyId: companyId } );
+    })
+    // gather questions and categories
+    .then( Qx.map( function( result ) {
+      if ( !questions.hasOwnProperty( result.questionId ) ) {
+        return fullcrum.db.collection( 'Questions' )
+          .then( function( collection ) {
+            return fullcrum.db.collectionFindOneById( collection, result.questionId );
+          })
+          .then( function( question ) {
+            questions[ result.questionId ] = question;
+
+            if( !categories.hasOwnProperty( question.categoryId ) ) {
+              return fullcrum.db.collection( 'Categories' )
+                .then( function( collection ) {
+                  return fullcrum.db.collectionFindOneById( collection, question.categoryId );
+                })
+                .then( function( category ) {
+                  categories[ question.categoryId ] = category;
+                  return result;
+                });
+            }
+            return result;
+          });
+      } else {
+        return result;
+      }
+    }))
+    // reconstruct into category hierarchy
+    .then( function( results ) {
+      var categoryResults = { };
+
+      results.forEach( function( result ) {
+        var questionId = result.questionId;
+        var categoryId = questions[ questionId ].categoryId;
+        if ( !categoryResults.hasOwnProperty( categoryId ) ) {
+          categoryResults[categoryId] = { 
+            negativeCount: 0,
+            neutralCount:  0,
+            positiveCount: 0,
+            questionResults: {}
+          };
+        }
+        if ( !categoryResults[categoryId].questionResults.hasOwnProperty( questionId ) ) {
+          categoryResults[categoryId].questionResults[questionId] = {
+            stronglyDisagreeCount: 0,
+            disagreeCount: 0,
+            neutralCount: 0,
+            agreeCount: 0,
+            stronglyAgreeCount: 0,
+            individualResults: []
+          };
+        }
+
+        result.score = parseInt( result.score );
+        if ( result.score === -2 ) {
+          categoryResults[ categoryId ].negativeCount++; 
+          categoryResults[ categoryId ].questionResults[ questionId ].stronglyDisagreeCount++;
+        } else if ( result.score === -1 ) {
+          categoryResults[ categoryId ].negativeCount++; 
+          categoryResults[ categoryId ].questionResults[ questionId ].disagreeCount++;
+        } else if ( result.score === 0 ) {
+          categoryResults[ categoryId ].neutralCount++; 
+          categoryResults[ categoryId ].questionResults[ questionId ].neutralCount++;
+        } else if ( result.score === 1 ) {
+          categoryResults[ categoryId ].positiveCount++; 
+          categoryResults[ categoryId ].questionResults[ questionId ].agreeCount++;
+        } else if ( result.score === 2 ) {
+          categoryResults[ categoryId ].positiveCount++; 
+          categoryResults[ categoryId ].questionResults[ questionId ].stronglyAgreeCount++;
+        }
+        categoryResults[ categoryId ].questionResults[ questionId ].individualResults.push( result );
+      });
+ 
+      return categoryResults;
+    })
+    // convert to arrays, add text
+    .then( function( results ) {
+      var categoryResults = [];
+      for (var categoryId in results) {
+        var category = {
+          categoryId: categoryId,
+          name: categories[categoryId].name,
+          negativeCount: results[categoryId].negativeCount,
+          neutralCount: results[categoryId].neutralCount,
+          positiveCount: results[categoryId].positiveCount,
+          questionResults: []
+        };
+        for (var questionId in results[categoryId].questionResults) {
+          var question = {
+            questionId: questionId,
+            text: questions[questionId].text,
+            stronglyDisagreeCount: results[categoryId].questionResults[questionId].stronglyDisagreeCount,
+            disagreeCount: results[categoryId].questionResults[questionId].disagreeCount,
+            neutralCount: results[categoryId].questionResults[questionId].neutralCount,
+            agreeCount: results[categoryId].questionResults[questionId].agreeCount,
+            stronglyAgreeCount: results[categoryId].questionResults[questionId].stronglyAgreeCount,
+            individualResults: results[categoryId].questionResults[questionId].individualResults,
+          }; 
+          category.questionResults.push( question );
+        }
+        categoryResults.push( category );
+      }
+      return categoryResults;
+    })
+    .then( function( results ) {
+      res.send( 200, results );      
+    })
+    .fail( function (err) {
+      res.send( 500, err.stack );
+    });
+};
