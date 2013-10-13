@@ -3,7 +3,7 @@ fullcrum
 
 Deploy
 
-  - jitsu deploy
+  - modulus deploy
 
 Config files
 
