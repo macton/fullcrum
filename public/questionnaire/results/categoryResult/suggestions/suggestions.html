@@ -1,12 +1,12 @@
 <div ng-controller="suggestions">
   <div ng-if="!isOpen">
     <div class="form">
-      <a class="form-row" style="float:right;text-align:right;" ng-click="open()"> Suggestions <i class="icon-plus"></i> </a>
+      <a class="form-row" style="float:right;text-align:right;padding-right:10px;" ng-click="open()"> Suggestions <i class="icon-plus"></i> </a>
     </div>
   </div>
   <div ng-if="isOpen">
     <div class="form">
-      <a class="form-row" style="float:right;text-align:right;" ng-click="close()"> Suggestions <i class="icon-minus"></i> </a>
+      <a class="form-row" style="float:right;text-align:right;padding-right:10px;" ng-click="close()"> Suggestions <i class="icon-minus"></i> </a>
     </div>
     <div ng-repeat="suggestion in categoryResult.suggestions" class="row color-h2">
       <p>&ldquo; {{ suggestion.text }} &rdquo;</p>

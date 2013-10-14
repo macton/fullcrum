@@ -32,6 +32,10 @@ app.controller('main', function($scope) {
 
     })
     .done();
+
+  $scope.refreshResults = function() {
+    handleGetCollection( $scope, '/closedQuestionnaireInstances', 'closedQuestionnaireInstances' );
+  };
 });
 
 

@@ -1,16 +1,16 @@
 <div ng-controller="author">
   <div ng-if="!isOpen">
     <div>
-      <a style="float:right;text-align:right;" ng-click="open()"> <i class="icon-plus"></i> {{ profile.displayName }} </a>
+      <a style="float:right;text-align:right;padding-right:10px;" ng-click="open()"> <i class="icon-plus"></i> {{ profile.displayName }} </a>
     </div>
     <div style="clear:both;"></div>    
   </div>
   <div ng-if="isOpen">
     <div>
-      <a style="float:right;text-align:right;" ng-click="close()"> <i class="icon-minus"></i> {{ profile.displayName }} </a>
+      <a style="float:right;text-align:right;padding-right:10px;" ng-click="close()"> <i class="icon-minus"></i> {{ profile.displayName }} </a>
     </div>
     <div style="clear:both;"></div>    
-    <div class="color-h3">
+    <div class="color-h3" style="margin:10px;">
       <img ng-src="{{ profile.thumbnailUrl }}" style="float:left; padding:15px;"></img>
       <p> {{ profile.aboutMe }} </p>
       <div style="text-align:right;" ng-if="profile.accounts"> 

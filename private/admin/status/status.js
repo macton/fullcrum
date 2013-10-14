@@ -24,6 +24,7 @@ app.controller('status', function($scope) {
   var refreshOpenQuestionnaire = function() {
     $scope.isLoading            = true;
     $scope.hasOpenQuestionnaire = false;
+    $scope.refreshResults();
     Q.when( $.get('/openQuestionnaire') )
       .then( function( results ) {
         $scope.safeApply( function() {
@@ -46,7 +47,7 @@ app.controller('status', function($scope) {
   $scope.begin = function() {
     if ( sureConfirm('This will create your new questionnaire and send an email with a unique URL to each employee.') ) {
       $scope.isLoading = true;
-      Q.when( $.post('/closeQuestionnaire', { title: $scope.newQuestionnaireTitle } ) )
+      Q.when( $.post('/openQuestionnaire', { title: $scope.newQuestionnaireTitle } ) )
         .then( function( results ) {
           console.log( results );
         })
