@@ -187,6 +187,14 @@ app.get('/questionnaireInstanceResultsByCategory', ensureAuthenticated, ensureFu
   }
 });
 
+app.get('/download', ensureAuthenticated, ensureHasAccount, function( req, res ) {
+  if ( req.param('questionnaireInstanceId') ) {
+    fullcrumApp.download( req, res );
+  } else {
+    res.send(400);
+  }
+});
+
 // find private -type d
 var privateDirectories = [
   "admin",

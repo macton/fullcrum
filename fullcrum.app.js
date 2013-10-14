@@ -5,6 +5,9 @@ var passport          = require('passport');
 var Q                 = require('q');
 var Qx                = require('qx');
 var ejs               = require('ejs');
+var xlsx              = require('xlsx.js');
+var fs                = require('fs');
+var path              = require('path');
 var postmark          = require('./postmark');
 var fullcrum          = require('./fullcrum.api');
 
@@ -717,6 +720,102 @@ exports.questionnaireInstanceResultsByCategory = function( req, res ) {
     })
     .then( function( results ) {
       res.send( 200, results );      
+    })
+    .fail( function (err) {
+      res.send( 500, err.stack );
+    });
+};
+
+exports.download = function( req, res ) {
+  var questionnaireInstanceId = req.param('questionnaireInstanceId');
+  var companyId               = req.user.companyId;
+  var userName                = req.user.name;
+  var filePath                = path.join(__dirname, questionnaireInstanceId + '.xlsx');
+  var questionnaireId;
+  var questions  = {};
+  var categories = {};
+  var xlsx_data  = {
+    creator: userName,
+    lastModifiedBy: userName,
+    worksheets: [{
+     data: [
+       [ { value: 'Employee ID', autoWidth: true }, { value: 'Answer', autoWidth: true }, { value: 'Question', autoWidth: true }, { value: 'Category', autoWidth: true } ]
+     ],
+     table: true,
+     name: 'Results'
+    }]
+  };
+
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( 'Companies' );
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionFindOneById( collection, companyId );
+    })
+    .then( function( company ) {
+      questionnaireId = company.questionnaireId;
+    })
+    .then( function() {
+      return fullcrum.db.collection( 'QuestionnaireResults' );
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionFind( collection, { questionnaireInstanceId: questionnaireInstanceId, companyId: companyId } );
+    })
+    // gather questions and categories
+    .then( Qx.map( function( result ) {
+      if ( !questions.hasOwnProperty( result.questionId ) ) {
+        return fullcrum.db.collection( 'Questions' )
+          .then( function( collection ) {
+            return fullcrum.db.collectionFindOneById( collection, result.questionId );
+          })
+          .then( function( question ) {
+            questions[ result.questionId ] = question;
+
+            if( !categories.hasOwnProperty( question.categoryId ) ) {
+              return fullcrum.db.collection( 'Categories' )
+                .then( function( collection ) {
+                  return fullcrum.db.collectionFindOneById( collection, question.categoryId );
+                })
+                .then( function( category ) {
+                  categories[ question.categoryId ] = category;
+                  return result;
+                });
+            }
+            return result;
+          });
+      } else {
+        return result;
+      }
+    }))
+    // construct xlsx_data
+    .then( Qx.map( function( result ) { 
+      var employeeId   = result.employeeId;
+      var questionId   = result.questionId;
+      var categoryId   = questions[ questionId ].categoryId;
+      var categoryName = categories[categoryId].name;
+      var questionText = questions[questionId].text;
+      var score        = parseInt( result.score );
+      var answer;
+      if ( score === -2 ) {
+        answer = 'Strongly Disagree';
+      } else if ( score === -1 ) {
+        answer = 'Disagree';
+      } else if ( score === 0 ) {
+        answer = 'Neutral';
+      } else if ( score === 1 ) {
+        answer = 'Agree';
+      } else if ( score === 2 ) {
+        answer = 'Strongly Agree';
+      }
+      xlsx_data.worksheets[0].data.push( [ employeeId, answer, questionText, categoryName ] );
+    }))
+    .then( function() {
+      var sheet = xlsx( xlsx_data );
+      return Q.ninvoke( fs, 'writeFile', filePath, sheet.base64, 'base64' );
+    })
+    .then( function() {
+      res.download( filePath );
     })
     .fail( function (err) {
       res.send( 500, err.stack );

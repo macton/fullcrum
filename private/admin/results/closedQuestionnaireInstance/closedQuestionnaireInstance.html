@@ -7,6 +7,11 @@
       <div ng-click="close()" class="btn-title"> <i class="icon-minus"></i> {{ closedQuestionnaireInstance.title }} </div>
       <i ng-click="remove()" class="btn text-delete icon-remove-sign"></i>
     </div>
+    <div class="form">
+      <div class="form-row">
+        <p> Browse results below or <a ng-href="/download?questionnaireInstanceId={{closedQuestionnaireInstance._id}}">download xlsx</a>. </p>
+      </div>
+    </div>
     <ng-include src="'/admin/results/closedQuestionnaireInstance/resultsByCategory/resultsByCategory.html'"></ng-include>
   </div>
 </div>
