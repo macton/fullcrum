@@ -1,3 +1,62 @@
-<html>
-hello company admin
+<html ng-app="app">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>fullcrum login</title>
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+  <link rel="stylesheet" href="/shared/common/common.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/q.js/0.9.6/q.min.js"></script>
+  <script src="/shared/ObjectId/ObjectId.js"></script>
+  <script src="/shared/common/common.js"></script>
+  <script src="/admin/company.js"></script>
+  <script src="/admin/employees/employees.js"></script>
+  <script src="/admin/employees/employee/employee.js"></script>
+  <script src="/admin/employeeGroups/employeeGroups.js"></script>
+  <script src="/admin/employeeGroups/employeeGroup/employeeGroup.js"></script>
+  <script src="/admin/employees/employee/employeeGroupConnections/employeeGroupConnections.js"></script>
+  <script src="/admin/employees/employee/employeeGroupConnections/employeeGroupConnection/employeeGroupConnection.js"></script>
+  <script src="/admin/status/status.js"></script>
+  <script src="/admin/results/results.js"></script>
+  <script src="/admin/results/closedQuestionnaireInstance/closedQuestionnaireInstance.js"></script>
+  <script src="/admin/results/closedQuestionnaireInstance/resultsByCategory/resultsByCategory.js"></script>
+  <script src="/admin/results/closedQuestionnaireInstance/resultsByCategory/resultCategory/resultCategory.js"></script>
+  <script src="/admin/results/closedQuestionnaireInstance/resultsByCategory/resultCategory/resultCategoryQuestion/resultCategoryQuestion.js"></script>
+</head>
+<body ng-controller="main">
+  
+  <span style="float:right;"><a href="/logout">logout</a></span> 
+
+  <div ng-if="isServerError">
+    <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+    <div class="row color-h1">
+      <div class="title">Server Error</div>
+    </div>
+    <div class="form">
+      <div class="form-row">
+        <p>Argh! Sorry about this, but it looks like there's some problem with our server or one of our service providers.</p>
+        <p>Feel free to contact us welovedevs@fullcrum.co for an update on the situation.</p>
+        <p>Error: {{ serverErrorText }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="!isServerError">
+    <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+    <div class="row color-h1">
+      <div class="title">Happy to see you {{ userName }}!</div>
+      <div ng-if="isEdited" ng-click="save()" class="btn color-notify"><i ng-show="isSaving" class="icon-spin icon-spinner"></i><span ng-show="!isSaving">Save</span></div>
+    </div>
+  
+    <ng-include src="'/admin/employeeGroups/employeeGroups.html'"></ng-include>
+    <ng-include src="'/admin/employees/employees.html'"></ng-include>
+    <ng-include src="'/admin/status/status.html'"></ng-include>
+    <ng-include ng-if="closedQuestionnaireInstances.length > 0" src="'/admin/results/results.html'"></ng-include>
+
+    <ng-include src="'/shared/footer/footer.html'"></ng-include>
+  </div>  
+
+</body>
 </html>
