@@ -12,6 +12,7 @@
   <script src="/shared/ObjectId/ObjectId.js"></script>
   <script src="/shared/common/common.js"></script>
   <script src="/admin/fullcrum.js"></script>
+  <script src="/admin/firstSteps/firstSteps.js"></script>
   <script src="/admin/administrators/administrators.js"></script>
   <script src="/admin/administrators/admin/admin.js"></script>
   <script src="/admin/companies/companies.js"></script>
@@ -66,6 +67,7 @@
     <div class="row color-h1">
       <div class="title">Happy to see you {{ userName }}!</div>
       <div ng-if="isEdited" ng-click="save()" class="btn color-notify"><i ng-show="isSaving" class="icon-spin icon-spinner"></i><span ng-show="!isSaving">Save</span></div>
+      <ng-include src="'/admin/firstSteps/firstSteps.html'"></ng-include>
     </div>
   
     <ng-include src="'/admin/administrators/administrators.html'"></ng-include>

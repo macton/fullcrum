@@ -1,0 +1,25 @@
+<div ng-controller="firstSteps">
+  <div ng-if="!isOpen">
+    <div style="clear:both;"></div>
+    <a ng-click="open()" style="float:right; padding-right: 20px; text-align: right;"> <i class="icon-plus"></i> Help? (First Steps)</a>
+    <div style="clear:both;"></div>
+  </div>
+  <div ng-if="isOpen">
+    <div style="clear:both;"></div>
+    <a ng-click="close()" style="float:right; padding-right: 20px; text-align: right;"> <i class="icon-minus"></i> Help? (First Steps)</a>
+    <div style="clear:both;"></div>
+    <div class="form" style="width:auto; margin:10px; padding:10px; color: black;">
+      <div class="form-row">
+        <ul>
+          <li>Add your employees in the Employees tab.</li>
+          <li>Optional: You can create new Employee Groups (e.g. Art, Design, Programming) and assign any employee to one or more groups in the Employees tab.</li> 
+          <li>Once you are ready, Begin Questionnaire in the Current Questionnaire tab.</li>
+          <li>An email will be sent to each employee with a unique link to take the questionnaire.</li>
+          <li>Whenever you log in (or refresh the page) you can see the updated questionnaire status of each employee in the Current Questionnaire tab.</li>
+          <li>Once all the employees have taken the questionnaire, Close Questionnaire.</li>
+          <li>After you close the questionnaire, you can see the results in the results tab.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

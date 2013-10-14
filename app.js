@@ -198,6 +198,7 @@ app.get('/download', ensureAuthenticated, ensureHasAccount, function( req, res )
 // find private -type d
 var privateDirectories = [
   "admin",
+  "admin/firstSteps",
   "admin/administrators",
   "admin/administrators/admin",
   "admin/companies",
