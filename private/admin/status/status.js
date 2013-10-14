@@ -50,7 +50,7 @@ app.controller('status', function($scope) {
       Q.when( $.post('/openQuestionnaire', { title: $scope.newQuestionnaireTitle } ) )
         .then( function( results ) {
           console.log( results );
-        })
+      })
         .fail( function( err ) {
           console.log( err );
         })

@@ -1,8 +1,8 @@
 <div ng-controller="status">
-  <div ng-if="!isOpen">
+  <div ng-show="!isOpen">
     <div class="row color-h2"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Open Questionnaire </div></div>
   </div>
-  <div ng-if="isOpen">
+  <div ng-show="isOpen">
     <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Open Questionnaire </div> </div>
 
     <div class="form">
@@ -11,13 +11,13 @@
       </div>
     </div>
 
-    <div ng-if="isLoading" class="form">
+    <div ng-show="isLoading" class="form">
       <div class="form-row" style="text-align:center;"><i class="icon-spin icon-spinner"></i> Loading...</div>
     </div>
 
-    <div ng-if="!isLoading">
+    <div ng-show="!isLoading">
 
-      <div ng-if="!hasOpenQuestionnaire">
+      <div ng-show="!hasOpenQuestionnaire">
         <div class="row color-h3">
           <span class="title">Next step</span>
         </div>
@@ -25,24 +25,26 @@
           <div class="form-row" style="text-align:center;">Start your questionnaire.</div>
           <div class="form-row">
             <div class="field-label">Title</div>
-            <div class="field-data"><input type="text" ng-model="newQuestionnaireTitle" required></div>
+            <div class="field-data"><input type="text" ng-model="newQuestionnaireTitle"></div>
           </div>
           <div class="form-row"><div class="btn color-primary" ng-click="begin()" style="margin-right: 180px;">Begin!</div></div>
         </div>
       </div>
 
-      <div ng-if="hasOpenQuestionnaire">
+      <div ng-show="hasOpenQuestionnaire">
         <div class="row color-h3">
           <span class="title">{{ openQuestionnaire.title }} employee status</span>
         </div>
         <div class="form">
-          <table class="form-row">
-            <tr ng-repeat="status in employeeQuestionnaireStatus">
-              <td style="padding:5px">{{status.email}}</td>
-              <td style="padding:5px">{{status.name}}</td>
-              <td ng-style="statusStateStyle[status.state]">{{statusStateText[status.state]}}</td>
-            </tr>
-          </table>
+          <div class="form-row">
+            <table>
+              <tr ng-repeat="status in employeeQuestionnaireStatus">
+                <td>{{status.email}}</td>
+                <td>{{status.name}}</td>
+                <td ng-style="statusStateStyle[status.state]">{{statusStateText[status.state]}}</td>
+              </tr>
+            </table>
+          </div>
         </div>
         <div class="row color-h3">
           <span class="title">Next step</span>
