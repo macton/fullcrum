@@ -41,7 +41,7 @@ if ('development' == app.get('env')) {
 }
 
 function classifyScore( score ) {
-  if ( score < 0.75 ) {
+  if ( score <- 0.75 ) {
     return 'kNegative';
   }
   if ( score > 0.75 ) {
