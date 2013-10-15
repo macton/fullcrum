@@ -8,6 +8,7 @@ var ejs               = require('ejs');
 var xlsx              = require('xlsx.js');
 var fs                = require('fs');
 var path              = require('path');
+var md5               = require('MD5');
 var postmark          = require('./postmark');
 var fullcrum          = require('./fullcrum.api');
 
@@ -746,6 +747,14 @@ exports.download = function( req, res ) {
     }]
   };
 
+  var employeeFakeIdTable = {};
+  var getEmployeeFakeId = function( employeeId ) {
+    if ( !employeeFakeIdTable.hasOwnProperty( employeeId ) ) {
+      employeeFakeIdTable[ employeeId ] = md5( employeeId + '-employee' );
+    }
+    return employeeFakeIdTable[ employeeId ];
+  }
+
   fullcrum.db.connection
     .then( function() {
       return fullcrum.db.collection( 'Companies' );
@@ -790,7 +799,7 @@ exports.download = function( req, res ) {
     }))
     // construct xlsx_data
     .then( Qx.map( function( result ) { 
-      var employeeId   = result.employeeId;
+      var employeeId   = getEmployeeFakeId(result.employeeId); /* disguise employeeId */
       var questionId   = result.questionId;
       var categoryId   = questions[ questionId ].categoryId;
       var categoryName = categories[categoryId].name;
