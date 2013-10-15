@@ -39,7 +39,6 @@
           <div class="form-row">
             <table>
               <tr ng-repeat="status in employeeQuestionnaireStatus">
-                <td>{{status.email}}</td>
                 <td>{{status.name}}</td>
                 <td ng-style="statusStateStyle[status.state]">{{statusStateText[status.state]}}</td>
               </tr>

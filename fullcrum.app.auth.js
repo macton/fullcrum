@@ -12,7 +12,7 @@ exports.ensureAuthenticated = function(req, res, next) {
 };
 
 exports.ensureHasAccount = function(req, res, next) {
-  if (req.user && req.user._id && ( req.user.companyId == fullcrum.master.company._id ) ) {
+  if (req.user && req.user._id) {
     return next();
   }
   res.redirect('/new-account');
@@ -43,6 +43,8 @@ exports.use = function() {
       profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
     },
     function(token, tokenSecret, profile, done) {
+      console.dir( profile );
+
       fullcrum.db.connection.then( function() {
         return fullcrum.db.collection('Admins');
       })
@@ -51,6 +53,7 @@ exports.use = function() {
       })
       .then( function( admin ) {
         if (!admin) {
+          console.log( 'admin not found' );
           admin = { name: profile.displayName };
         } 
         admin.loginId = profile.id;
