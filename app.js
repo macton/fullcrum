@@ -179,7 +179,7 @@ app.get('/closedQuestionnaireInstances', ensureAuthenticated, ensureHasAccount, 
   fullcrumApp.sendCollection( 'QuestionnaireInstances', req, res, { companyId: req.user.companyId, state: 'kClosed' } );
 });
 
-app.get('/questionnaireInstanceResultsByCategory', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+app.get('/questionnaireInstanceResultsByCategory', ensureAuthenticated, ensureHasAccount, function(req, res) {
   if ( req.param('questionnaireInstanceId') ) {
     fullcrumApp.questionnaireInstanceResultsByCategory( req, res ); 
   } else {

@@ -282,6 +282,11 @@ p {
   color: #FEFEF2;
 }
 
+.color-h6-grey {
+  background-color: #cdc9c9;
+  color: #666;
+}
+
 .color-h7 {
   background-color: #E773BD;
   color: #FEFEF2;

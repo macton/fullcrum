@@ -1,11 +1,11 @@
 <div ng-controller="resultCategoryQuestion">
 
   <div ng-if="!isOpen">
-    <div class="row color-h6"><div ng-click="open()" class="btn-title" style="width: 95%"><i class="icon-plus"></i> {{ resultCategoryQuestion.text }}</div></div>
+    <div class="row color-h6-grey"><div ng-click="open()" class="btn-title" style="width: 95%"><i class="icon-plus"></i> {{ resultCategoryQuestion.text }}</div></div>
   </div>
 
   <div ng-if="isOpen">
-    <div class="row color-h6"><div ng-click="close()" class="btn-title" style="width: 95%"><i class="icon-minus"></i> {{ resultCategoryQuestion.text }}</div></div>
+    <div class="row color-h6-grey"><div ng-click="close()" class="btn-title" style="width: 95%"><i class="icon-minus"></i> {{ resultCategoryQuestion.text }}</div></div>
   </div>
 
   <div class="bottom-bar color-strongly-disagree" ng-style="stronglyDisagreeBarStyle()">&nbsp;</div>
