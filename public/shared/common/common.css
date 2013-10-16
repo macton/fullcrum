@@ -540,3 +540,23 @@ td {
 table {
   margin: 20px;
 }
+
+.info-table {
+  margin:0px;padding:0px;
+}
+.info-table table{
+  width:100%;
+  margin:0px;padding:0px;
+}
+.info-table tr:nth-child(odd) { 
+  background-color:#aad4ff; 
+}
+.info-table tr:nth-child(even) { 
+  background-color:#9eafbc; }.info-table td{
+  vertical-align:middle;
+  text-align:left;
+  padding:7px;
+  font-size:14px;
+  font-weight:normal;
+  color:#000000;
+}
