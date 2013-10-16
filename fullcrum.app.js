@@ -596,9 +596,11 @@ exports.createQuestionnaire = function( req, res, questionnaire ) {
 exports.questionnaireInstanceResultsByCategory = function( req, res ) {
   var questionnaireInstanceId = req.param('questionnaireInstanceId');
   var companyId               = req.user.companyId;
+  var employeeGroupId         = req.param('employeeGroupId');
   var questionnaireId;
   var questions  = {};
   var categories = {};
+  var filteredEmployees = [];
 
   fullcrum.db.connection
     .then( function() {
@@ -611,11 +613,29 @@ exports.questionnaireInstanceResultsByCategory = function( req, res ) {
       questionnaireId = company.questionnaireId;
     })
     .then( function() {
+      if ( typeof employeeGroupId != 'undefined' ) {
+        return fullcrum.db.collection( 'EmployeeGroupConnections' )
+          .then( function( collection ) {
+            return fullcrum.db.collectionFind( collection, { employeeGroupId: employeeGroupId } );
+          })
+          .then( Qx.map( function( connection ) {
+            filteredEmployees.push( connection.employeeId );
+          }));
+      }
+    })
+    .then( function() {
       return fullcrum.db.collection( 'QuestionnaireResults' );
     })
     .then( function( collection ) {
       return fullcrum.db.collectionFind( collection, { questionnaireInstanceId: questionnaireInstanceId, companyId: companyId } );
     })
+    // filter results by employees if requested
+    .then( Qx.filter( function( result ) {
+      if ( typeof employeeGroupId == 'undefined' ) {
+        return true;
+      }
+      return filteredEmployees.indexOf( result.employeeId ) != -1;
+    }))
     // gather questions and categories
     .then( Qx.map( function( result ) {
       if ( !questions.hasOwnProperty( result.questionId ) ) {

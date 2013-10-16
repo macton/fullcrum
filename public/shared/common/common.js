@@ -174,11 +174,12 @@ function handleGetCollection( $scope, url, collectionName, data ) {
   $scope[ collectionName ] = [];
   Q.when( $.get( url, data ) )
     .then( function( results ) {
-      if ( (results.length > 0) && results[0].hasOwnProperty('name') ) {
-       results.sort(sortByName);
-      }
-      $scope[ collectionName ] = results;
-      $scope.safeApply();
+      $scope.safeApply( function() {
+        if ( (results.length > 0) && results[0].hasOwnProperty('name') ) {
+         results.sort(sortByName);
+        }
+        $scope[ collectionName ] = results;
+      });
     })
     .fail( function( err ) {
       $scope.serverError( err );

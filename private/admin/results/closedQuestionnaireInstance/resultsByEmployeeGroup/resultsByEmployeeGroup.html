@@ -1,0 +1,17 @@
+<div ng-controller="resultsByEmployeeGroup">
+  <div ng-if="!isOpen">
+    <div class="row color-h4"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Results by Employee Group</div></div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row color-h4">
+      <div ng-click="close()" class="btn-title"> 
+        <i ng-if="employeeGroups.length > 0" class="icon-minus"></i> 
+        <i ng-if="employeeGroups.length == 0" class="icon-spin icon-spinner"></i> 
+        Results by Employee Group
+     </div>
+    </div>
+    <div ng-repeat="employeeGroup in employeeGroups">
+      <ng-include src="'/admin/results/closedQuestionnaireInstance/resultsByEmployeeGroup/resultEmployeeGroup/resultEmployeeGroup.html'"></ng-include>
+    </div>
+  </div>
+</div>

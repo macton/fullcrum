@@ -1,0 +1,22 @@
+<div ng-controller="resultEmployeeGroup">
+
+  <div style="width:100%;overflow:hidden;">
+    <div ng-if="!isOpen">
+      <div class="row color-h7"><div ng-click="open()" class="btn-title" style="width:100%"><i class="icon-plus"></i> {{ employeeGroup.name }}</div></div>
+    </div>
+
+    <div ng-if="isOpen">
+      <div class="row color-h7">
+        <div ng-click="close()" class="btn-title"> 
+          <i ng-if="questionnaireInstanceResultsByCategory.length > 0" class="icon-minus"></i> 
+          <i ng-if="questionnaireInstanceResultsByCategory.length == 0" class="icon-spin icon-spinner"></i> 
+          {{ employeeGroup.name }}
+        </div>
+      </div>
+      <div ng-repeat="resultCategory in questionnaireInstanceResultsByCategory">
+        <ng-include src="'/admin/results/closedQuestionnaireInstance/resultsByCategory/resultCategory/resultCategory.html'"></ng-include>
+      </div>
+    </div>
+  </div>
+
+</div>
