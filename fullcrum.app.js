@@ -715,6 +715,22 @@ exports.questionnaireInstanceResultsByCategory = function( req, res ) {
           }; 
           category.questionResults.push( question );
         }
+        category.questionResults.sort( function( b, a ) {
+          if ( a.stronglyDisagreeCount == b.stronglyDisagreeCount ) {
+            if ( a.disagreeCount == b.disagreeCount ) {
+              if ( a.neutralCount == b.neutralCount ) {
+                if ( a.agreeCount == b.agreeCount ) {
+                  return a.stronglyAgreeCount - b.stronglyAgreeCount;
+                }
+                return a.agreeCount - b.agreeCount;
+              }
+              return a.neutralCount - b.neutralCount;
+            }
+            return a.disagreeCount - b.disagreeCount;
+          }
+          return a.stronglyDisagreeCount - b.stronglyDisagreeCount;
+        });
+
         categoryResults.push( category );
       }
       return categoryResults;
