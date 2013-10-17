@@ -8,6 +8,7 @@ var ejs               = require('ejs');
 var xlsx              = require('xlsx.js');
 var fs                = require('fs');
 var path              = require('path');
+var MongoStore        = require('connect-mongo')(express);
 var md5               = require('MD5');
 var postmark          = require('./postmark');
 var fullcrum          = require('./fullcrum.api');
@@ -22,7 +23,18 @@ app.use(express.favicon());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
-app.use(express.session({ secret: 'lifting developers' }));
+
+// memory session
+// app.use(express.session({ secret: 'lifting developers' }));
+
+// mongodb session
+app.use(express.session({ 
+  secret: 'lifting developers',
+  store: new MongoStore({  
+    db:  fullcrum.config.dbName,
+    url: fullcrum.config.mongoDbUrl
+  })
+}));
 
 // Initialize Passport
 app.use(passport.initialize());
@@ -32,7 +44,6 @@ app.use(passport.session());
 app.use(app.router);
 app.use(express.compress());
 app.use(express.staticCache());
-
 exports.staticMiddleware = express.static(__dirname + '/public');
 app.use( exports.staticMiddleware );
 
