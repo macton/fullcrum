@@ -877,3 +877,26 @@ exports.download = function( req, res ) {
       res.send( 500, err.stack );
     });
 };
+
+exports.todo = function( req, res, todoType ) {
+  var fromCompanyId  = req.user.companyId;
+  var fromAdminId    = req.user._id;
+  var text           = req.param('text');
+
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( 'Todos' )
+    })
+    .then( function( collection ) {
+      var todo = { type: todoType, text: text, fromCompanyId: fromCompanyId, fromAdminId: fromAdminId };
+      return fullcrum.db.collectionInsert( collection, todo );
+    })
+    .then( function( result ) {
+      console.log( result );
+      res.send( 200, result );
+    })
+    .fail( function (err) {
+      res.send( 500, err.stack );
+    });
+}; 
+

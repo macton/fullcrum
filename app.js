@@ -167,6 +167,14 @@ app.post('/save', ensureAuthenticated, ensureHasAccount, function(req, res) {
   fullcrumApp.save( req, res );
 });
 
+app.post('/bug', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  fullcrumApp.todo( req, res, 'kUnassignedBug' );
+});
+
+app.post('/suggestion', ensureAuthenticated, ensureHasAccount, function(req, res) {
+  fullcrumApp.todo( req, res, 'kUnassignedSuggestion' );
+});
+
 app.post('/results', function(req, res) {
   fullcrumApp.saveQuestionnaireResults( req, res, req.body.results );
 });
@@ -199,6 +207,7 @@ app.get('/download', ensureAuthenticated, ensureHasAccount, function( req, res )
 var privateDirectories = [
   "admin",
   "admin/firstSteps",
+  "admin/bugSuggestion",
   "admin/administrators",
   "admin/administrators/admin",
   "admin/companies",

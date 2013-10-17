@@ -52,6 +52,19 @@ div {
   float: left;
 }
 
+.row-right-40 {
+  width: 205px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 5px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 0px;
+  min-height: 32px;
+  overflow: hidden;
+  float: left;
+}
+
 .bottom-bar {
   /* width: 210px; */
   /* padding: 5px; */
@@ -285,6 +298,11 @@ p {
 .color-h6-grey {
   background-color: #cdc9c9;
   color: #666;
+}
+
+.color-grey {
+  background-color: #3d3939;
+  color: #FEFEF2;
 }
 
 .color-h7 {

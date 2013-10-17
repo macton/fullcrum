@@ -1,8 +1,9 @@
-Collection Site
-  Url                       headerImageUrl
-  Text                      aboutHtml
-  Text                      footerHtml
-  Text                      newAdminEmailBodyHtml
+// This file isn't parsed or read by anything (yet?)
+// It's only for reference.
+
+Collection sessions
+  // handled my connect-mongo
+  // https://github.com/kcbanner/connect-mongo
 
 Collection Admins
   Text                      name
@@ -79,8 +80,8 @@ Collection Employees
   Email                     email
 
 Collection EmployeeGroupConnection
-  $oid.EmployeeGroup        employeeGroupId
-  $oid.Employee             employeeId
+  $oid.EmployeeGroups       employeeGroupId
+  $oid.Employees            employeeId
 
 Select QuestionnaireState
   kOpen
@@ -98,13 +99,25 @@ Select EmployeeQuestionnaireState
   kCompleted
 
 Collection EmployeeQuestionnaireStatus
-  $oid.QuestionnaireInstance questionnaireInstanceId
-  $oid.Employee              empoyeeId
-  EmployeeQuestionnaireState state
+  $oid.QuestionnaireInstances questionnaireInstanceId
+  $oid.Employees              empoyeeId
+  EmployeeQuestionnaireState  state
 
 Collection QuestionnaireResults
-  $oid.Companies             companyId
-  $oid.Employee              empoyeeId
-  $oid.QuestionnaireInstance questionnaireInstanceId
-  $oid.Question              quesitonId
-  Integer                    score
+  $oid.Companies              companyId
+  $oid.Employees              empoyeeId
+  $oid.QuestionnaireInstances questionnaireInstanceId
+  $oid.Questions              quesitonId
+  Integer                     score
+
+Selection TodoType
+  kUnassignedBug
+  kUnassignedSuggestion
+  kAssigned
+
+Collection Todos
+  TodoType       type
+  Text           text
+  $oid.Admins    adminId
+  $oid.Admins    fromAdminId 
+  $oid.Companies fromCompanyId

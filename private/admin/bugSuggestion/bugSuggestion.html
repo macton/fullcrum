@@ -1,0 +1,32 @@
+<div ng-controller="bugSuggestion">
+  <div ng-show="!isOpen">
+    <div style="clear:both;"></div>
+    <a ng-click="open()" style="float:right; padding-right: 22px; text-align: right;"> <i class="icon-plus"></i> Bug? Suggestion?</a>
+    <div style="clear:both;"></div>
+  </div>
+  <div ng-show="isOpen">
+    <div style="clear:both;"></div>
+    <a ng-click="close()" style="float:right; padding-right: 22px; text-align: right;"> <i class="icon-minus"></i> Bug? Suggestion?</a>
+    <div style="clear:both;"></div>
+    <div class="form" style="width:auto; margin:10px; padding:10px; color: black;">
+      <div class="form-row">
+        <p>Send us your bug or suggestion here. We'll have a look and see if there's anything we can do to help!</p>
+        <textarea ng-model="commentText" style="width:100%;height:200px;padding:10px;resize:none;"></textarea>
+      </div>
+      <div class="form-row">
+        <div ng-if='isSendingBug'>
+          <a class="btn color-grey" style="width:30%"><i class="icon-spin icon-spinner"></i></a> 
+          <a class="btn color-grey" style="width:30%">Send Suggestion</a> 
+        </div>
+        <div ng-if='isSendingSuggestion'>
+          <a class="btn color-grey" style="width:30%">Send Bug</a> 
+          <a class="btn color-grey" style="width:30%"><i class="icon-spin icon-spinner"></i></a> 
+        </div>
+        <div ng-if='!(isSendingSuggestion||isSendingBug)'>
+          <a ng-click="sendBug()" class="btn color-primary" style="width:30%">Send Bug</a> 
+          <a ng-click="sendSuggestion()" class="btn color-primary" style="width:30%">Send Suggestion</a> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
