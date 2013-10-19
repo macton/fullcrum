@@ -169,14 +169,21 @@ function handleOpenIsNew( $scope, docName ) {
 var sortByName = function( a, b ) {
   return a.name.localeCompare( b.name );
 }
+var sortById = function( a, b ) {
+  return a._id.localeCompare( b._id );
+}
 
 function handleGetCollection( $scope, url, collectionName, data ) {
   $scope[ collectionName ] = [];
   Q.when( $.get( url, data ) )
     .then( function( results ) {
       $scope.safeApply( function() {
-        if ( (results.length > 0) && results[0].hasOwnProperty('name') ) {
-         results.sort(sortByName);
+        if ( results.length > 0 ) {
+          if ( results[0].hasOwnProperty('name') ) {
+            results.sort(sortByName);
+          } else if ( results[0].hasOwnProperty('_id') ) {
+            results.sort(sortById);
+          }
         }
         $scope[ collectionName ] = results;
       });
