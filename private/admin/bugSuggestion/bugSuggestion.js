@@ -56,9 +56,11 @@ app.controller('bugSuggestion', function($scope) {
 
   $scope.sendBug = function() {
     sendTodo('/bug');
+    $scope.incSentTodo();
   };
   $scope.sendSuggestion = function() {
     sendTodo('/suggestion');
+    $scope.incSentTodo();
   };
 });
 

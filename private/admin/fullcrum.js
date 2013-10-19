@@ -7,6 +7,7 @@ app.controller('main', function($scope) {
   $scope.todoGroups             = [];
   $scope.fullcrumAdministrators = [];
 
+
   var administratorNames = {};
   var companyNames       = {};
 
@@ -88,6 +89,13 @@ app.controller('main', function($scope) {
       return 'Unknown Company';
     }
     return companyNames[ companyId ];
+  };
+
+  $scope.todoSentCount = 0;
+  $scope.incSentTodo = function() {
+    $scope.safeApply( function() {
+      $scope.todoSentCount++;
+    });
   };
 });
 

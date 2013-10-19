@@ -155,52 +155,56 @@ function sendAdminEmailUpdates( adminChanges ) {
 
 function sendAdminEmailUpdatedTodos( req, todoChanges ) {
   var userName  = req.user.name;
+
+  function sendReassign( todoId, adminId ) {
+    var todo;
+    var admin;
+    fullcrum.db.connection
+      .then( function() {
+        return fullcrum.db.collection( 'Todos' );
+      })
+      .then( function( collection ) {
+        return fullcrum.db.collectionFindOneById( collection, todoId );
+      })
+      .then( function( result ) {
+        todo = result;
+      })
+      .then( function() {
+        return fullcrum.db.collection( 'Admins' );
+      })
+      .then( function( collection ) {
+        return fullcrum.db.collectionFindOneById( collection, adminId );
+      })
+      .then( function( result ) {
+        admin = result;
+      })
+      .then( function() {
+        return postmark.send({
+            to:       admin.email,
+            subject:  '#reassigned by ' + userName + ' (' + todoId + ')',
+            html:     '<h1>#TODO reassigned to you!</h1>'
+                    + '<p>The following item was re-assigned to you by ' + userName + '.'
+                    + 'To view or edit the issue, log on to http://fullcrum.co and view your open issues in #TODO -> ' + admin.name + ' </p>'
+                    + '<br>----<br>'
+                    + '<p>' + todo.text + '</p>'
+          })
+          .then( function( results ) {
+            console.log( results );
+          })
+          .fail( function( err ) {
+            console.log( err );
+          });
+      })
+      .fail( function( err ) {
+        console.log( err );
+      });
+  }
+
   for ( todoId in todoChanges ) {
     var todoFieldChanges = todoChanges[ todoId ];
     // was adminId changed? i.e. re-assign
     if ( todoFieldChanges.hasOwnProperty('adminId') ) {
-      var adminId = todoFieldChanges.adminId;
-      var todo;
-      var admin;
-      fullcrum.db.connection
-        .then( function() {
-          return fullcrum.db.collection( 'Todos' );
-        })
-        .then( function( collection ) {
-          return fullcrum.db.collectionFindOneById( collection, todoId );
-        })
-        .then( function( result ) {
-          todo = result;
-        })
-        .then( function() {
-          return fullcrum.db.collection( 'Admins' );
-        })
-        .then( function( collection ) {
-          return fullcrum.db.collectionFindOneById( collection, adminId );
-        })
-        .then( function( result ) {
-          admin = result;
-        })
-        .then( function() {
-          return postmark.send({
-              to:       admin.email,
-              subject:  '#reassigned by ' + userName + ' (' + todoId + ')',
-              html:     '<h1>#TODO reassigned to you!</h1>'
-                      + '<p>The following item was re-assigned to you by ' + userName + '.'
-                      + 'To view or edit the issue, log on to http://fullcrum.co and view your open issues in #TODO -> ' + admin.name + ' </p>'
-                      + '<br>----<br>'
-                      + '<p>' + todo.text + '</p>'
-            })
-            .then( function( results ) {
-              console.log( results );
-            })
-            .fail( function( err ) {
-              console.log( err );
-            });
-        })
-        .fail( function( err ) {
-          console.log( err );
-        });
+      sendReassign( todoId, todoFieldChanges.adminId );
     }
   }
 }
@@ -255,6 +259,45 @@ function sendAdminEmailNewTodo( todo ) {
    });
 }
 
+function sendAdminEmailClosedTodo( todo ) {
+  var fromAdmin;
+  var fromCompany;
+
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( 'Admins' );
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionFindOneById( collection, todo.fromAdminId );
+    })
+    .then( function( result ) {
+      fromAdmin = result;
+    })
+    .then( function() {
+      return fullcrum.db.collection( 'Companies' );
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionFindOneById( collection, todo.fromCompanyId );
+    })
+    .then( function( result ) {
+      fromCompany = result;
+    })
+    .then( function() {
+      return postmark.send({
+        to:      'welovedevs@fullcrum.co',
+        subject: '#closed (' + todo._id + ')',
+        html:    '<h1> Issue from ' + fromAdmin.name + ' closed.</h1>'
+                +'<p>' + todo.text + '</p>'
+      });
+   })
+   .then( function( results ) {
+     console.log( results );
+   })
+   .fail( function( err ) {
+     console.log( err );
+   });
+}
+
 exports.save = function( req, res ) {
   var deletes         = req.body.delete || {};
   var changes         = req.body.edit || {};
@@ -287,8 +330,20 @@ exports.save = function( req, res ) {
   };
 
   var deleteDocument = function( collectionName, documentId ) {
+    var collection;
     return fullcrum.db.collection( collectionName ) 
-      .then( function( collection ) {
+      .then( function( result ) {
+        collection = result;
+      })
+      .then( function() { 
+        if ( collectionName === 'Todos' ) {
+          return fullcrum.db.collectionFindOneById( collection, documentId )
+            .then( function( todo ) {
+              sendAdminEmailClosedTodo( todo );
+            })
+        }
+      })
+      .then( function() {
         return fullcrum.db.collectionRemoveById( collection, documentId );
       })
       .then( function( results ) {
@@ -313,6 +368,7 @@ exports.save = function( req, res ) {
 
   for ( collectionName in deletes ) {
     var collectionDeletes = deletes[ collectionName ]; 
+
     collectionDeletes.forEach( function( documentId ) {
       promises.push( deleteDocument( collectionName, documentId ) );
     });

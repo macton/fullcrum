@@ -33,6 +33,13 @@ app.controller('main', function($scope) {
   $scope.refreshResults = function() {
     handleGetCollection( $scope, '/closedQuestionnaireInstances', 'closedQuestionnaireInstances' );
   };
+
+  $scope.todoSentCount = 0;
+  $scope.incSentTodo = function() {
+    $scope.safeApply( function() {
+      $scope.todoSentCount++;
+    });
+  };
 });
 
 
