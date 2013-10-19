@@ -9,6 +9,7 @@ app.controller('main', function($scope) {
       $scope.userName              = results.userName;
       $scope.userCompanyId         = results.userCompanyId;
       $scope.masterQuestionnaireId = results.masterQuestionnaireId;
+      $scope.maxEmployeeCount      = results.maxEmployeeCount;
 
       // keep masterQuestionnaire for questionnaires.fork()
       $scope.$watch('questionnaires', function( questionnaires ) { 

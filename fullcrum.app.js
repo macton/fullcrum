@@ -113,6 +113,29 @@ exports.sendCollection = function( collectionName, req, res, query ) {
       return fullcrum.db.collectionFind( collection, query );
     })
     .then( function( results ) {
+ 
+      // Employee count limit results
+      if ( collectionName == 'Employees' ) { 
+        return fullcrum.db.collection( 'Companies' )
+          .then( function( collection ) {
+            return fullcrum.db.collectionFindOneById( collection, req.user.companyId );
+          })
+          .then( function( company ) {
+            var maxEmployeeCount = parseInt( company.maxEmployeeCount ) || 0;
+            if ( results.length > maxEmployeeCount ) {
+              console.log('Employees LIMITED companyId=' + req.user.companyId + ' employeeCount=' + results.length + ' maxEmployeeCount=' + maxEmployeeCount);
+              results.length = maxEmployeeCount;
+            } else {
+              console.log('Employees companyId=' + req.user.companyId + ' employeeCount=' + results.length + ' maxEmployeeCount=' + maxEmployeeCount);
+            }
+            return results;
+          });
+      // Everything else pass-through
+      } else {
+        return results;
+      }
+    })
+    .then( function( results ) {
       res.send(200, results);
     })
     .fail( function (err) {

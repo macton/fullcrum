@@ -21,7 +21,26 @@ app.get('/', ensureAuthenticated, ensureHasAccount, function(req, res, next){
 });
 
 app.get('/adminInfo', ensureAuthenticated, ensureHasAccount, function( req, res ) {
-  res.send(200, { fullcrumCompanyId: fullcrum.master.company._id, masterQuestionnaireId: fullcrum.master.questionnaire._id, userName: req.user.name, userCompanyId: req.user.companyId } );
+  fullcrum.db.connection
+    .then( function() {
+      return fullcrum.db.collection( 'Companies' )
+    })
+    .then( function( collection ) {
+      return fullcrum.db.collectionFindOneById( collection, req.user.companyId );
+    })
+    .then( function( company ) {
+      var result = {  
+        fullcrumCompanyId:     fullcrum.master.company._id, 
+        masterQuestionnaireId: fullcrum.master.questionnaire._id, 
+        userName:              req.user.name, 
+        userCompanyId:         req.user.companyId,
+        maxEmployeeCount:      parseInt( company.maxEmployeeCount ) || 0
+      };
+      res.send(200, result);
+    })
+    .fail( function( err ) {
+      res.send(400, err);
+    });
 });
 
 app.get('/administrators', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {

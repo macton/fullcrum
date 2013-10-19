@@ -4,5 +4,6 @@ app.controller('companies-company', function($scope) {
   handleRemove( $scope, 'Companies', 'companies', '$index' );
   handleEdit( $scope, 'Companies', 'company', 'name' );
   handleEdit( $scope, 'Companies', 'company', 'questionnaireId' );
+  handleEdit( $scope, 'Companies', 'company', 'maxEmployeeCount' );
 });
 
