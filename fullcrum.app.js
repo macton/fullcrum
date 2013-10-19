@@ -782,16 +782,22 @@ exports.download = function( req, res ) {
   var questionnaireId;
   var questions  = {};
   var categories = {};
-  var xlsx_data  = {
-    creator: userName,
-    lastModifiedBy: userName,
-    worksheets: [{
+  var employeeGroups = {};
+  var employeeGroupWorksheets = {};
+  var makeWorksheet = function( name ) {
+    return {
      data: [
        [ { value: 'Employee ID', autoWidth: true }, { value: 'Answer', autoWidth: true }, { value: 'Question', autoWidth: true }, { value: 'Category', autoWidth: true } ]
      ],
      table: true,
-     name: 'Results'
-    }]
+     name: name 
+    };
+  };
+
+  var xlsx_data  = {
+    creator: userName,
+    lastModifiedBy: userName,
+    worksheets: [ makeWorksheet('All Results') ]
   };
 
   var employeeFakeIdTable = {};
@@ -811,6 +817,44 @@ exports.download = function( req, res ) {
     })
     .then( function( company ) {
       questionnaireId = company.questionnaireId;
+    })
+    // get employeeGroups
+    .then( function() {
+      return fullcrum.db.collection( 'EmployeeGroups' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFind( collection, { companyId: companyId } );
+        })
+        .then( Qx.map( function( group ) {
+          var employeeGroupId = group._id;
+          employeeGroupWorksheets[ employeeGroupId ] = makeWorksheet( group.name );
+          xlsx_data.worksheets.push( employeeGroupWorksheets[ employeeGroupId ] );
+        }));
+    })
+    // get employees
+    .then( function() {
+      return fullcrum.db.collection( 'Employees' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFind( collection, { companyId: companyId } );
+        })
+        .then( Qx.map( function( employee ) {
+          var employeeId = employee._id;
+          employeeGroups[ employeeId ] = [];
+        }));
+    })
+    // make worksheets for employee groups, make employeeId -> [employeeGroupId] table
+    .then( function() {
+      return fullcrum.db.collection( 'EmployeeGroupConnections' )
+        .then( function( collection ) {
+          return fullcrum.db.collectionFind( collection );
+        })
+        .then( Qx.map( function( connection ) {
+          var employeeId      = connection.employeeId;
+          var employeeGroupId = connection.employeeGroupId;
+
+          if ( employeeGroups.hasOwnProperty( employeeId ) ) {
+            employeeGroups[ employeeId ].push( employeeGroupId );
+          }
+        }));
     })
     .then( function() {
       return fullcrum.db.collection( 'QuestionnaireResults' );
@@ -846,12 +890,13 @@ exports.download = function( req, res ) {
     }))
     // construct xlsx_data
     .then( Qx.map( function( result ) { 
-      var employeeId   = getEmployeeFakeId(result.employeeId); /* disguise employeeId */
-      var questionId   = result.questionId;
-      var categoryId   = questions[ questionId ].categoryId;
-      var categoryName = categories[categoryId].name;
-      var questionText = questions[questionId].text;
-      var score        = parseInt( result.score );
+      var employeeId     = result.employeeId;
+      var fakeEmployeeId = getEmployeeFakeId(employeeId); /* disguise employeeId */
+      var questionId     = result.questionId;
+      var categoryId     = questions[ questionId ].categoryId;
+      var categoryName   = categories[categoryId].name;
+      var questionText   = questions[questionId].text;
+      var score          = parseInt( result.score );
       var answer;
       if ( score === -2 ) {
         answer = 'Strongly Disagree';
@@ -864,7 +909,15 @@ exports.download = function( req, res ) {
       } else if ( score === 2 ) {
         answer = 'Strongly Agree';
       }
-      xlsx_data.worksheets[0].data.push( [ employeeId, answer, questionText, categoryName ] );
+      var row = [ fakeEmployeeId, answer, questionText, categoryName ];
+      xlsx_data.worksheets[0].data.push( row );
+      if ( employeeGroups.hasOwnProperty( employeeId ) ) {
+        employeeGroups[ employeeId ].forEach( function( employeeGroupId ) {
+          employeeGroupWorksheets[ employeeGroupId ].data.push( row );
+        });
+      } else {
+        console.log('no groups for ' + employeeId );
+      }
     }))
     .then( function() {
       var sheet = xlsx( xlsx_data );
