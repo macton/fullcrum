@@ -1,0 +1,11 @@
+<div ng-controller="todoGroups">
+  <div ng-if="!isOpen">
+    <div class="row color-h2"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> #TODO </div></div>
+  </div>
+  <div ng-if="isOpen">
+    <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> #TODO </div></div>
+    <div ng-repeat="todoGroup in todoGroups">
+      <ng-include src="'/admin/todoGroups/todoGroup/todoGroup.html'"></ng-include>
+    </div>
+  </div>
+</div>

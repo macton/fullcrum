@@ -21,7 +21,7 @@ app.get('/', ensureAuthenticated, ensureHasAccount, function(req, res, next){
 });
 
 app.get('/adminInfo', ensureAuthenticated, ensureHasAccount, function( req, res ) {
-  res.send(200, { masterQuestionnaireId: fullcrum.master.questionnaire._id, userName: req.user.name, userCompanyId: req.user.companyId } );
+  res.send(200, { fullcrumCompanyId: fullcrum.master.company._id, masterQuestionnaireId: fullcrum.master.questionnaire._id, userName: req.user.name, userCompanyId: req.user.companyId } );
 });
 
 app.get('/administrators', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
@@ -168,11 +168,19 @@ app.post('/save', ensureAuthenticated, ensureHasAccount, function(req, res) {
 });
 
 app.post('/bug', ensureAuthenticated, ensureHasAccount, function(req, res) {
-  fullcrumApp.todo( req, res, 'kUnassignedBug' );
+  fullcrumApp.postTodo( req, res, 'kUnassignedBug' );
 });
 
 app.post('/suggestion', ensureAuthenticated, ensureHasAccount, function(req, res) {
-  fullcrumApp.todo( req, res, 'kUnassignedSuggestion' );
+  fullcrumApp.postTodo( req, res, 'kUnassignedSuggestion' );
+});
+
+app.post('/todo', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  fullcrumApp.postTodo( req, res );
+});
+
+app.get('/todo', ensureAuthenticated, ensureFullcrumAdmin, function(req, res) {
+  fullcrumApp.getTodo( req, res );
 });
 
 app.post('/results', function(req, res) {
@@ -208,6 +216,10 @@ var privateDirectories = [
   "admin",
   "admin/firstSteps",
   "admin/bugSuggestion",
+  "admin/todoGroups",
+  "admin/todoGroups/todoGroup",
+  "admin/todoGroups/todoGroup/todoItems",
+  "admin/todoGroups/todoGroup/todoItem",
   "admin/administrators",
   "admin/administrators/admin",
   "admin/companies",

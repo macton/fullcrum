@@ -1,0 +1,15 @@
+<div ng-controller="todoItem">
+  <div class="form">
+    <div class="form-row">
+      <div class="field-hlabel">#todo <a ng-click="remove()"><i class="text-delete icon-remove-sign"></i></a> </div>
+      <div class="field-hlabel">From: {{ getAdministratorName(todoItem.fromAdminId) }} @ {{ getCompanyName(todoItem.fromCompanyId) }}</div>
+      <div class="field-hdata"><textarea class="tall" ng-model="todoItem.text"></textarea></div>
+    </div>
+    <div class="form-row">
+      <div class="field-label">Assign To</div>
+      <div class="field-data">
+        <select ng-model="todoItem.adminId" ng-options="admin._id as admin.name for admin in fullcrumAdministrators"></select>
+     </div>
+    </div>
+  </div>
+</div>
