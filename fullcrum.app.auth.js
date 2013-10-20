@@ -32,7 +32,31 @@ exports.use = function() {
   });
   
   passport.deserializeUser(function(obj, done) {
-    done(null, obj);
+    if ( fullcrumApp.reloadUser[ obj._id ] ) {
+      console.log('reloadUser = ' + JSON.stringify(obj) );
+      fullcrum.db.connection.then( function() {
+        return fullcrum.db.collection('Admins');
+      })
+      .then( function( collection ) {
+        return fullcrum.db.collectionFindOne( collection, { loginId: obj.loginId } );
+      })
+      .then( function( admin ) {
+        if (!admin) {
+          throw new Error('admin not found');
+        } 
+        console.log('admin = ' + JSON.stringify(admin) );
+        return done( null, admin );        
+      })
+      .fail( function( err ) {
+        console.log( err.stack );
+        return done( null, null );        
+      })
+      .done( function() {
+        fullcrumApp.reloadUser[ obj._id ] = false;
+      });
+    } else {
+      done(null, obj);
+    }
   });
   
   // #todo callbackURL
@@ -43,8 +67,6 @@ exports.use = function() {
       profileFields: ['id', 'first-name', 'last-name', 'email-address', 'headline']
     },
     function(token, tokenSecret, profile, done) {
-      console.dir( profile );
-
       fullcrum.db.connection.then( function() {
         return fullcrum.db.collection('Admins');
       })

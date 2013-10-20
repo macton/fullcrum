@@ -13,6 +13,8 @@ var md5               = require('MD5');
 var postmark          = require('./postmark');
 var fullcrum          = require('./fullcrum.api');
 
+exports.reloadUser = {};
+
 var app = express();
 
 // all environments
@@ -348,6 +350,9 @@ exports.save = function( req, res ) {
         return fullcrum.db.collectionUpdateById( collection, documentId, { '$set' : documentChanges } );    
       })
       .then( function( results ) {
+        if ( collectionName == 'Admins' ) {
+          exports.reloadUser[ documentId ] = true;
+        }
         return { status: 'updated', collectionName: collectionName, id: documentId };
       });
   };
@@ -364,6 +369,8 @@ exports.save = function( req, res ) {
             .then( function( todo ) {
               sendAdminEmailClosedTodo( todo );
             })
+        } else if ( collectionName == 'Admins' ) {
+          exports.reloadUser[ documentId ] = true;
         }
       })
       .then( function() {
