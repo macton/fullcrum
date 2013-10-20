@@ -17,6 +17,7 @@ app.controller('main', function($scope) {
       $scope.userCompanyId         = results.userCompanyId;
       $scope.masterQuestionnaireId = results.masterQuestionnaireId;
       $scope.fullcrumCompanyId     = results.fullcrumCompanyId;
+      $scope.maxEmployeeCount      = results.maxEmployeeCount;
 
       // keep masterQuestionnaire for questionnaires.fork()
       $scope.$watch('questionnaires', function( questionnaires ) { 
