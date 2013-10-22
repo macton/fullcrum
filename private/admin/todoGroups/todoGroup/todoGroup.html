@@ -2,12 +2,12 @@
   <div ng-if="todoItems.length > 0">
     <div ng-if="!isOpen">
       <div class="row color-h3">
-        <div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> {{ todoGroup.name }}</div> 
+        <div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> {{ todoGroup.name }} ({{ todoItems.length }})</div> 
       </div>
     </div>
     <div ng-if="isOpen">
       <div class="row color-h3">
-        <div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> {{ todoGroup.name }}</div>
+        <div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> {{ todoGroup.name }} ({{ todoItems.length }})</div>
       </div>
       <div ng-repeat="todoItem in todoItems">
         <ng-include src="'/admin/todoGroups/todoGroup/todoItem/todoItem.html'"></ng-include>

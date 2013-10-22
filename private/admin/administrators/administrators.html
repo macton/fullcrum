@@ -1,9 +1,9 @@
 <div ng-controller="administrators">
   <div ng-if="!isOpen">
-    <div class="row color-h2"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Administrators </div></div>
+    <div class="row color-h2"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Administrators ({{ administrators.length }})</div></div>
   </div>
   <div ng-if="isOpen">
-    <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Administrators </div> <div ng-click="addNew()" class="btn color-primary">Add New</div> </div>
+    <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Administrators ({{ administrators.length }})</div> <div ng-click="addNew()" class="btn color-primary">Add New</div> </div>
     <div class="form">
       <div class="form-row">
         <p>These are all the administrator accounts. Each company must be assigned at least one administrator. Note that only Fullcrum adminstrators can see or edit the Administrators, Companies and Questionnaires databases below.</p>

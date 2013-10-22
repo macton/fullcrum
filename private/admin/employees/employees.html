@@ -1,9 +1,9 @@
 <div ng-controller="employees">
   <div ng-if="!isOpen">
-    <div class="row color-h2"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Employees </div></div>
+    <div class="row color-h2"><div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> Employees ({{ employees.length }})</div></div>
   </div>
   <div ng-if="isOpen">
-    <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Employees </div> 
+    <div class="row color-h2"><div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> Employees ({{ employees.length }})</div> 
       <div ng-if="employees.length < maxEmployeeCount" ng-click="addNew()" class="btn color-primary">Add New</div> 
     </div>
     <div class="form">
