@@ -31,9 +31,15 @@
 </head>
 <body ng-controller="main">
   
-  <span style="float:right;"><a href="/logout">logout</a></span> 
+  <div class="top-bar" style="margin-bottom: 60px;">
+    <a href="/logout" class="btn-left color-grey"><i class="icon-power-off"></i> Logout</a>
+    <ng-include src="'/admin/firstSteps/firstSteps.html'"></ng-include>
+    <ng-include src="'/admin/bugSuggestion/bugSuggestion.html'"></ng-include>
+    <div ng-if="isEdited" ng-click="save()" class="btn color-notify"><i ng-show="isSaving" class="icon-spin icon-spinner"></i><span ng-show="!isSaving">Save</span></div>
+  </div>
 
-  <div ng-if="isServerError">
+
+  <div ng-if="isServerError" style="margin-top:55px;">
     <div class="row color-h1">
       <div class="title">Server Error</div>
     </div>
@@ -46,14 +52,12 @@
     </div>
   </div>
 
-  <div ng-if="!isServerError">
-    <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
+  <div ng-if="!isServerError" style="margin-top:55px;">
     <div class="row color-h1">
       <div class="title">Happy to see you {{ userName }}!</div>
-      <div ng-if="isEdited" ng-click="save()" class="btn color-notify"><i ng-show="isSaving" class="icon-spin icon-spinner"></i><span ng-show="!isSaving">Save</span></div>
-      <ng-include src="'/admin/firstSteps/firstSteps.html'"></ng-include>
-      <ng-include src="'/admin/bugSuggestion/bugSuggestion.html'"></ng-include>
     </div>
+    <div style="clear:both;"></div>
+    <div class="row"> <img width="100%" src="/img/fullcrum_cropped.jpg"> </div>
   
     <ng-include src="'/admin/employeeGroups/employeeGroups.html'"></ng-include>
     <ng-include src="'/admin/employees/employees.html'"></ng-include>
