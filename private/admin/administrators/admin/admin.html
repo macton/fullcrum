@@ -1,12 +1,12 @@
 <div ng-controller="administrators-admin">
   <div ng-if="!isOpen">
     <div class="row" ng-class="(admin.$isEdit) ? 'color-notify' : 'color-h3'">
-      <div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> {{ admin.name }}</div> 
+      <div ng-click="open()" class="btn-title"> <i class="icon-plus"></i> {{ admin.name }} @ {{ getCompanyName( admin.companyId ) }}</div> 
     </div>
   </div>
   <div ng-if="isOpen">
     <div class="row" ng-class="(admin.$isEdit) ? 'color-notify' : 'color-h3'">
-      <div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> {{ admin.name }}</div>
+      <div ng-click="close()" class="btn-title"> <i class="icon-minus text-notify"></i> {{ admin.name }} @ {{ getCompanyName( admin.companyId ) }}</div>
       <i ng-click="remove()" class="btn text-delete icon-remove-sign"></i>
     </div>
     <div class="form">
