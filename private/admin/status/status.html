@@ -28,7 +28,10 @@
             <div class="field-data"><input type="text" ng-model="newQuestionnaireTitle"></div>
           </div>
           <div ng-show="(isEdited||isSaving)" class="form-row" style="text-align:center;"> Save all changes before you can begin. </div>
-          <div ng-show="!(isEdited||isSaving)" class="form-row"><div class="btn color-primary" ng-click="begin()" style="margin-right: 180px;">Begin!</div></div>
+          <div ng-show="closedQuestionnaireInstances.length >= maxQuestionnaireCount" class="form-row" style="text-align:center;"> Please contact fullcrum.co to purchase support for additional questionnaires </div>
+          <div ng-show="closedQuestionnaireInstances.length < maxQuestionnaireCount">
+            <div ng-show="!(isEdited||isSaving)" class="form-row"><div class="btn color-primary" ng-click="begin()" style="margin-right: 180px;">Begin!</div></div>
+          </div>
         </div>
       </div>
 

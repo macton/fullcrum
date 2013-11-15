@@ -34,7 +34,8 @@ app.get('/adminInfo', ensureAuthenticated, ensureHasAccount, function( req, res 
         masterQuestionnaireId: fullcrum.master.questionnaire._id, 
         userName:              req.user.name, 
         userCompanyId:         req.user.companyId,
-        maxEmployeeCount:      parseInt( company.maxEmployeeCount ) || 0
+        maxEmployeeCount:      parseInt( company.maxEmployeeCount ) || 0,
+        maxQuestionnaireCount: parseInt( company.maxQuestionnaireCount ) || 1
       };
       res.send(200, result);
     })

@@ -5,5 +5,6 @@ app.controller('companies-company', function($scope) {
   handleEdit( $scope, 'Companies', 'company', 'name' );
   handleEdit( $scope, 'Companies', 'company', 'questionnaireId' );
   handleEdit( $scope, 'Companies', 'company', 'maxEmployeeCount' );
+  handleEdit( $scope, 'Companies', 'company', 'maxQuestionnaireCount' );
 });
 
