@@ -100,7 +100,7 @@ Select EmployeeQuestionnaireState
 
 Collection EmployeeQuestionnaireStatus
   $oid.QuestionnaireInstances questionnaireInstanceId
-  $oid.Employees              empoyeeId
+  Email                       email
   EmployeeQuestionnaireState  state
 
 Collection QuestionnaireResults
